@@ -1,0 +1,5 @@
+# Disable CodeRabbit automatic reviews for this repository.
+# Reviews can still be requested manually from a PR comment if needed.
+reviews:
+  auto_review:
+    enabled: false
