@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Latency • NHID Training</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600; }
+        .module-card:focus-visible,
+        .dashboard-card:focus-visible,
+        button:focus-visible {
+            outline: 3px solid rgb(20 184 166);
+            outline-offset: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white">
+    <main class="max-w-5xl mx-auto px-6 sm:px-8 pt-16 pb-12">
+        <header class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between mb-12">
+            <div class="flex items-center gap-x-4">
+                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center" aria-hidden="true">
+                    <i class="fa-solid fa-shield-halved text-slate-900 text-3xl"></i>
+                </div>
+                <div>
+                    <span class="font-display text-4xl sm:text-5xl font-semibold tracking-[-2px]">Zero Latency</span>
+                    <span class="block text-xs tracking-[3px] text-teal-500 font-bold mt-1">NHID-CLINICAL TRAINING SIMULATOR</span>
+                </div>
+            </div>
+
+            <div class="text-left md:text-right">
+                <div class="text-xs text-white/60">CLINICAL AI TRUST OFFICER TRAINING</div>
+                <div id="last-updated" class="mt-1 text-xs text-teal-400" aria-live="polite"></div>
+            </div>
+        </header>
+
+        <section class="max-w-2xl" aria-labelledby="page-title">
+            <h1 id="page-title" class="font-display text-5xl sm:text-6xl font-semibold tracking-[-2.5px] leading-none">Master AI Voice<br>Identity Governance</h1>
+            <p class="mt-6 text-xl text-white/70">Learn to eliminate impersonation latency and enforce mandatory disclosure in real healthcare voice workflows.</p>
+        </section>
+
+        <section class="mt-10 grid gap-4 sm:grid-cols-3" aria-label="Training progress summary">
+            <div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+                <div class="text-xs uppercase tracking-[2px] text-white/50">Completed</div>
+                <div class="mt-2 text-3xl font-display" id="completed-count">0/4</div>
+            </div>
+            <div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+                <div class="text-xs uppercase tracking-[2px] text-white/50">Average Score</div>
+                <div class="mt-2 text-3xl font-display" id="average-score">—</div>
+            </div>
+            <div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+                <div class="text-xs uppercase tracking-[2px] text-white/50">Next Step</div>
+                <a id="continue-link" href="zero-latency-module1-v2.html" class="mt-2 inline-flex items-center gap-2 text-lg font-semibold text-teal-400 hover:text-teal-300">
+                    Start Module 1 <i class="fa-solid fa-arrow-right text-sm" aria-hidden="true"></i>
+                </a>
+            </div>
+        </section>
+
+        <section class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Training modules">
+            <a href="zero-latency-module1-v2.html" class="module-card group block rounded-3xl" data-module-id="module1" data-module-title="Module 1">
+                <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 1</div>
+                        <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
+                    </div>
+                    <div class="font-display text-3xl font-semibold tracking-tight mb-3">The First 5 Seconds</div>
+                    <div class="text-white/70 text-[15px] leading-relaxed">Your AI agent just connected to a payer. One wrong opening creates impersonation liability. Master the disclosure window.</div>
+                    <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">5–8 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Real-time timer</div>
+                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="zero-latency-module2.html" class="module-card group block rounded-3xl" data-module-id="module2" data-module-title="Module 2">
+                <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 2</div>
+                        <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
+                    </div>
+                    <div class="font-display text-3xl font-semibold tracking-tight mb-3">Passport Inspection</div>
+                    <div class="text-white/70 text-[15px] leading-relaxed">Inspect an NHID-Auth v2 passport token, compare domain and expiration signals, and reject forged provider claims.</div>
+                    <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">6–9 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Drag-and-drop validator</div>
+                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="zero-latency-module3.html" class="module-card group block rounded-3xl" data-module-id="module3" data-module-title="Module 3">
+                <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 3</div>
+                        <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
+                    </div>
+                    <div class="font-display text-3xl font-semibold tracking-tight mb-3">Compliance Gaps</div>
+                    <div class="text-white/70 text-[15px] leading-relaxed">Audit late AI disclosures, revoked passports, and escalation failures by tagging realistic call-log violations.</div>
+                    <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">7–10 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Shadow evaluation</div>
+                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Module 4 -->
+            <a href="zero-latency-module4.html" class="module-card group block rounded-3xl" data-module-id="module4" data-module-title="Module 4">
+                <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 4</div>
+                        <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
+                    </div>
+                    <div class="font-display text-3xl font-semibold tracking-tight mb-3">Safe Agent Deployment</div>
+                    <div class="text-white/70 text-[15px] leading-relaxed">Configure outbound medical AI voice agents so disclosure is logic-gated before data requests or human-like artifacts.</div>
+                    <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">5–7 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Prompt-node builder</div>
+                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="zero-latency-dashboard.html" class="dashboard-card group block md:col-span-3 lg:col-span-1 rounded-3xl">
+                <div class="bg-white border border-teal-600 group-hover:border-teal-700 transition-colors rounded-3xl p-8 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="px-4 py-1 bg-teal-600 text-white text-xs font-bold tracking-wider rounded-3xl">PROGRESS</div>
+                        </div>
+                        <div class="font-display text-3xl font-semibold tracking-tight mb-3 text-slate-900">Your Dashboard</div>
+                        <div class="text-slate-600 text-[15px] leading-relaxed">See your latest scores across all modules and track improvement over time.</div>
+                    </div>
+                    <div class="mt-8 flex items-center gap-x-2 text-xs text-teal-700 font-medium">
+                        <span>View Progress &amp; History</span>
+                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </a>
+        </section>
+
+        <div class="mt-12 flex flex-col items-center gap-4 text-center">
+            <button type="button" id="reset-progress" class="rounded-2xl border border-white/15 px-4 py-2 text-xs font-semibold text-white/70 transition-colors hover:border-teal-500 hover:text-teal-300">Reset saved progress</button>
+            <div class="inline-flex items-center gap-x-2 text-xs text-white/50">
+                <i class="fa-solid fa-info-circle" aria-hidden="true"></i>
+                <span>These simulations follow NHID-Clinical v1.3 and NHID-Auth v2 requirements</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const MODULES = [
+            { id: 'module1', title: 'Module 1', href: 'zero-latency-module1-v2.html' },
+            { id: 'module2', title: 'Module 2', href: 'zero-latency-module2.html' },
+            { id: 'module3', title: 'Module 3', href: 'zero-latency-module3.html' },
+            { id: 'module4', title: 'Module 4', href: 'zero-latency-module4.html' }
+        ];
+
+        const STORAGE_KEY = 'zeroLatencyProgress';
+
+        function readProgress() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                return saved && typeof saved === 'object' ? saved : {};
+            } catch (error) {
+                console.warn('Unable to read saved training progress.', error);
+                return {};
+            }
+        }
+
+        function renderProgress() {
+            const progress = readProgress();
+            const completedModules = MODULES.filter((module) => progress[module.id]?.completed);
+            const scoredModules = MODULES.filter((module) => Number.isFinite(progress[module.id]?.score));
+            const nextModule = MODULES.find((module) => !progress[module.id]?.completed) || MODULES[0];
+
+            document.getElementById('completed-count').textContent = `${completedModules.length}/${MODULES.length}`;
+            document.getElementById('average-score').textContent = scoredModules.length
+                ? `${Math.round(scoredModules.reduce((sum, module) => sum + progress[module.id].score, 0) / scoredModules.length)}%`
+                : '—';
+
+            const continueLink = document.getElementById('continue-link');
+            continueLink.href = nextModule.href;
+            continueLink.innerHTML = `${completedModules.length === MODULES.length ? 'Review' : 'Continue'} ${nextModule.title} <i class="fa-solid fa-arrow-right text-sm" aria-hidden="true"></i>`;
+
+            document.querySelectorAll('.module-card').forEach((card) => {
+                const moduleProgress = progress[card.dataset.moduleId];
+                const actionLabel = card.querySelector('[data-action-label]');
+                const completeBadge = card.querySelector('[data-complete-badge]');
+
+                if (moduleProgress?.completed) {
+                    actionLabel.textContent = 'REVIEW →';
+                    completeBadge.classList.remove('hidden');
+                } else {
+                    actionLabel.textContent = 'START →';
+                    completeBadge.classList.add('hidden');
+                }
+            });
+
+            const lastCompleted = completedModules
+                .map((module) => progress[module.id]?.completedAt)
+                .filter(Boolean)
+                .sort()
+                .at(-1);
+            document.getElementById('last-updated').textContent = lastCompleted
+                ? `Last activity: ${new Date(lastCompleted).toLocaleDateString()}`
+                : 'No saved progress yet';
+        }
+
+        document.getElementById('reset-progress').addEventListener('click', () => {
+            localStorage.removeItem(STORAGE_KEY);
+            renderProgress();
+        });
+
+        renderProgress();
+    </script>
+</body>
+</html>

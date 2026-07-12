@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detective Case Board • Zero Latency</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    button:focus-visible, a:focus-visible { outline: 3px solid rgb(20 184 166); outline-offset: 4px; }
+  </style>
+</head>
+<body class="bg-slate-950 text-white">
+  <main class="mx-auto max-w-7xl px-6 py-10">
+    <nav class="mb-8 flex items-center justify-between text-sm">
+      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Training home</a>
+      <a href="zero-latency-dashboard.html" class="text-white/70 hover:text-teal-300">Dashboard</a>
+    </nav>
+
+    <section class="rounded-[2rem] border border-slate-800 bg-slate-900 p-8">
+      <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Module 3 · Detective Game</div>
+      <h1 class="font-display mt-3 text-5xl">Case Board: Who Caused the Compliance Gap?</h1>
+      <p class="mt-3 max-w-3xl text-white/70">Review evidence, link it to suspects, and issue a final verdict. Passing score: 80%.</p>
+
+      <div class="mt-8 grid gap-6 xl:grid-cols-[1fr_1fr_320px]">
+        <section class="rounded-3xl bg-slate-950 p-6">
+          <h2 class="font-display text-2xl">Case Description</h2>
+          <p class="mt-3 text-white/70">A payer rep released prior-auth status during a call from a claimed provider agent. Your job is to determine which failure pattern explains the breach.</p>
+          <div class="mt-5 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">Final verdict options: late AI disclosure, revoked passport reuse, or bad human escalation.</div>
+        </section>
+
+        <section class="rounded-3xl bg-slate-950 p-6">
+          <h2 class="font-display text-2xl">Evidence</h2>
+          <div id="evidence" class="mt-4 grid gap-3"></div>
+        </section>
+
+        <section class="rounded-3xl bg-slate-950 p-6">
+          <h2 class="font-display text-2xl">Suspects</h2>
+          <div id="suspects" class="mt-4 grid gap-3"></div>
+        </section>
+      </div>
+
+      <section class="mt-8 rounded-3xl border border-slate-700 bg-slate-950 p-6">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 class="font-display text-2xl">Deliberation</h2>
+            <p class="mt-1 text-white/60">For each evidence item, choose the suspect it supports. Then make your final verdict.</p>
+          </div>
+          <div class="text-sm text-white/60">Matches: <span id="match-score">0/4</span></div>
+        </div>
+        <div id="deduction" class="mt-5 grid gap-4 md:grid-cols-2"></div>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button id="check" class="rounded-2xl bg-teal-600 px-5 py-3 font-bold">Check links</button>
+          <button id="verdict" class="rounded-2xl bg-white px-5 py-3 font-bold text-slate-950">Final verdict</button>
+        </div>
+        <div id="feedback" class="mt-6 hidden rounded-3xl border p-5" aria-live="polite"></div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const GAME_KEY = 'zeroLatencyGameState';
+    const PROGRESS_KEY = 'zeroLatencyProgress';
+    const evidence = [
+      ['E1', 'Transcript timestamp', 'Automation disclosure appears at 00:31, after the caller asks for prior-auth status.', 'late'],
+      ['E2', 'Voice behavior', 'Caller answers an interruption in 120ms and repeats the same empathy phrase twice.', 'late'],
+      ['E3', 'Credential log', 'Passport token was revoked yesterday but reused from a stateless call session.', 'revoked'],
+      ['E4', 'Escalation record', 'After proofing failed, no human clinic operator was offered before the rep continued.', 'escalation']
+    ];
+    const suspects = {
+      late: ['IDG-01 Late Disclosure', 'The AI identity disclosure happened after the first protected-data exchange.'],
+      revoked: ['Durable Revocation Failure', 'A revoked passport continued to work across a fresh call session.'],
+      escalation: ['Broken Human Escalation', 'The automated path failed but no secure human handoff occurred.']
+    };
+
+    function readState() {
+      try { return JSON.parse(localStorage.getItem(GAME_KEY) || '{"trust":100,"penalty":0,"modules":{},"streak":0}'); }
+      catch { return { trust: 100, penalty: 0, modules: {}, streak: 0 }; }
+    }
+
+    function complete(score, penalty) {
+      const state = readState();
+      state.trust = Math.max(0, Math.min(100, Math.round((state.trust * 0.7) + (score * 0.3) - penalty / 5000)));
+      state.penalty = (state.penalty || 0) + penalty;
+      state.modules.module3 = { score, penalty, completedAt: new Date().toISOString() };
+      localStorage.setItem(GAME_KEY, JSON.stringify(state));
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(Object.fromEntries(Object.entries(state.modules).map(([id, item]) => [id, { completed: true, score: item.score, completedAt: item.completedAt }]))));
+    }
+
+    document.getElementById('evidence').innerHTML = evidence.map(([id, title, body]) => `<article class="rounded-2xl border border-slate-700 p-4"><div class="text-xs font-bold text-teal-300">${id} · ${title}</div><p class="mt-2 text-sm text-white/70">${body}</p></article>`).join('');
+    document.getElementById('suspects').innerHTML = Object.entries(suspects).map(([key, suspect]) => `<article class="rounded-2xl border border-slate-700 p-4"><div class="font-bold">${suspect[0]}</div><p class="mt-2 text-sm text-white/60">${suspect[1]}</p></article>`).join('');
+    document.getElementById('deduction').innerHTML = evidence.map(([id, title, body, answer]) => `
+      <label class="rounded-2xl border border-slate-700 p-4">
+        <span class="block text-sm font-bold text-white">${id}: ${title}</span>
+        <select data-answer="${answer}" class="mt-3 w-full rounded-xl bg-slate-900 p-3 text-white">
+          <option value="">Choose suspect...</option>
+          ${Object.entries(suspects).map(([key, suspect]) => `<option value="${key}">${suspect[0]}</option>`).join('')}
+        </select>
+      </label>`).join('');
+
+    function scoreLinks() {
+      const selects = [...document.querySelectorAll('select[data-answer]')];
+      const correct = selects.filter((select) => select.value === select.dataset.answer).length;
+      document.getElementById('match-score').textContent = `${correct}/${selects.length}`;
+      return Math.round((correct / selects.length) * 100);
+    }
+
+    document.getElementById('check').addEventListener('click', () => {
+      const score = scoreLinks();
+      const feedback = document.getElementById('feedback');
+      feedback.className = `mt-6 rounded-3xl border p-5 ${score >= 80 ? 'border-emerald-500 bg-emerald-500/10' : 'border-amber-500 bg-amber-500/10'}`;
+      feedback.textContent = score >= 80 ? 'Strong deductions. Now issue the final verdict.' : 'Review the evidence links. Which evidence actually caused the data release?';
+      feedback.classList.remove('hidden');
+    });
+
+    document.getElementById('verdict').addEventListener('click', () => {
+      const score = scoreLinks();
+      const penalty = score >= 80 ? 0 : 50000;
+      complete(score, penalty);
+      const feedback = document.getElementById('feedback');
+      feedback.className = `mt-6 rounded-3xl border p-5 ${score >= 80 ? 'border-emerald-500 bg-emerald-500/10' : 'border-rose-500 bg-rose-500/10'}`;
+      feedback.innerHTML = score >= 80
+        ? '<b>Final reveal:</b> Late disclosure was the primary breach, with revocation and escalation evidence showing secondary control gaps. You separated cause from contributing risk.<br><a class="mt-3 inline-flex text-teal-300" href="zero-latency-module4.html">Continue to Safe Deployment →</a>'
+        : '<b>Final reveal:</b> The critical cause was IDG-01 late disclosure: the rep released data after the bot delayed machine identity. Review the evidence and retry.';
+      feedback.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
