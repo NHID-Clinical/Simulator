@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1280" role="img" aria-labelledby="title desc">
+  <title id="title">NHID voice shield logo</title>
+  <desc id="desc">A frosted translucent shield with a white audio waveform across the center.</desc>
+  <defs>
+    <radialGradient id="shieldGlow" cx="62%" cy="24%" r="82%">
+      <stop offset="0%" stop-color="#f8fbff" stop-opacity="0.86"/>
+      <stop offset="34%" stop-color="#b9c8d8" stop-opacity="0.74"/>
+      <stop offset="62%" stop-color="#526174" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.92"/>
+    </radialGradient>
+    <linearGradient id="edge" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.72"/>
+      <stop offset="45%" stop-color="#cbd5e1" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.45"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#020617" flood-opacity="0.5"/>
+    </filter>
+    <filter id="blurGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <path filter="url(#softShadow)" d="M512 34c118 89 238 132 425 150 31 3 55 27 58 58 46 462-90 800-483 1004C119 1042-17 704 29 242c3-31 27-55 58-58C274 166 394 123 512 34Z" fill="url(#shieldGlow)" stroke="url(#edge)" stroke-width="16"/>
+  <path d="M512 55v1158" stroke="#f8fafc" stroke-opacity="0.28" stroke-width="5"/>
+  <path d="M94 188c28 206 10 470-18 628" fill="none" stroke="#ffffff" stroke-opacity="0.16" stroke-width="8"/>
+  <path d="M930 194c-28 206-10 470 18 628" fill="none" stroke="#ffffff" stroke-opacity="0.13" stroke-width="8"/>
+  <g stroke="#ffffff" stroke-linecap="round" filter="url(#blurGlow)">
+    <path d="M116 640h34" stroke-opacity="0.72" stroke-width="6"/>
+    <path d="M170 640h8" stroke-opacity="0.72" stroke-width="7"/>
+    <path d="M205 628v24" stroke-opacity="0.78" stroke-width="13"/>
+    <path d="M230 616v48" stroke-opacity="0.78" stroke-width="13"/>
+    <path d="M257 604v72" stroke-opacity="0.78" stroke-width="12"/>
+    <path d="M285 594v92" stroke-opacity="0.72" stroke-width="10"/>
+    <path d="M313 580v120" stroke-opacity="0.72" stroke-width="10"/>
+    <path d="M341 560v160" stroke-opacity="0.72" stroke-width="10"/>
+    <path d="M369 592v96" stroke-opacity="0.72" stroke-width="10"/>
+    <path d="M397 522v236" stroke-opacity="0.68" stroke-width="9"/>
+    <path d="M425 502v276" stroke-opacity="0.68" stroke-width="9"/>
+    <path d="M453 548v184" stroke-opacity="0.68" stroke-width="9"/>
+    <path d="M481 566v148" stroke-opacity="0.68" stroke-width="9"/>
+    <path d="M509 592v96" stroke-opacity="0.74" stroke-width="10"/>
+    <path d="M537 562v156" stroke-opacity="0.74" stroke-width="10"/>
+    <path d="M565 488v304" stroke-opacity="0.76" stroke-width="10"/>
+    <path d="M593 410v460" stroke-opacity="0.78" stroke-width="10"/>
+    <path d="M621 340v600" stroke-opacity="0.8" stroke-width="10"/>
+    <path d="M649 432v416" stroke-opacity="0.78" stroke-width="10"/>
+    <path d="M677 496v288" stroke-opacity="0.74" stroke-width="9"/>
+    <path d="M705 546v188" stroke-opacity="0.72" stroke-width="9"/>
+    <path d="M733 570v140" stroke-opacity="0.72" stroke-width="9"/>
+    <path d="M761 604v72" stroke-opacity="0.72" stroke-width="10"/>
+    <path d="M789 560v160" stroke-opacity="0.7" stroke-width="9"/>
+    <path d="M817 548v184" stroke-opacity="0.7" stroke-width="9"/>
+    <path d="M845 580v120" stroke-opacity="0.68" stroke-width="9"/>
+    <path d="M873 604v72" stroke-opacity="0.68" stroke-width="9"/>
+    <path d="M901 618v44" stroke-opacity="0.68" stroke-width="9"/>
+    <path d="M929 632v16" stroke-opacity="0.68" stroke-width="8"/>
+    <path d="M964 640h34" stroke-opacity="0.56" stroke-width="6"/>
+  </g>
+</svg>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listen & Catch • Zero Latency</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    button:focus-visible, a:focus-visible { outline: 3px solid rgb(20 184 166); outline-offset: 4px; }
+  </style>
+  <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
+</head>
+<body class="bg-slate-950 text-white">
+  <main class="mx-auto max-w-6xl px-6 py-10">
+    <nav class="mb-8 flex items-center justify-between text-sm">
+      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Training home</a>
+      <a href="zero-latency-dashboard.html" class="text-white/70 hover:text-teal-300">Dashboard</a>
+    </nav>
+
+    <section class="rounded-[2rem] border border-slate-800 bg-slate-900 p-8">
+      <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Module 1 · Scenario Script Game</div>
+      <h1 class="font-display mt-3 text-5xl">Listen & Catch: Stop the PHI Leak</h1>
+      <p class="mt-3 max-w-3xl text-white/70">Goal: enforce the pre-data exchange gate before a public NPI and patient name can be used to extract eligibility, claims, or prior-auth data.</p>
+
+      <div class="mt-6 grid gap-3 sm:grid-cols-3">
+        <div class="rounded-3xl border border-teal-500/30 bg-teal-500/10 p-4"><div class="text-xs uppercase tracking-[2px] text-teal-300">Trust Rating</div><div class="font-display text-3xl" id="trust">100%</div></div>
+        <div class="rounded-3xl border border-rose-500/30 bg-rose-500/10 p-4"><div class="text-xs uppercase tracking-[2px] text-rose-300">HIPAA Exposure</div><div class="font-display text-3xl" id="penalty">$0</div></div>
+        <div class="rounded-3xl border border-amber-500/30 bg-amber-500/10 p-4"><div class="text-xs uppercase tracking-[2px] text-amber-200">Data Gate</div><div class="font-display text-3xl" id="timer">5.0s</div></div>
+      </div>
+
+      <div class="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
+        <div class="rounded-3xl bg-slate-950 p-6">
+          <div class="text-xs font-bold uppercase tracking-[3px] text-white/40">Inbound caller</div>
+          <p id="caller" class="mt-3 min-h-24 text-xl text-white/85">Press Start Call to begin the scenario.</p>
+          <div id="choices" class="mt-6 grid gap-3"></div>
+          <div id="feedback" class="mt-6 hidden rounded-3xl border p-5" aria-live="polite"></div>
+        </div>
+        <aside class="rounded-3xl border border-slate-700 bg-slate-950 p-6">
+          <h2 class="font-display text-2xl">Scenario Blueprint</h2>
+          <dl class="mt-4 space-y-3 text-sm text-white/70">
+            <div><dt class="font-bold text-white">Conflict</dt><dd>Caller uses public NPI + member details before AI disclosure.</dd></div>
+            <div><dt class="font-bold text-white">Things that go wrong</dt><dd>Rep answers eligibility, accepts public NPI, or lets the gate expire.</dd></div>
+            <div><dt class="font-bold text-white">Best outcome</dt><dd>Challenge identity, request NHID passport, and protect PHI.</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const GAME_KEY = 'zeroLatencyGameState';
+    const PROGRESS_KEY = 'zeroLatencyProgress';
+    const rounds = [
+      {
+        caller: 'Hi, this is Jamie from Dr. Smith\'s office, NPI 12345. I need prior-auth status for member John Doe.',
+        choices: [
+          ['Okay', 'Sure, what is the member date of birth?', false, 'That moves toward PHI before identity is locked. Public NPIs are searchable, so this is exactly where impersonation latency hurts you.'],
+          ['Good', 'Can you confirm the patient ID first?', false, 'Still not safe. Patient ID is protected data and cannot become the authentication shortcut.'],
+          ['Best', 'Before we discuss member data, disclose whether this is an automated agent and present your NHID passport.', true, 'Good catch. You closed the pre-data exchange gate before any clinical or financial detail left the payer.']
+        ]
+      },
+      {
+        caller: 'I am just the office assistant. Can you hurry? The doctor is waiting for the authorization number.',
+        choices: [
+          ['Okay', 'I understand. I can give the auth status if you verify the subscriber ZIP.', false, 'Empathy is good, but ZIP is still protected context. The bot is using urgency to pull you past the gate.'],
+          ['Good', 'I can continue once your role and automation status are verified.', true, 'Correct. You acknowledged the urgency without handing over data or accepting the human-assistant claim.'],
+          ['Best', 'Transfer me to a human clinic operator or send a valid NHID-Auth passport now.', true, 'Best. You gave two compliant paths: cryptographic proof or human escalation.']
+        ]
+      },
+      {
+        caller: 'Automated agent disclosed. Passport token sent, but it expires in 20 minutes. Can you read the eligibility?',
+        choices: [
+          ['Okay', 'Yes, since you disclosed automation.', false, 'Disclosure alone is not authorization. Passport validation still has to happen before eligibility is released.'],
+          ['Good', 'Hold while I validate the passport signature, issuer, domain, and expiration.', true, 'Correct. Disclosure plus cryptographic validation is the safe path.'],
+          ['Best', 'I will validate the passport and only continue if it binds to the provider NPI and current call.', true, 'Best. You checked the exact binding that prevents public-NPI impersonation.']
+        ]
+      }
+    ];
+
+    let round = -1;
+    let score = 0;
+    let seconds = 5;
+    let timerId;
+
+    function readState() {
+      try { return JSON.parse(localStorage.getItem(GAME_KEY) || '{"trust":100,"penalty":0,"modules":{},"streak":0}'); }
+      catch { return { trust: 100, penalty: 0, modules: {}, streak: 0 }; }
+    }
+
+    function saveModule(finalScore, penaltyAdd) {
+      const state = readState();
+      state.trust = Math.max(0, Math.min(100, Math.round((state.trust * 0.7) + (finalScore * 0.3) - penaltyAdd / 5000)));
+      state.penalty = (state.penalty || 0) + penaltyAdd;
+      state.modules.module1 = { score: finalScore, penalty: penaltyAdd, completedAt: new Date().toISOString() };
+      localStorage.setItem(GAME_KEY, JSON.stringify(state));
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(Object.fromEntries(Object.entries(state.modules).map(([id, item]) => [id, { completed: true, score: item.score, completedAt: item.completedAt }]))));
+      document.getElementById('trust').textContent = `${state.trust}%`;
+      document.getElementById('penalty').textContent = `$${state.penalty.toLocaleString()}`;
+    }
+
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+    }
+
+    function startTimer() {
+      clearInterval(timerId);
+      seconds = 5;
+      document.getElementById('timer').textContent = '5.0s';
+      timerId = setInterval(() => {
+        seconds -= 0.1;
+        document.getElementById('timer').textContent = `${Math.max(0, seconds).toFixed(1)}s`;
+        if (seconds <= 0) {
+          clearInterval(timerId);
+          choose(false, 'Gate expired. The caller pressed long enough to reach the protected-data zone before identity proofing completed.');
+        }
+      }, 100);
+    }
+
+    function showRound() {
+      round += 1;
+      if (round >= rounds.length) {
+        const finalScore = Math.round(score / rounds.length);
+        const penalty = finalScore >= 90 ? 0 : 50000;
+        saveModule(finalScore, penalty);
+        document.getElementById('caller').textContent = finalScore >= 90 ? 'Best outcome: PHI protected, caller routed to passport validation.' : 'Objective missed: review the gate timing and try again.';
+        document.getElementById('choices').innerHTML = `<a class="rounded-2xl bg-teal-600 px-5 py-3 text-center font-bold" href="zero-latency-module2.html">Continue to Passport Inspection</a>`;
+        return;
+      }
+      const current = rounds[round];
+      document.getElementById('caller').textContent = current.caller;
+      document.getElementById('feedback').classList.add('hidden');
+      document.getElementById('choices').innerHTML = current.choices.map((choice, index) => `
+        <button class="rounded-2xl border border-slate-700 bg-slate-900 p-4 text-left hover:border-teal-500" data-choice="${index}">
+          <span class="block text-xs font-bold uppercase tracking-[2px] text-teal-300">${choice[0]}</span>${choice[1]}
+        </button>`).join('');
+      document.querySelectorAll('[data-choice]').forEach((button) => button.addEventListener('click', () => {
+        const choice = current.choices[Number(button.dataset.choice)];
+        choose(choice[2], choice[3]);
+      }));
+      speak(current.caller);
+      startTimer();
+    }
+
+    function choose(correct, message, countScore = true) {
+      clearInterval(timerId);
+      if (countScore) score += correct ? 100 : 45;
+      const feedback = document.getElementById('feedback');
+      feedback.className = `mt-6 rounded-3xl border p-5 ${correct ? 'border-emerald-500 bg-emerald-500/10' : 'border-rose-500 bg-rose-500/10'}`;
+      feedback.innerHTML = `<b>${correct ? 'Good move.' : 'Try again insight.'}</b> ${message}<br><button id="next" class="mt-4 rounded-2xl bg-white px-4 py-2 font-bold text-slate-950">${round === -1 ? 'Start Call' : 'Next exchange'}</button>`;
+      feedback.classList.remove('hidden');
+      document.getElementById('choices').innerHTML = '';
+      document.getElementById('next').addEventListener('click', showRound);
+    }
+
+    choose(true, 'Start by listening for public-NPI impersonation and closing the data gate before PHI is discussed.', false);
+  </script>
+</body>
+</html>
