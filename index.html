@@ -46,7 +46,7 @@
         <section class="mt-10 grid gap-4 sm:grid-cols-3" aria-label="Training progress summary">
             <div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
                 <div class="text-xs uppercase tracking-[2px] text-white/50">Completed</div>
-                <div class="mt-2 text-3xl font-display" id="completed-count">0/3</div>
+                <div class="mt-2 text-3xl font-display" id="completed-count">0/4</div>
             </div>
             <div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
                 <div class="text-xs uppercase tracking-[2px] text-white/50">Average Score</div>
@@ -83,11 +83,11 @@
                         <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 2</div>
                         <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
                     </div>
-                    <div class="font-display text-3xl font-semibold tracking-tight mb-3">Conformance Trace Audit</div>
-                    <div class="text-white/70 text-[15px] leading-relaxed">Review a flagged call. Compare the spoken transcript against the structured JSON log and catch critical compliance failures.</div>
+                    <div class="font-display text-3xl font-semibold tracking-tight mb-3">Passport Inspection</div>
+                    <div class="text-white/70 text-[15px] leading-relaxed">Inspect an NHID-Auth v2 passport token, compare domain and expiration signals, and reject forged provider claims.</div>
                     <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">8–12 min</div>
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Audit detective mode</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">6–9 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Drag-and-drop validator</div>
                         <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
                     </div>
                 </div>
@@ -99,11 +99,28 @@
                         <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 3</div>
                         <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
                     </div>
-                    <div class="font-display text-3xl font-semibold tracking-tight mb-3">Cryptographic Passport</div>
-                    <div class="text-white/70 text-[15px] leading-relaxed">Validate incoming NPI claims using NHID-Auth cryptographic signatures. Decide whether to accept, verify, or revoke.</div>
+                    <div class="font-display text-3xl font-semibold tracking-tight mb-3">Compliance Gaps</div>
+                    <div class="text-white/70 text-[15px] leading-relaxed">Audit late AI disclosures, revoked passports, and escalation failures by tagging realistic call-log violations.</div>
                     <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">6–10 min</div>
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Signature verification</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">7–10 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Shadow evaluation</div>
+                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Module 4 -->
+            <a href="zero-latency-module4.html" class="module-card group block rounded-3xl" data-module-id="module4" data-module-title="Module 4">
+                <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 4</div>
+                        <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
+                    </div>
+                    <div class="font-display text-3xl font-semibold tracking-tight mb-3">Safe Agent Deployment</div>
+                    <div class="text-white/70 text-[15px] leading-relaxed">Configure outbound medical AI voice agents so disclosure is logic-gated before data requests or human-like artifacts.</div>
+                    <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">5–7 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Prompt-node builder</div>
                         <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
                     </div>
                 </div>
@@ -139,7 +156,8 @@
         const MODULES = [
             { id: 'module1', title: 'Module 1', href: 'zero-latency-module1-v2.html' },
             { id: 'module2', title: 'Module 2', href: 'zero-latency-module2.html' },
-            { id: 'module3', title: 'Module 3', href: 'zero-latency-module3.html' }
+            { id: 'module3', title: 'Module 3', href: 'zero-latency-module3.html' },
+            { id: 'module4', title: 'Module 4', href: 'zero-latency-module4.html' }
         ];
 
         const STORAGE_KEY = 'zeroLatencyProgress';
