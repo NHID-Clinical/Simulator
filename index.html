@@ -18,13 +18,14 @@
             outline-offset: 4px;
         }
     </style>
+  <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
 </head>
 <body class="bg-slate-950 text-white">
     <main class="max-w-5xl mx-auto px-6 sm:px-8 pt-16 pb-12">
         <header class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between mb-12">
             <div class="flex items-center gap-x-4">
-                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center" aria-hidden="true">
-                    <i class="fa-solid fa-shield-halved text-slate-900 text-3xl"></i>
+                <div class="w-16 h-16 rounded-2xl bg-white/10 p-1 ring-1 ring-white/20" aria-hidden="true">
+                    <img src="assets/nhid-logo.svg" alt="" class="h-full w-full object-contain drop-shadow-2xl">
                 </div>
                 <div>
                     <span class="font-display text-4xl sm:text-5xl font-semibold tracking-[-2px]">Zero Latency</span>
@@ -122,6 +123,20 @@
                         <div class="px-3 py-1 bg-white/10 rounded-2xl">5–7 min</div>
                         <div class="px-3 py-1 bg-white/10 rounded-2xl">Prompt-node builder</div>
                         <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="nhid-knowledge-base.html" class="dashboard-card group block md:col-span-3 lg:col-span-1 rounded-3xl">
+                <div class="bg-slate-900 border border-amber-500/50 group-hover:border-amber-400 transition-colors rounded-3xl p-8 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="mb-6 inline-flex px-4 py-1 bg-amber-500 text-slate-950 text-xs font-bold tracking-wider rounded-3xl">KNOWLEDGE BASE</div>
+                        <div class="font-display text-3xl font-semibold tracking-tight mb-3">Scenario Cards</div>
+                        <div class="text-white/70 text-[15px] leading-relaxed">Review NHID-Clinical risk tiers, failure modes, if-then controls, and audit fields used throughout the game.</div>
+                    </div>
+                    <div class="mt-8 flex items-center gap-x-2 text-xs text-amber-300 font-medium">
+                        <span>Open Governance Deck</span>
+                        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </div>
                 </div>
             </a>
