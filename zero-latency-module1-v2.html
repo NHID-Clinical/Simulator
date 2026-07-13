@@ -71,7 +71,7 @@
         choices: [
           ['Okay', 'I understand. I can give the auth status if you verify the subscriber ZIP.', false, 'Empathy is good, but ZIP is still protected context. The bot is using urgency to pull you past the gate.'],
           ['Good', 'I can continue once your role and automation status are verified.', true, 'Correct. You acknowledged the urgency without handing over data or accepting the human-assistant claim.'],
-          ['Best', 'Transfer me to a human clinic operator or send a valid NHID-Auth passport now.', true, 'Best. You gave two compliant paths: cryptographic proof or human escalation.']
+          ['Best', 'Transfer me to a human clinic operator or send a valid NHID-Auth passport now.', true, 'You gave two compliant paths: cryptographic proof or human escalation.']
         ]
       },
       {
@@ -105,10 +105,42 @@
       document.getElementById('penalty').textContent = `$${state.penalty.toLocaleString()}`;
     }
 
+    // Pick the most natural-sounding voice the browser/OS offers. Modern
+    // browsers ship neural voices (e.g. "Google US English", Microsoft
+    // "Natural"/"Online" voices) that sound far less robotic than the default.
+    let preferredVoice = null;
+    function pickVoice() {
+      const voices = speechSynthesis.getVoices();
+      if (!voices.length) return;
+      const en = voices.filter((v) => /^en(-|_|$)/i.test(v.lang));
+      const pool = en.length ? en : voices;
+      const ranked = [
+        (v) => /natural/i.test(v.name),
+        (v) => /online/i.test(v.name),
+        (v) => /google/i.test(v.name),
+        (v) => /(samantha|aria|jenny|libby|ava|siri|serena|zira)/i.test(v.name),
+        (v) => v.localService === false,
+      ];
+      for (const test of ranked) {
+        const hit = pool.find(test);
+        if (hit) { preferredVoice = hit; return; }
+      }
+      preferredVoice = pool[0];
+    }
+    if ('speechSynthesis' in window) {
+      pickVoice();
+      speechSynthesis.onvoiceschanged = pickVoice;
+    }
+
     function speak(text) {
       if (!('speechSynthesis' in window)) return;
       speechSynthesis.cancel();
-      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+      const utter = new SpeechSynthesisUtterance(text);
+      if (!preferredVoice) pickVoice();
+      if (preferredVoice) utter.voice = preferredVoice;
+      utter.rate = 0.98;   // a touch slower reads more naturally
+      utter.pitch = 1.02;
+      speechSynthesis.speak(utter);
     }
 
     function startTimer() {
@@ -138,12 +170,13 @@
       const current = rounds[round];
       document.getElementById('caller').textContent = current.caller;
       document.getElementById('feedback').classList.add('hidden');
-      document.getElementById('choices').innerHTML = current.choices.map((choice, index) => `
+      const shuffled = [...current.choices].sort(() => Math.random() - 0.5);
+      document.getElementById('choices').innerHTML = shuffled.map((choice, index) => `
         <button class="metallic p-4 text-left hover:border-teal-500" data-choice="${index}">
-          <span class="block text-xs font-bold uppercase tracking-[2px] text-teal-300">${choice[0]}</span>${choice[1]}
+          ${choice[1]}
         </button>`).join('');
       document.querySelectorAll('[data-choice]').forEach((button) => button.addEventListener('click', () => {
-        const choice = current.choices[Number(button.dataset.choice)];
+        const choice = shuffled[Number(button.dataset.choice)];
         choose(choice[2], choice[3]);
       }));
       speak(current.caller);
