@@ -26,8 +26,14 @@
       <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Runtime governance layer</div>
       <h1 class="font-display mt-3 text-5xl">NHID-Clinical Knowledge Base</h1>
       <p class="mt-3 max-w-3xl text-white/70">Scenario cards, failure modes, and if-then controls for real-world healthcare voice AI calls.</p>
+      <p id="rotation" class="mt-2 text-xs uppercase tracking-[2px] text-teal-400/80"></p>
     </header>
     <section id="priorities" class="grid gap-4 md:grid-cols-3"></section>
+    <section class="mt-8">
+      <h2 class="font-display text-3xl">Control catalog</h2>
+      <p class="mt-2 max-w-3xl text-sm text-white/60">The five NHID-Clinical v1.3 gates the simulator scenarios exercise.</p>
+      <div id="controls" class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
     <section class="hyper-glass mt-8 p-6">
       <h2 class="font-display text-3xl">Minimal interaction record</h2>
       <div id="fields" class="mt-4 flex flex-wrap gap-2"></div>
@@ -49,7 +55,9 @@
   </main>
   <script>
     const kb = window.NHID_KB;
+    if (kb.rotation) document.getElementById('rotation').textContent = kb.rotation;
     document.getElementById('priorities').innerHTML = kb.priorities.map((item) => `<article class="hyper-glass p-5"><div class="text-xs font-bold text-teal-300">Evidence ${item.strength}</div><h2 class="mt-2 font-display text-2xl">${item.title}</h2><p class="mt-2 text-sm text-white/70">${item.rule}</p></article>`).join('');
+    document.getElementById('controls').innerHTML = (kb.controls || []).map((c) => `<article class="metallic p-4"><div class="font-mono text-xs font-bold text-teal-300">${c.id}</div><h3 class="mt-1 font-display text-lg">${c.name}</h3><p class="mt-2 text-sm text-white/70"><span class="font-bold text-white">Triggers:</span> ${c.trigger}</p><p class="mt-1 text-sm text-white/70"><span class="font-bold text-white">Decision:</span> ${c.decision}</p></article>`).join('');
     document.getElementById('fields').innerHTML = kb.fields.map((field) => `<span class="metallic px-3 py-2 text-sm">${field}</span>`).join('');
     document.getElementById('cards').innerHTML = kb.scenarioCards.map((card) => `<article class="hyper-glass p-6"><div class="text-xs font-bold uppercase tracking-[2px] text-amber-300">${card.tier}</div><h3 class="mt-2 font-display text-2xl">${card.title}</h3><dl class="mt-4 space-y-3 text-sm text-white/70"><div><dt class="font-bold text-white">Participants</dt><dd>${card.participants}</dd></div><div><dt class="font-bold text-white">Allowed</dt><dd>${card.allowed}</dd></div><div><dt class="font-bold text-white">Blocked</dt><dd>${card.disallowed}</dd></div><div><dt class="font-bold text-white">Proof</dt><dd>${card.proof}</dd></div><div><dt class="font-bold text-white">Escalate when</dt><dd>${card.escalation}</dd></div></dl></article>`).join('');
     document.getElementById('failures').innerHTML = kb.failureModes.map((item) => `<div class="metallic p-4"><b>${item.mode}</b><p class="mt-1 text-sm text-white/70">${item.response}</p></div>`).join('');

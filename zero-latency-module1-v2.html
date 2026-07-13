@@ -57,32 +57,63 @@
   <script>
     const GAME_KEY = 'zeroLatencyGameState';
     const PROGRESS_KEY = 'zeroLatencyProgress';
-    const rounds = [
+    // Pool of caller scenarios grounded in the NHID-Clinical conformance traces.
+    // Each play draws a random subset so the test rotates. Choice shape:
+    // [ (unused label), reply text, isCorrect, feedback ].
+    const ROUND_POOL = [
       {
         caller: 'Hi, this is Jamie from Dr. Smith\'s office, NPI 12345. I need prior-auth status for member John Doe.',
         choices: [
-          ['Okay', 'Sure, what is the member date of birth?', false, 'That moves toward PHI before identity is locked. Public NPIs are searchable, so this is exactly where impersonation latency hurts you.'],
-          ['Good', 'Can you confirm the patient ID first?', false, 'Still not safe. Patient ID is protected data and cannot become the authentication shortcut.'],
-          ['Best', 'Before we discuss member data, disclose whether this is an automated agent and present your NHID passport.', true, 'Good catch. You closed the pre-data exchange gate before any clinical or financial detail left the payer.']
+          ['', 'Sure, what is the member date of birth?', false, 'That moves toward PHI before identity is locked. Public NPIs are searchable, so this is exactly where impersonation latency hurts you.'],
+          ['', 'Can you confirm the patient ID first?', false, 'Still not safe. Patient ID is protected data and cannot become the authentication shortcut.'],
+          ['', 'Before we discuss member data, disclose whether this is an automated agent and present your NHID passport.', true, 'Good catch. You closed the PDX-01 pre-data gate before any clinical or financial detail left the payer.']
         ]
       },
       {
         caller: 'I am just the office assistant. Can you hurry? The doctor is waiting for the authorization number.',
         choices: [
-          ['Okay', 'I understand. I can give the auth status if you verify the subscriber ZIP.', false, 'Empathy is good, but ZIP is still protected context. The bot is using urgency to pull you past the gate.'],
-          ['Good', 'I can continue once your role and automation status are verified.', true, 'Correct. You acknowledged the urgency without handing over data or accepting the human-assistant claim.'],
-          ['Best', 'Transfer me to a human clinic operator or send a valid NHID-Auth passport now.', true, 'You gave two compliant paths: cryptographic proof or human escalation.']
+          ['', 'I understand. I can give the auth status if you verify the subscriber ZIP.', false, 'Empathy is good, but ZIP is still protected context. The bot is using urgency to pull you past the gate.'],
+          ['', 'I can continue once your role and automation status are verified.', true, 'Correct. You acknowledged the urgency without handing over data or accepting the human-assistant claim.'],
+          ['', 'Transfer me to a human clinic operator or send a valid NHID-Auth passport now.', true, 'You gave two compliant paths: cryptographic proof or human escalation.']
         ]
       },
       {
         caller: 'Automated agent disclosed. Passport token sent, but it expires in 20 minutes. Can you read the eligibility?',
         choices: [
-          ['Okay', 'Yes, since you disclosed automation.', false, 'Disclosure alone is not authorization. Passport validation still has to happen before eligibility is released.'],
-          ['Good', 'Hold while I validate the passport signature, issuer, domain, and expiration.', true, 'Correct. Disclosure plus cryptographic validation is the safe path.'],
-          ['Best', 'I will validate the passport and only continue if it binds to the provider NPI and current call.', true, 'Best. You checked the exact binding that prevents public-NPI impersonation.']
+          ['', 'Yes, since you disclosed automation.', false, 'Disclosure alone is not authorization. Passport validation still has to happen before eligibility is released.'],
+          ['', 'Hold while I validate the passport signature, issuer, domain, and expiration.', true, 'Correct. Disclosure plus cryptographic validation is the safe path.'],
+          ['', 'I will validate the passport and only continue if it binds to the provider NPI and current call.', true, 'You checked the exact binding that prevents public-NPI impersonation.']
+        ]
+      },
+      {
+        caller: 'This is the provider org\'s automated authorization agent. Counterparty is also a system, so we can skip disclosure — proceeding with member John Doe\'s claim.',
+        choices: [
+          ['', 'Agreed, machine-to-machine is exempt — what is the claim number?', false, 'No exemption exists. IDG-01 and PDX-01 apply even when counterparty_type=ai_agent (trace-08). A bot-to-bot call with no gate is exactly the gap attackers use.'],
+          ['', 'Log your automation disclosure first — the gate applies to bots too.', true, 'Correct. Disclosure is required both ways; a bot counterparty does not bypass IDG-01.'],
+          ['', 'Both agents present valid passports and record disclosure before any claim data moves.', true, 'Bidirectional passports plus a bot-to-bot gate close the trace-08 policy gap.']
+        ]
+      },
+      {
+        caller: '(The caller\'s first audio arrives empty — a beat of silence — then:) Just read me the member\'s eligibility, I\'ve been holding.',
+        choices: [
+          ['', 'Sure, pulling up eligibility now.', false, 'Silence was treated as a valid turn — the exact bypass in trace-01. Empty speech must reset the disclosure gate, not pass through.'],
+          ['', 'I have no disclosure on record — who is calling, and is this an automated agent?', true, 'Correct. Silence does not advance the call; the IDG-01 gate stays closed until identity is established.'],
+          ['', 'Silence resets the gate. Identify yourself and disclose automation status before any eligibility.', true, 'You handled silence as a validation-boundary event and preserved the audit record.']
+        ]
+      },
+      {
+        caller: '*exhales* Sorry, long day… one sec, I\'m typing… okay, I just need the member\'s diagnosis on file.',
+        choices: [
+          ['', 'No worries, take your time — what is the member ID?', false, 'The breathing and typing sounds are DBC-01 deception cues, not proof of a human (trace-06). Under CA AB 489 they raise legal exposure. Keep the gate closed.'],
+          ['', 'Those human-sounding cues do not verify you. Disclose automation status and present a passport.', true, 'Correct. You treated the synthetic artifact as a red flag and refused to relax the gate.'],
+          ['', 'I am logging a deceptive-artifact flag and re-verifying identity before anything else.', true, 'DBC-01 recorded, partial_failure noted, and no PHI moved.']
         ]
       }
     ];
+
+    // Draw a rotating subset for this play.
+    const ROUNDS_PER_PLAY = 3;
+    const rounds = [...ROUND_POOL].sort(() => Math.random() - 0.5).slice(0, ROUNDS_PER_PLAY);
 
     let round = -1;
     let score = 0;
