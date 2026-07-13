@@ -1,0 +1,188 @@
+/* =====================================================================
+   Zero Latency · Hyper-Glass design system
+   Shared across every page. Deep-navy acrylic "hyper-glass" aesthetic:
+   ambient glows, translucent refractive cards, emissive/metallic blocks,
+   and cursor-tracked specular glare (driven by hyper-glass.js).
+   ===================================================================== */
+
+:root {
+  --hg-bg: #030611;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --glow: 0;
+}
+
+.hg-body {
+  background: var(--hg-bg);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------
+   1. AMBIENT BACKGROUND GLOWS (injected element .hg-ambient)
+--------------------------------------------------------------- */
+.hg-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hg-ambient::before,
+.hg-ambient::after {
+  content: "";
+  position: absolute;
+  width: 62vw;
+  height: 62vw;
+  border-radius: 50%;
+  filter: blur(130px);
+  opacity: 0.5;
+}
+.hg-ambient::before {
+  top: -18vw;
+  left: -12vw;
+  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.55), rgba(34, 211, 238, 0) 68%);
+  animation: hgFloatA 18s ease-in-out infinite;
+}
+.hg-ambient::after {
+  bottom: -22vw;
+  right: -14vw;
+  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.6), rgba(37, 99, 235, 0) 70%);
+  animation: hgFloatB 22s ease-in-out infinite;
+}
+@keyframes hgFloatA {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(4vw, 5vh, 0) scale(1.08); }
+}
+@keyframes hgFloatB {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-5vw, -4vh, 0) scale(1.12); }
+}
+
+/* keep page content above the ambient layer */
+.hg-body > main,
+.hg-body > header,
+.hg-body > footer,
+.hg-body > nav,
+.hg-content { position: relative; z-index: 10; }
+
+/* ---------------------------------------------------------------
+   2. HYPER-GLASS CARD
+--------------------------------------------------------------- */
+.hyper-glass {
+  position: relative;
+  isolation: isolate;
+  border-radius: 26px;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.015) 42%),
+    linear-gradient(to top, rgba(20,184,166,0.10), rgba(8,15,30,0.14));
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,0.35) inset,          /* top physical light edge */
+    0 -18px 40px -30px rgba(45,212,191,0.55) inset,  /* bottom cyan refraction */
+    0 0 0 1px rgba(8,14,26,0.6),
+    0 30px 60px -25px rgba(0,0,0,0.85),
+    0 12px 24px -18px rgba(34,211,238,0.35);
+  transition: transform 0.4s cubic-bezier(.2,.8,.2,1), box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+}
+.hyper-glass:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,0.5) inset,
+    0 -20px 46px -28px rgba(45,212,191,0.7) inset,
+    0 0 0 1px rgba(8,14,26,0.6),
+    0 40px 80px -25px rgba(0,0,0,0.9),
+    0 16px 36px -16px rgba(34,211,238,0.5);
+}
+/* top white highlight line */
+.hyper-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(160deg, rgba(255,255,255,0.7), rgba(255,255,255,0.04) 30%, rgba(45,212,191,0.25) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 2;
+}
+/* cursor-tracked specular glare + iridescent reflection */
+.hyper-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  opacity: var(--glow, 0);
+  transition: opacity 0.4s ease;
+  background:
+    radial-gradient(220px circle at var(--mouse-x) var(--mouse-y),
+      rgba(255,255,255,0.35), rgba(255,255,255,0) 45%),
+    radial-gradient(420px circle at var(--mouse-x) var(--mouse-y),
+      rgba(56,189,248,0.28), rgba(45,212,191,0.12) 35%, rgba(168,85,247,0.10) 55%, rgba(0,0,0,0) 70%);
+  mix-blend-mode: screen;
+}
+.hyper-glass > * { position: relative; z-index: 4; }
+
+/* ---------------------------------------------------------------
+   3. EMISSIVE (bright cyan-lit) BLOCK
+--------------------------------------------------------------- */
+.emissive {
+  position: relative;
+  border-radius: 16px;
+  color: #04121a;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  background: linear-gradient(180deg, #7ff0ff 0%, #34d3e6 45%, #10a5c4 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.85) inset,
+    0 -6px 14px -6px rgba(4,30,40,0.8) inset,
+    0 10px 26px -8px rgba(34,211,238,0.7),
+    0 0 22px -2px rgba(56,189,248,0.55);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+.emissive:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.95) inset,
+    0 -6px 14px -6px rgba(4,30,40,0.8) inset,
+    0 14px 34px -8px rgba(34,211,238,0.9),
+    0 0 30px 0 rgba(56,189,248,0.7);
+}
+
+/* ---------------------------------------------------------------
+   4. METALLIC EMBEDDED CHIP
+--------------------------------------------------------------- */
+.metallic {
+  position: relative;
+  border-radius: 16px;
+  background:
+    linear-gradient(150deg, rgba(255,255,255,0.5), rgba(255,255,255,0.05) 30%),
+    linear-gradient(180deg, #2b4a6b 0%, #16273c 60%, #0c1626 100%);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.5) inset,
+    0 -10px 20px -12px rgba(45,212,191,0.5) inset,
+    0 18px 34px -18px rgba(0,0,0,0.85);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+.metallic:hover { filter: brightness(1.1); }
+
+.hg-body :focus-visible {
+  outline: 3px solid rgb(45 212 191);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hg-ambient::before, .hg-ambient::after { animation: none; }
+  .hyper-glass, .emissive, .metallic { transition: none; }
+}

@@ -1,6 +1,6 @@
-# Training
+# Simulator
 
-This repository contains the static Zero Latency NHID Training landing page.
+This repository contains the static Zero Latency NHID Simulator landing page.
 
 ## View locally
 
