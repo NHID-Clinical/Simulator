@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Completion Record • Zero Latency • NHID Training</title>
+  <meta name="description" content="Your NHID-Clinical Training Simulator completion record — a demonstration of healthcare AI voice governance concepts.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    button:focus-visible, a:focus-visible { outline: 3px solid rgb(20 184 166); outline-offset: 4px; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff !important; color: #0f172a !important; }
+      .record-sheet { border-color: #cbd5e1 !important; background: #fff !important; box-shadow: none !important; }
+    }
+  </style>
+  <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
+</head>
+<body class="bg-slate-950 text-white">
+  <main class="mx-auto max-w-3xl px-6 py-10">
+    <nav class="no-print mb-8 flex items-center justify-between text-sm">
+      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Training home</a>
+      <a href="zero-latency-dashboard.html" class="text-white/70 hover:text-teal-300">Dashboard</a>
+    </nav>
+
+    <section class="record-sheet rounded-[2rem] border border-slate-800 bg-slate-900 p-8" aria-labelledby="record-title">
+      <div class="flex items-center gap-4">
+        <div class="h-14 w-14 rounded-2xl bg-white/10 p-1 ring-1 ring-white/20" aria-hidden="true">
+          <img src="assets/nhid-logo.svg" alt="" class="h-full w-full object-contain">
+        </div>
+        <div>
+          <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">NHID-Clinical Training Simulator</div>
+          <h1 id="record-title" class="font-display text-3xl sm:text-4xl">Completion Record</h1>
+        </div>
+      </div>
+
+      <p class="mt-5 text-white/70">This record summarizes the training modules you have completed in this browser. It is a <strong class="text-white">training achievement</strong>, not a certification, license, or attestation of compliance.</p>
+
+      <!-- Overall status -->
+      <div id="overall" class="mt-6 rounded-2xl border border-slate-700 bg-slate-950 p-5"></div>
+
+      <!-- Module checklist -->
+      <div class="mt-6">
+        <div class="text-xs font-bold uppercase tracking-[3px] text-white/40">Modules</div>
+        <ul id="module-list" class="mt-3 space-y-2"></ul>
+      </div>
+
+      <!-- Metadata -->
+      <dl class="mt-8 grid gap-4 sm:grid-cols-2">
+        <div class="rounded-2xl border border-slate-700 bg-slate-950 p-4">
+          <dt class="text-xs uppercase tracking-[2px] text-white/50">Framework</dt>
+          <dd class="mt-1 font-display text-xl">NHID-Clinical v1.3</dd>
+        </div>
+        <div class="rounded-2xl border border-slate-700 bg-slate-950 p-4">
+          <dt class="text-xs uppercase tracking-[2px] text-white/50">Record generated</dt>
+          <dd id="generated-at" class="mt-1 font-display text-xl">—</dd>
+        </div>
+      </dl>
+
+      <div class="mt-6 rounded-2xl border border-slate-700 bg-slate-950 p-5">
+        <dt class="text-xs uppercase tracking-[2px] text-white/50">Purpose</dt>
+        <dd class="mt-1 text-white/80">Demonstration of healthcare AI voice governance concepts. The simulator demonstrates the NHID-Clinical framework; it is education and practical training, not the framework itself.</dd>
+      </div>
+
+      <div class="no-print mt-8 flex flex-wrap gap-3">
+        <button type="button" id="print" class="inline-flex items-center gap-2 rounded-2xl bg-teal-600 px-5 py-3 font-bold hover:bg-teal-500">
+          <i class="fa-solid fa-print" aria-hidden="true"></i> Print / save as PDF
+        </button>
+        <a href="index.html" class="inline-flex items-center gap-2 rounded-2xl border border-white/15 px-5 py-3 font-semibold text-white/80 hover:border-teal-500 hover:text-teal-300">
+          Back to training
+        </a>
+      </div>
+    </section>
+
+    <p class="no-print mt-6 text-center text-xs text-white/40">
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+      Progress is stored locally in your browser via localStorage. This record reflects activity on this device only.
+    </p>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'zeroLatencyProgress';
+    const ROLE_KEY = 'nhidRole';
+
+    // Module 0 is experiential (no score); Modules 1–4 are graded.
+    const MODULES = [
+      { id: 'module0', title: 'Module 0 · The Identity Problem', graded: false },
+      { id: 'module1', title: 'Module 1 · The First 5 Seconds', graded: true },
+      { id: 'module2', title: 'Module 2 · Passport Inspection', graded: true },
+      { id: 'module3', title: 'Module 3 · Compliance Gaps', graded: true },
+      { id: 'module4', title: 'Module 4 · Safe Agent Deployment', graded: true }
+    ];
+
+    const ROLE_LABELS = {
+      payer: 'Healthcare payer operations',
+      provider: 'Provider organization',
+      vendor: 'AI voice vendor',
+      security: 'Security / compliance professional'
+    };
+
+    function readProgress() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; }
+      catch { return {}; }
+    }
+
+    function render() {
+      const progress = readProgress();
+      const completed = MODULES.filter((m) => progress[m.id]?.completed);
+      const graded = MODULES.filter((m) => m.graded);
+      const gradedDone = graded.filter((m) => progress[m.id]?.completed);
+      const scored = graded.filter((m) => Number.isFinite(progress[m.id]?.score));
+      const average = scored.length
+        ? Math.round(scored.reduce((sum, m) => sum + progress[m.id].score, 0) / scored.length)
+        : null;
+
+      let role = null;
+      try { role = localStorage.getItem(ROLE_KEY); } catch (error) { console.warn('Unable to read role.', error); }
+
+      const roleLine = role && ROLE_LABELS[role]
+        ? `<div class="mt-3 text-sm text-white/60">Selected path: <span class="text-teal-300">${ROLE_LABELS[role]}</span></div>`
+        : '';
+
+      document.getElementById('overall').innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div class="text-xs uppercase tracking-[2px] text-white/50">Modules completed</div>
+            <div class="font-display text-3xl">${completed.length}/${MODULES.length}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-[2px] text-white/50">Graded modules</div>
+            <div class="font-display text-3xl">${gradedDone.length}/${graded.length}</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-[2px] text-white/50">Average score</div>
+            <div class="font-display text-3xl">${average === null ? '—' : average + '%'}</div>
+          </div>
+        </div>
+        ${roleLine}`;
+
+      document.getElementById('module-list').innerHTML = MODULES.map((m) => {
+        const item = progress[m.id];
+        const done = !!item?.completed;
+        const detail = done
+          ? (m.graded && Number.isFinite(item.score)
+              ? `Completed · ${item.score}%${item.completedAt ? ' · ' + new Date(item.completedAt).toLocaleDateString() : ''}`
+              : `Completed${item.completedAt ? ' · ' + new Date(item.completedAt).toLocaleDateString() : ''}`)
+          : 'Not yet completed';
+        return `<li class="flex items-center justify-between rounded-2xl border ${done ? 'border-emerald-500/40 bg-emerald-500/5' : 'border-slate-700 bg-slate-950'} px-4 py-3">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid ${done ? 'fa-circle-check text-emerald-400' : 'fa-circle text-white/25'}" aria-hidden="true"></i>
+            <span class="font-medium">${m.title}</span>
+          </div>
+          <span class="text-sm ${done ? 'text-white/70' : 'text-white/40'}">${detail}</span>
+        </li>`;
+      }).join('');
+
+      document.getElementById('generated-at').textContent = new Date().toLocaleDateString();
+    }
+
+    document.getElementById('print').addEventListener('click', () => window.print());
+    render();
+  </script>
+</body>
+</html>

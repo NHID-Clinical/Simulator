@@ -39,9 +39,31 @@
             </div>
         </header>
 
-        <section class="max-w-2xl" aria-labelledby="page-title">
-            <h1 id="page-title" class="font-display text-5xl sm:text-6xl font-semibold tracking-[-2.5px] leading-none">Master AI Voice<br>Identity Governance</h1>
-            <p class="mt-6 text-xl text-white/70">Learn to eliminate impersonation latency and enforce mandatory disclosure in real healthcare voice workflows.</p>
+        <section class="max-w-3xl" aria-labelledby="page-title">
+            <h1 id="page-title" class="font-display text-4xl sm:text-6xl font-semibold tracking-[-2.5px] leading-[1.05]">When AI sounds human,<br>identity becomes a security control.</h1>
+            <p class="mt-6 text-xl text-white/70">NHID-Clinical is an open governance framework for healthcare voice agents that helps organizations verify identity, enforce disclosure, and create auditable AI interactions before sensitive workflows begin.</p>
+            <p class="mt-4 text-sm text-white/50">This site is an interactive training <strong class="text-white/70">simulator that demonstrates</strong> the NHID-Clinical framework — a governance model of controls and requirements. The simulator is education and demonstration; it is not the framework itself.</p>
+        </section>
+
+        <!-- Module 0 · problem-first entry point -->
+        <section class="mt-10" aria-labelledby="start-here-title">
+            <a href="zero-latency-module0.html" class="group block rounded-[2rem]" data-module0-card>
+                <div class="rounded-[2rem] border border-teal-500/40 bg-gradient-to-br from-slate-900 to-slate-900/40 p-8 transition-colors group-hover:border-teal-400">
+                    <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                        <div class="max-w-2xl">
+                            <div class="inline-flex items-center gap-2 rounded-3xl bg-teal-500/15 px-4 py-1 text-xs font-bold uppercase tracking-[2px] text-teal-300">
+                                <i class="fa-solid fa-play" aria-hidden="true"></i> Start here · Module 0
+                            </div>
+                            <h2 id="start-here-title" class="font-display mt-4 text-3xl font-semibold tracking-tight">Why does this matter?</h2>
+                            <p class="mt-2 text-white/70 text-[15px] leading-relaxed">Before learning how NHID-Clinical works, experience the governance failure it prevents. Sit at the payer desk and watch what happens when an AI voice agent discloses its identity too late.</p>
+                        </div>
+                        <div class="flex items-center gap-3 self-start md:self-center">
+                            <span class="hidden rounded-2xl bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-300 md:inline" data-module0-badge hidden>Experienced</span>
+                            <span class="inline-flex items-center gap-2 rounded-2xl bg-teal-600 px-5 py-3 font-bold text-white group-hover:bg-teal-500">The Identity Problem <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
         </section>
 
         <section class="mt-10 grid gap-4 sm:grid-cols-3" aria-label="Training progress summary">
@@ -61,7 +83,35 @@
             </div>
         </section>
 
-        <section class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Training modules">
+        <!-- Role-based entry points -->
+        <section class="mt-16 rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8" aria-labelledby="role-title">
+            <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Personalize your path</div>
+            <h2 id="role-title" class="font-display mt-2 text-3xl font-semibold tracking-tight">I am a…</h2>
+            <p class="mt-2 max-w-2xl text-white/60 text-[15px]">Select your role to see why NHID-Clinical governance matters for you. Your choice is saved in this browser only — no account required.</p>
+
+            <div id="role-options" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" role="group" aria-label="Select your role">
+                <button type="button" data-role="payer" aria-pressed="false" class="rounded-2xl border border-slate-700 bg-slate-950 p-4 text-left transition-colors hover:border-teal-500">
+                    <div class="text-teal-300"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></div>
+                    <div class="mt-2 font-semibold">Healthcare payer operations</div>
+                </button>
+                <button type="button" data-role="provider" aria-pressed="false" class="rounded-2xl border border-slate-700 bg-slate-950 p-4 text-left transition-colors hover:border-teal-500">
+                    <div class="text-teal-300"><i class="fa-solid fa-house-medical" aria-hidden="true"></i></div>
+                    <div class="mt-2 font-semibold">Provider organization</div>
+                </button>
+                <button type="button" data-role="vendor" aria-pressed="false" class="rounded-2xl border border-slate-700 bg-slate-950 p-4 text-left transition-colors hover:border-teal-500">
+                    <div class="text-teal-300"><i class="fa-solid fa-microchip" aria-hidden="true"></i></div>
+                    <div class="mt-2 font-semibold">AI voice vendor</div>
+                </button>
+                <button type="button" data-role="security" aria-pressed="false" class="rounded-2xl border border-slate-700 bg-slate-950 p-4 text-left transition-colors hover:border-teal-500">
+                    <div class="text-teal-300"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></div>
+                    <div class="mt-2 font-semibold">Security / compliance</div>
+                </button>
+            </div>
+
+            <div id="role-explanation" class="mt-5 hidden rounded-2xl border border-teal-500/40 bg-teal-500/10 p-5" aria-live="polite"></div>
+        </section>
+
+        <section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Training modules">
             <a href="zero-latency-module1-v2.html" class="module-card group block rounded-3xl" data-module-id="module1" data-module-title="Module 1">
                 <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
                     <div class="flex items-center justify-between mb-6">
@@ -159,11 +209,17 @@
         </section>
 
         <div class="mt-12 flex flex-col items-center gap-4 text-center">
-            <button type="button" id="reset-progress" class="rounded-2xl border border-white/15 px-4 py-2 text-xs font-semibold text-white/70 transition-colors hover:border-teal-500 hover:text-teal-300">Reset saved progress</button>
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <a href="training-record.html" class="inline-flex items-center gap-2 rounded-2xl border border-teal-500/40 px-4 py-2 text-xs font-semibold text-teal-300 transition-colors hover:border-teal-400 hover:text-teal-200">
+                    <i class="fa-solid fa-file-lines" aria-hidden="true"></i> View your Completion Record
+                </a>
+                <button type="button" id="reset-progress" class="rounded-2xl border border-white/15 px-4 py-2 text-xs font-semibold text-white/70 transition-colors hover:border-teal-500 hover:text-teal-300">Reset saved progress</button>
+            </div>
             <div class="inline-flex items-center gap-x-2 text-xs text-white/50">
                 <i class="fa-solid fa-info-circle" aria-hidden="true"></i>
                 <span>These simulations follow NHID-Clinical v1.3 and NHID-Auth v2 requirements</span>
             </div>
+            <p class="max-w-xl text-xs text-white/40">The simulator demonstrates the NHID-Clinical framework — a governance model of controls, requirements, and audit expectations. It is a learning tool, not the framework or a certification.</p>
         </div>
     </main>
 
@@ -232,6 +288,59 @@
         });
 
         renderProgress();
+    </script>
+
+    <script>
+        // --- Role-based entry points (localStorage only, no auth) ---
+        const ROLE_KEY = 'nhidRole';
+        const ROLE_COPY = {
+            payer: 'Reduce uncertainty around AI-assisted calls and protect operational workflows.',
+            provider: 'Build trust in automation while maintaining accountability.',
+            vendor: 'Demonstrate responsible AI deployment practices.',
+            security: 'Translate AI risk requirements into measurable controls.'
+        };
+
+        const roleButtons = Array.from(document.querySelectorAll('#role-options [data-role]'));
+        const roleExplanation = document.getElementById('role-explanation');
+
+        function applyRole(role, { persist = true } = {}) {
+            if (!ROLE_COPY[role]) return;
+            roleButtons.forEach((button) => {
+                const selected = button.dataset.role === role;
+                button.setAttribute('aria-pressed', String(selected));
+                button.classList.toggle('border-teal-500', selected);
+                button.classList.toggle('bg-teal-500/10', selected);
+                button.classList.toggle('bg-slate-950', !selected);
+            });
+            roleExplanation.innerHTML = `<div class="text-xs font-bold uppercase tracking-[2px] text-teal-300">Why this matters for you</div><p class="mt-1 text-white/90">${ROLE_COPY[role]}</p>`;
+            roleExplanation.classList.remove('hidden');
+            if (persist) {
+                try { localStorage.setItem(ROLE_KEY, role); } catch (error) { console.warn('Unable to save role selection.', error); }
+            }
+        }
+
+        roleButtons.forEach((button) => button.addEventListener('click', () => applyRole(button.dataset.role)));
+
+        try {
+            const savedRole = localStorage.getItem(ROLE_KEY);
+            if (savedRole && ROLE_COPY[savedRole]) applyRole(savedRole, { persist: false });
+        } catch (error) {
+            console.warn('Unable to read saved role selection.', error);
+        }
+
+        // --- Module 0 "experienced" badge (does not affect graded scoring) ---
+        (function renderModule0Badge() {
+            try {
+                const progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {};
+                const badge = document.querySelector('[data-module0-badge]');
+                if (badge && progress.module0?.completed) {
+                    badge.hidden = false;
+                    badge.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.warn('Unable to read Module 0 status.', error);
+            }
+        })();
     </script>
 </body>
 </html>
