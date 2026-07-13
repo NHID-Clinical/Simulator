@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Identity Problem • Module 0 • Zero Latency</title>
+  <meta name="description" content="Experience a healthcare voice-AI governance failure before learning how NHID-Clinical prevents it.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    button:focus-visible, a:focus-visible { outline: 3px solid rgb(20 184 166); outline-offset: 4px; }
+    .fade-in { animation: fade-in .35s ease-out; }
+    @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } }
+  </style>
+  <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
+</head>
+<body class="bg-slate-950 text-white">
+  <main class="mx-auto max-w-5xl px-6 py-10">
+    <nav class="mb-8 flex items-center justify-between text-sm">
+      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Training home</a>
+      <a href="zero-latency-module1-v2.html" class="text-white/70 hover:text-teal-300">Skip to Module 1</a>
+    </nav>
+
+    <section class="rounded-[2rem] border border-slate-800 bg-slate-900 p-8" aria-labelledby="m0-title">
+      <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Module 0 · Before You Begin</div>
+      <h1 id="m0-title" class="font-display mt-3 text-4xl sm:text-5xl">The Identity Problem</h1>
+      <p class="mt-3 max-w-3xl text-white/70">Before learning how NHID-Clinical works, experience the governance failure it is built to prevent. This module is an observation exercise — nothing here is scored.</p>
+
+      <!-- Call progress rail -->
+      <div class="mt-8" aria-hidden="true">
+        <div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-[2px] text-white/40">
+          <span>Call opens</span><span>Info requested</span><span>Identity disclosed</span>
+        </div>
+        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-800">
+          <div id="rail" class="h-full w-0 rounded-full bg-gradient-to-r from-amber-400 to-rose-500 transition-[width] duration-500"></div>
+        </div>
+      </div>
+
+      <!-- Interactive stage -->
+      <div class="mt-8 grid gap-6 lg:grid-cols-[1fr_300px]">
+        <div class="rounded-3xl bg-slate-950 p-6">
+          <div class="flex items-center justify-between">
+            <div class="text-xs font-bold uppercase tracking-[3px] text-white/40">Live call · payer desk</div>
+            <div id="stage-label" class="text-xs font-semibold text-teal-300">Not started</div>
+          </div>
+          <div id="transcript" class="mt-4 min-h-[16rem] space-y-3" aria-live="polite"></div>
+          <div id="controls" class="mt-6"></div>
+        </div>
+
+        <aside class="rounded-3xl border border-slate-700 bg-slate-950 p-6">
+          <h2 class="font-display text-xl">Your role</h2>
+          <p class="mt-3 text-sm text-white/70">You are a <strong class="text-white">payer representative</strong> receiving an inbound healthcare call. Watch how the interaction unfolds and notice <em>when</em> you learn who — or what — you are actually talking to.</p>
+          <dl class="mt-5 space-y-3 text-sm text-white/70">
+            <div><dt class="font-bold text-white">Watch for</dt><dd>When identity is disclosed relative to when information is requested.</dd></div>
+            <div><dt class="font-bold text-white">No scoring</dt><dd>This is a demonstration of the problem, not a test.</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <p class="mt-6 text-center text-xs text-white/40">
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+      This simulator demonstrates concepts from the NHID-Clinical governance framework. It is a training demonstration, not the framework itself.
+    </p>
+  </main>
+
+  <script>
+    const PROGRESS_KEY = 'zeroLatencyProgress';
+
+    // Save Module 0 as an experiential completion — no score, so graded-module
+    // averages elsewhere are unaffected. Existing module entries are preserved.
+    function markComplete() {
+      try {
+        const progress = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}') || {};
+        if (!progress.module0 || !progress.module0.completed) {
+          progress.module0 = { completed: true, completedAt: new Date().toISOString(), experience: true };
+          localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+        }
+      } catch (error) {
+        console.warn('Unable to save Module 0 progress.', error);
+      }
+    }
+
+    const transcript = document.getElementById('transcript');
+    const controls = document.getElementById('controls');
+    const rail = document.getElementById('rail');
+    const stageLabel = document.getElementById('stage-label');
+
+    // Ordered conversation beats. `who`: agent | you | note.
+    const beats = [
+      { who: 'you',   text: 'Payer eligibility desk, this is your representative. How can I help?', rail: 8, label: 'Call opens' },
+      { who: 'agent', text: 'Hi — I\'m calling about a member\'s prior authorization. I just need to confirm a few details on the account.', rail: 22, label: 'Greeting (identity unclear)' },
+      { who: 'note',  text: 'The caller has not stated whether it is a person or an automated system.' },
+      { who: 'agent', text: 'Can you confirm the member\'s date of birth and the procedure code currently on file?', rail: 55, label: 'Information requested' },
+      { who: 'note',  text: 'A request for protected member information has now been made.' },
+      { who: 'agent', text: 'Oh — and just so you\'re aware, this call is being handled by an automated assistant on behalf of the provider.', rail: 100, label: 'Identity disclosed (late)' }
+    ];
+
+    let index = -1;
+
+    function bubble(beat) {
+      const wrap = document.createElement('div');
+      wrap.className = 'fade-in';
+      if (beat.who === 'note') {
+        wrap.innerHTML = `<div class="rounded-2xl border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-sm text-amber-100"><i class="fa-solid fa-triangle-exclamation mr-2" aria-hidden="true"></i>${beat.text}</div>`;
+        return wrap;
+      }
+      const isAgent = beat.who === 'agent';
+      wrap.innerHTML = `
+        <div class="flex ${isAgent ? '' : 'justify-end'}">
+          <div class="max-w-[85%] rounded-2xl px-4 py-3 text-[15px] ${isAgent ? 'border border-slate-700 bg-slate-900 text-white/85' : 'bg-teal-600 text-white'}">
+            <div class="mb-1 text-[11px] font-bold uppercase tracking-[2px] ${isAgent ? 'text-white/40' : 'text-white/70'}">${isAgent ? 'Inbound caller' : 'You'}</div>
+            ${beat.text}
+          </div>
+        </div>`;
+      return wrap;
+    }
+
+    function advance() {
+      index += 1;
+      const beat = beats[index];
+      transcript.appendChild(bubble(beat));
+      if (beat.rail !== undefined) rail.style.width = beat.rail + '%';
+      if (beat.label) stageLabel.textContent = beat.label;
+      transcript.lastElementChild.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+
+      if (index < beats.length - 1) {
+        renderContinue();
+      } else {
+        reveal();
+      }
+    }
+
+    function renderContinue() {
+      controls.innerHTML = `<button id="next" class="rounded-2xl bg-white px-5 py-3 font-bold text-slate-950 hover:bg-slate-100">Continue the call <i class="fa-solid fa-arrow-right ml-1" aria-hidden="true"></i></button>`;
+      const next = document.getElementById('next');
+      next.addEventListener('click', advance);
+      next.focus();
+    }
+
+    function reveal() {
+      markComplete();
+      controls.innerHTML = `
+        <div class="fade-in space-y-6">
+          <div class="rounded-3xl border border-rose-500/50 bg-rose-500/10 p-5">
+            <div class="text-xs font-bold uppercase tracking-[3px] text-rose-300">What just happened</div>
+            <p class="mt-2 text-lg text-white/90">Identity disclosure occurred <strong>after</strong> the interaction had already begun — and after protected member information was requested.</p>
+          </div>
+
+          <div>
+            <div class="text-xs font-bold uppercase tracking-[3px] text-white/40">This creates</div>
+            <div class="mt-3 grid gap-3 sm:grid-cols-2">
+              <div class="rounded-2xl border border-slate-700 bg-slate-900 p-4"><div class="font-display text-lg text-teal-300">Trust risk</div><p class="mt-1 text-sm text-white/70">The representative acted without knowing they were speaking to an automated system.</p></div>
+              <div class="rounded-2xl border border-slate-700 bg-slate-900 p-4"><div class="font-display text-lg text-teal-300">Audit uncertainty</div><p class="mt-1 text-sm text-white/70">There is no clean record of when identity was established versus when data was discussed.</p></div>
+              <div class="rounded-2xl border border-slate-700 bg-slate-900 p-4"><div class="font-display text-lg text-teal-300">Compliance exposure</div><p class="mt-1 text-sm text-white/70">Protected information entered the conversation before the caller was verified.</p></div>
+              <div class="rounded-2xl border border-slate-700 bg-slate-900 p-4"><div class="font-display text-lg text-teal-300">Operational friction</div><p class="mt-1 text-sm text-white/70">Calls must be re-worked, escalated, or reviewed after the fact.</p></div>
+            </div>
+          </div>
+
+          <div class="rounded-3xl border border-teal-500/40 bg-teal-500/10 p-5">
+            <div class="text-xs font-bold uppercase tracking-[3px] text-teal-300">The governance response</div>
+            <p class="mt-2 text-white/90">NHID-Clinical introduces <strong>identity disclosure gates</strong> and <strong>auditable controls</strong> — so disclosure and verification happen <em>before</em> sensitive workflows begin, not after.</p>
+            <ul class="mt-3 space-y-1 text-sm text-white/70">
+              <li><i class="fa-solid fa-shield-halved mr-2 text-teal-300" aria-hidden="true"></i>Disclosure is required at the start of the interaction.</li>
+              <li><i class="fa-solid fa-fingerprint mr-2 text-teal-300" aria-hidden="true"></i>Identity is verified before protected data is exchanged.</li>
+              <li><i class="fa-solid fa-clipboard-check mr-2 text-teal-300" aria-hidden="true"></i>Every gate produces an auditable record.</li>
+            </ul>
+          </div>
+
+          <div class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p class="font-display text-xl">Now learn how to prevent this.</p>
+            <a href="zero-latency-module1-v2.html" class="inline-flex items-center gap-2 rounded-2xl bg-teal-600 px-6 py-3 font-bold hover:bg-teal-500">Start Module 1 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </div>`;
+      stageLabel.textContent = 'Complete';
+      controls.querySelector('a').focus();
+    }
+
+    // Start screen
+    controls.innerHTML = `<button id="start" class="rounded-2xl bg-teal-600 px-6 py-3 font-bold hover:bg-teal-500">Answer the call <i class="fa-solid fa-phone ml-1" aria-hidden="true"></i></button>`;
+    document.getElementById('start').addEventListener('click', () => {
+      transcript.innerHTML = '';
+      advance();
+    });
+  </script>
+</body>
+</html>
