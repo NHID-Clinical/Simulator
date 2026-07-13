@@ -6,6 +6,8 @@
   <title>Detective Case Board • Zero Latency</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/hyper-glass.css">
+  <script src="assets/hyper-glass.js" defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
     body { font-family: 'Inter', system-ui, sans-serif; }
@@ -14,37 +16,37 @@
   </style>
   <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
 </head>
-<body class="bg-slate-950 text-white">
-  <main class="mx-auto max-w-7xl px-6 py-10">
+<body class="hg-body text-white">
+  <main class="relative z-10 mx-auto max-w-7xl px-6 py-10">
     <nav class="mb-8 flex items-center justify-between text-sm">
-      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Training home</a>
+      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Simulator home</a>
       <a href="zero-latency-dashboard.html" class="text-white/70 hover:text-teal-300">Dashboard</a>
     </nav>
 
-    <section class="rounded-[2rem] border border-slate-800 bg-slate-900 p-8">
+    <section class="hyper-glass p-8">
       <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Module 3 · Detective Game</div>
       <h1 class="font-display mt-3 text-5xl">Case Board: Who Caused the Compliance Gap?</h1>
       <p class="mt-3 max-w-3xl text-white/70">Review evidence, link it to suspects, and issue a final verdict. Passing score: 80%.</p>
 
       <div class="mt-8 grid gap-6 xl:grid-cols-[1fr_1fr_320px]">
-        <section class="rounded-3xl bg-slate-950 p-6">
+        <section class="metallic p-6">
           <h2 class="font-display text-2xl">Case Description</h2>
           <p class="mt-3 text-white/70">A payer rep released prior-auth status during a call from a claimed provider agent. Your job is to determine which failure pattern explains the breach.</p>
           <div class="mt-5 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-100">Final verdict options: late AI disclosure, revoked passport reuse, or bad human escalation.</div>
         </section>
 
-        <section class="rounded-3xl bg-slate-950 p-6">
+        <section class="metallic p-6">
           <h2 class="font-display text-2xl">Evidence</h2>
           <div id="evidence" class="mt-4 grid gap-3"></div>
         </section>
 
-        <section class="rounded-3xl bg-slate-950 p-6">
+        <section class="metallic p-6">
           <h2 class="font-display text-2xl">Suspects</h2>
           <div id="suspects" class="mt-4 grid gap-3"></div>
         </section>
       </div>
 
-      <section class="mt-8 rounded-3xl border border-slate-700 bg-slate-950 p-6">
+      <section class="metallic mt-8 p-6">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 class="font-display text-2xl">Deliberation</h2>
@@ -54,8 +56,8 @@
         </div>
         <div id="deduction" class="mt-5 grid gap-4 md:grid-cols-2"></div>
         <div class="mt-6 flex flex-wrap gap-3">
-          <button id="check" class="rounded-2xl bg-teal-600 px-5 py-3 font-bold">Check links</button>
-          <button id="verdict" class="rounded-2xl bg-white px-5 py-3 font-bold text-slate-950">Final verdict</button>
+          <button id="check" class="emissive px-5 py-3">Check links</button>
+          <button id="verdict" class="emissive px-5 py-3">Final verdict</button>
         </div>
         <div id="feedback" class="mt-6 hidden rounded-3xl border p-5" aria-live="polite"></div>
       </section>
@@ -91,10 +93,10 @@
       localStorage.setItem(PROGRESS_KEY, JSON.stringify(Object.fromEntries(Object.entries(state.modules).map(([id, item]) => [id, { completed: true, score: item.score, completedAt: item.completedAt }]))));
     }
 
-    document.getElementById('evidence').innerHTML = evidence.map(([id, title, body]) => `<article class="rounded-2xl border border-slate-700 p-4"><div class="text-xs font-bold text-teal-300">${id} · ${title}</div><p class="mt-2 text-sm text-white/70">${body}</p></article>`).join('');
-    document.getElementById('suspects').innerHTML = Object.entries(suspects).map(([key, suspect]) => `<article class="rounded-2xl border border-slate-700 p-4"><div class="font-bold">${suspect[0]}</div><p class="mt-2 text-sm text-white/60">${suspect[1]}</p></article>`).join('');
+    document.getElementById('evidence').innerHTML = evidence.map(([id, title, body]) => `<article class="metallic p-4"><div class="text-xs font-bold text-teal-300">${id} · ${title}</div><p class="mt-2 text-sm text-white/70">${body}</p></article>`).join('');
+    document.getElementById('suspects').innerHTML = Object.entries(suspects).map(([key, suspect]) => `<article class="metallic p-4"><div class="font-bold">${suspect[0]}</div><p class="mt-2 text-sm text-white/60">${suspect[1]}</p></article>`).join('');
     document.getElementById('deduction').innerHTML = evidence.map(([id, title, body, answer]) => `
-      <label class="rounded-2xl border border-slate-700 p-4">
+      <label class="metallic p-4">
         <span class="block text-sm font-bold text-white">${id}: ${title}</span>
         <select data-answer="${answer}" class="mt-3 w-full rounded-xl bg-slate-900 p-3 text-white">
           <option value="">Choose suspect...</option>

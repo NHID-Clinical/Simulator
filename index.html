@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zero Latency • NHID Training</title>
+    <title>Zero Latency • NHID Simulator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/hyper-glass.css">
+    <script src="assets/hyper-glass.js" defer></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
 
@@ -20,7 +22,7 @@
     </style>
   <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
 </head>
-<body class="bg-slate-950 text-white">
+<body class="hg-body text-white">
     <main class="max-w-5xl mx-auto px-6 sm:px-8 pt-16 pb-12">
         <header class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between mb-12">
             <div class="flex items-center gap-x-4">
@@ -29,12 +31,12 @@
                 </div>
                 <div>
                     <span class="font-display text-4xl sm:text-5xl font-semibold tracking-[-2px]">Zero Latency</span>
-                    <span class="block text-xs tracking-[3px] text-teal-500 font-bold mt-1">NHID-CLINICAL TRAINING SIMULATOR</span>
+                    <span class="block text-xs tracking-[3px] text-teal-500 font-bold mt-1">NHID-CLINICAL SIMULATOR</span>
                 </div>
             </div>
 
             <div class="text-left md:text-right">
-                <div class="text-xs text-white/60">CLINICAL AI TRUST OFFICER TRAINING</div>
+                <div class="text-xs text-white/60">CLINICAL AI TRUST OFFICER SIMULATOR</div>
                 <div id="last-updated" class="mt-1 text-xs text-teal-400" aria-live="polite"></div>
             </div>
         </header>
@@ -42,13 +44,13 @@
         <section class="max-w-3xl" aria-labelledby="page-title">
             <h1 id="page-title" class="font-display text-4xl sm:text-6xl font-semibold tracking-[-2.5px] leading-[1.05]">When AI sounds human,<br>identity becomes a security control.</h1>
             <p class="mt-6 text-xl text-white/70">NHID-Clinical is an open governance framework for healthcare voice agents that helps organizations verify identity, enforce disclosure, and create auditable AI interactions before sensitive workflows begin.</p>
-            <p class="mt-4 text-sm text-white/50">This site is an interactive training <strong class="text-white/70">simulator that demonstrates</strong> the NHID-Clinical framework — a governance model of controls and requirements. The simulator is education and demonstration; it is not the framework itself.</p>
+            <p class="mt-4 text-sm text-white/50">This site is an interactive <strong class="text-white/70">simulator that demonstrates</strong> the NHID-Clinical framework — a governance model of controls and requirements. The simulator is education and demonstration; it is not the framework itself.</p>
         </section>
 
         <!-- Module 0 · problem-first entry point -->
         <section class="mt-10" aria-labelledby="start-here-title">
             <a href="zero-latency-module0.html" class="group block rounded-[2rem]" data-module0-card>
-                <div class="rounded-[2rem] border border-teal-500/40 bg-gradient-to-br from-slate-900 to-slate-900/40 p-8 transition-colors group-hover:border-teal-400">
+                <div class="hyper-glass p-8">
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                         <div class="max-w-2xl">
                             <div class="inline-flex items-center gap-2 rounded-3xl bg-teal-500/15 px-4 py-1 text-xs font-bold uppercase tracking-[2px] text-teal-300">
@@ -59,23 +61,23 @@
                         </div>
                         <div class="flex items-center gap-3 self-start md:self-center">
                             <span class="hidden rounded-2xl bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-300 md:inline" data-module0-badge hidden>Experienced</span>
-                            <span class="inline-flex items-center gap-2 rounded-2xl bg-teal-600 px-5 py-3 font-bold text-white group-hover:bg-teal-500">The Identity Problem <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                            <span class="emissive inline-flex items-center gap-2 px-5 py-3">The Identity Problem <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
                         </div>
                     </div>
                 </div>
             </a>
         </section>
 
-        <section class="mt-10 grid gap-4 sm:grid-cols-3" aria-label="Training progress summary">
-            <div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+        <section class="mt-10 grid gap-4 sm:grid-cols-3" aria-label="Simulator progress summary">
+            <div class="metallic p-5">
                 <div class="text-xs uppercase tracking-[2px] text-white/50">Completed</div>
                 <div class="mt-2 text-3xl font-display" id="completed-count">0/4</div>
             </div>
-            <div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+            <div class="metallic p-5">
                 <div class="text-xs uppercase tracking-[2px] text-white/50">Average Score</div>
                 <div class="mt-2 text-3xl font-display" id="average-score">—</div>
             </div>
-            <div class="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
+            <div class="metallic p-5">
                 <div class="text-xs uppercase tracking-[2px] text-white/50">Next Step</div>
                 <a id="continue-link" href="zero-latency-module1-v2.html" class="mt-2 inline-flex items-center gap-2 text-lg font-semibold text-teal-400 hover:text-teal-300">
                     Start Module 1 <i class="fa-solid fa-arrow-right text-sm" aria-hidden="true"></i>
@@ -84,25 +86,25 @@
         </section>
 
         <!-- Role-based entry points -->
-        <section class="mt-16 rounded-[2rem] border border-slate-800 bg-slate-900/70 p-8" aria-labelledby="role-title">
+        <section class="hyper-glass mt-16 p-8" aria-labelledby="role-title">
             <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Personalize your path</div>
             <h2 id="role-title" class="font-display mt-2 text-3xl font-semibold tracking-tight">I am a…</h2>
             <p class="mt-2 max-w-2xl text-white/60 text-[15px]">Select your role to see why NHID-Clinical governance matters for you. Your choice is saved in this browser only — no account required.</p>
 
             <div id="role-options" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" role="group" aria-label="Select your role">
-                <button type="button" data-role="payer" aria-pressed="false" class="rounded-2xl border border-slate-700 bg-slate-950 p-4 text-left transition-colors hover:border-teal-500">
+                <button type="button" data-role="payer" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-teal-500">
                     <div class="text-teal-300"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></div>
                     <div class="mt-2 font-semibold">Healthcare payer operations</div>
                 </button>
-                <button type="button" data-role="provider" aria-pressed="false" class="rounded-2xl border border-slate-700 bg-slate-950 p-4 text-left transition-colors hover:border-teal-500">
+                <button type="button" data-role="provider" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-teal-500">
                     <div class="text-teal-300"><i class="fa-solid fa-house-medical" aria-hidden="true"></i></div>
                     <div class="mt-2 font-semibold">Provider organization</div>
                 </button>
-                <button type="button" data-role="vendor" aria-pressed="false" class="rounded-2xl border border-slate-700 bg-slate-950 p-4 text-left transition-colors hover:border-teal-500">
+                <button type="button" data-role="vendor" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-teal-500">
                     <div class="text-teal-300"><i class="fa-solid fa-microchip" aria-hidden="true"></i></div>
                     <div class="mt-2 font-semibold">AI voice vendor</div>
                 </button>
-                <button type="button" data-role="security" aria-pressed="false" class="rounded-2xl border border-slate-700 bg-slate-950 p-4 text-left transition-colors hover:border-teal-500">
+                <button type="button" data-role="security" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-teal-500">
                     <div class="text-teal-300"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></div>
                     <div class="mt-2 font-semibold">Security / compliance</div>
                 </button>
@@ -111,9 +113,9 @@
             <div id="role-explanation" class="mt-5 hidden rounded-2xl border border-teal-500/40 bg-teal-500/10 p-5" aria-live="polite"></div>
         </section>
 
-        <section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Training modules">
+        <section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Simulator modules">
             <a href="zero-latency-module1-v2.html" class="module-card group block rounded-3xl" data-module-id="module1" data-module-title="Module 1">
-                <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
+                <div class="hyper-glass rounded-3xl p-8 h-full">
                     <div class="flex items-center justify-between mb-6">
                         <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 1</div>
                         <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
@@ -129,7 +131,7 @@
             </a>
 
             <a href="zero-latency-module2.html" class="module-card group block rounded-3xl" data-module-id="module2" data-module-title="Module 2">
-                <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
+                <div class="hyper-glass rounded-3xl p-8 h-full">
                     <div class="flex items-center justify-between mb-6">
                         <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 2</div>
                         <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
@@ -145,7 +147,7 @@
             </a>
 
             <a href="zero-latency-module3.html" class="module-card group block rounded-3xl" data-module-id="module3" data-module-title="Module 3">
-                <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
+                <div class="hyper-glass rounded-3xl p-8 h-full">
                     <div class="flex items-center justify-between mb-6">
                         <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 3</div>
                         <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
@@ -162,7 +164,7 @@
 
             <!-- Module 4 -->
             <a href="zero-latency-module4.html" class="module-card group block rounded-3xl" data-module-id="module4" data-module-title="Module 4">
-                <div class="bg-slate-900 border border-slate-800 group-hover:border-teal-600 transition-colors rounded-3xl p-8 h-full">
+                <div class="hyper-glass rounded-3xl p-8 h-full">
                     <div class="flex items-center justify-between mb-6">
                         <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 4</div>
                         <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
@@ -178,7 +180,7 @@
             </a>
 
             <a href="nhid-knowledge-base.html" class="dashboard-card group block md:col-span-3 lg:col-span-1 rounded-3xl">
-                <div class="bg-slate-900 border border-amber-500/50 group-hover:border-amber-400 transition-colors rounded-3xl p-8 h-full flex flex-col justify-between">
+                <div class="hyper-glass rounded-3xl p-8 h-full flex flex-col justify-between">
                     <div>
                         <div class="mb-6 inline-flex px-4 py-1 bg-amber-500 text-slate-950 text-xs font-bold tracking-wider rounded-3xl">KNOWLEDGE BASE</div>
                         <div class="font-display text-3xl font-semibold tracking-tight mb-3">Scenario Cards</div>
@@ -192,15 +194,15 @@
             </a>
 
             <a href="zero-latency-dashboard.html" class="dashboard-card group block md:col-span-3 lg:col-span-1 rounded-3xl">
-                <div class="bg-white border border-teal-600 group-hover:border-teal-700 transition-colors rounded-3xl p-8 h-full flex flex-col justify-between">
+                <div class="hyper-glass rounded-3xl p-8 h-full flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-6">
                             <div class="px-4 py-1 bg-teal-600 text-white text-xs font-bold tracking-wider rounded-3xl">PROGRESS</div>
                         </div>
-                        <div class="font-display text-3xl font-semibold tracking-tight mb-3 text-slate-900">Your Dashboard</div>
-                        <div class="text-slate-600 text-[15px] leading-relaxed">See your latest scores across all modules and track improvement over time.</div>
+                        <div class="font-display text-3xl font-semibold tracking-tight mb-3 text-white">Your Dashboard</div>
+                        <div class="text-white/70 text-[15px] leading-relaxed">See your latest scores across all modules and track improvement over time.</div>
                     </div>
-                    <div class="mt-8 flex items-center gap-x-2 text-xs text-teal-700 font-medium">
+                    <div class="mt-8 flex items-center gap-x-2 text-xs text-teal-300 font-medium">
                         <span>View Progress &amp; History</span>
                         <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </div>
@@ -210,7 +212,7 @@
 
         <div class="mt-12 flex flex-col items-center gap-4 text-center">
             <div class="flex flex-wrap items-center justify-center gap-3">
-                <a href="training-record.html" class="inline-flex items-center gap-2 rounded-2xl border border-teal-500/40 px-4 py-2 text-xs font-semibold text-teal-300 transition-colors hover:border-teal-400 hover:text-teal-200">
+                <a href="simulator-record.html" class="inline-flex items-center gap-2 rounded-2xl border border-teal-500/40 px-4 py-2 text-xs font-semibold text-teal-300 transition-colors hover:border-teal-400 hover:text-teal-200">
                     <i class="fa-solid fa-file-lines" aria-hidden="true"></i> View your Completion Record
                 </a>
                 <button type="button" id="reset-progress" class="rounded-2xl border border-white/15 px-4 py-2 text-xs font-semibold text-white/70 transition-colors hover:border-teal-500 hover:text-teal-300">Reset saved progress</button>
@@ -238,7 +240,7 @@
                 const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
                 return saved && typeof saved === 'object' ? saved : {};
             } catch (error) {
-                console.warn('Unable to read saved training progress.', error);
+                console.warn('Unable to read saved simulator progress.', error);
                 return {};
             }
         }

@@ -1,35 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard • Zero Latency</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/hyper-glass.css" />
+  <script src="assets/hyper-glass.js" defer></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
     body { font-family: 'Inter', system-ui, sans-serif; }
-    .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600; }
-    button:focus-visible, a:focus-visible { outline: 3px solid rgb(20 184 166); outline-offset: 4px; }
+    .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
   </style>
-  <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml" />
 </head>
-<body class="bg-slate-950 text-white">
-  <main class="mx-auto max-w-5xl px-6 py-10 sm:px-8">
-    <nav class="mb-10 flex items-center justify-between text-sm">
-      <div class="flex flex-wrap gap-4"><a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to training</a><a href="nhid-knowledge-base.html" class="text-white/70 hover:text-teal-300">Knowledge base</a><a href="training-record.html" class="text-teal-300 hover:text-teal-200">Completion Record</a></div>
-      <button id="reset" type="button" class="rounded-2xl border border-white/15 px-4 py-2 text-white/70 hover:border-teal-500 hover:text-teal-300">Reset progress</button>
+<body class="hg-body text-white">
+  <main class="relative z-10 mx-auto max-w-6xl px-6 py-10 sm:px-8">
+
+    <!-- NAV -->
+    <nav class="mb-10 flex flex-wrap items-center justify-between gap-4 text-sm">
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to simulator
+        </a>
+        <a href="nhid-knowledge-base.html" class="text-white/70 hover:text-teal-300">Knowledge base</a>
+        <a href="simulator-record.html" class="text-teal-300 hover:text-teal-200">Completion Record</a>
+      </div>
+      <button id="reset" type="button" class="hyper-glass px-4 py-2 text-sm text-white/80 hover:text-teal-200">
+        Reset progress
+      </button>
     </nav>
 
-    <header class="mb-10">
-      <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Progress</div>
-      <h1 class="font-display mt-3 text-5xl tracking-[-2px]">Your Dashboard</h1>
-      <p class="mt-3 max-w-2xl text-white/70">Scores are saved in this browser with localStorage. Complete module pages to update this dashboard.</p>
-      <p class="mt-2 max-w-2xl text-xs text-white/40">This simulator demonstrates the NHID-Clinical framework. Scores reflect training performance, not a compliance certification.</p>
-    </header>
+    <!-- BRAND STRIP -->
+    <section class="hyper-glass mb-8 flex items-center gap-4 px-6 py-5">
+      <span class="metallic grid h-11 w-11 place-items-center font-display text-lg text-teal-200">ZL</span>
+      <span class="font-display text-xl tracking-wide text-white/90">Zero Latency</span>
+    </section>
 
-    <section id="summary" class="grid gap-4 sm:grid-cols-3" aria-label="Progress summary"></section>
+    <!-- HERO + MODULE 0 -->
+    <section class="mb-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+      <div class="flex flex-col justify-center">
+        <h1 class="font-display text-5xl leading-[1.05] tracking-[-2px] sm:text-6xl">
+          When AI sounds human, identity becomes a security control.
+        </h1>
+        <p class="mt-6 max-w-xl text-lg text-white/70">
+          Cool, human-sounding AI erodes the instinct to verify. This simulator rebuilds that
+          instinct — teaching teams to treat non-human identity as an enforceable control.
+        </p>
+        <p class="mt-4 max-w-xl text-sm text-white/45">
+          Scores are saved in this browser with localStorage. Complete module pages to update this dashboard.
+          They reflect simulator performance, not a compliance certification.
+        </p>
+      </div>
+
+      <article class="hyper-glass flex flex-col gap-5 p-7">
+        <div class="text-xs font-bold uppercase tracking-[3px] text-teal-300">Module 0</div>
+        <h2 class="font-display text-3xl tracking-[-1px]">Interactive Simulator Module</h2>
+        <p class="text-white/70">
+          Experience the governance failure NHID-Clinical prevents — then block the late
+          disclosure before it lands.
+        </p>
+        <div class="mt-2">
+          <a href="zero-latency-module0.html" class="emissive inline-flex items-center gap-2 px-6 py-3 text-sm">The Identity Problem <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="mt-auto grid grid-cols-3 gap-3 pt-4 text-center">
+          <div class="metallic px-2 py-3">
+            <div class="font-display text-lg text-teal-200">02</div>
+            <div class="text-[10px] uppercase tracking-wider text-white/50">Scenarios</div>
+          </div>
+          <div class="metallic px-2 py-3">
+            <div class="font-display text-lg text-teal-200">5s</div>
+            <div class="text-[10px] uppercase tracking-wider text-white/50">Decide</div>
+          </div>
+          <div class="metallic px-2 py-3">
+            <div class="font-display text-lg text-teal-200">A+</div>
+            <div class="text-[10px] uppercase tracking-wider text-white/50">Contrast</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- DASHBOARD + PERSONALIZE -->
+    <section class="grid gap-8 lg:grid-cols-2">
+      <article class="hyper-glass p-7">
+        <h2 class="font-display text-2xl tracking-[-0.5px]">Dashboard</h2>
+        <div id="summary" class="mt-5 grid grid-cols-3 gap-4"></div>
+      </article>
+
+      <article class="hyper-glass p-7">
+        <h2 class="font-display text-2xl tracking-[-0.5px]">Personalize Your Path</h2>
+        <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <a href="index.html" class="metallic flex flex-col items-center gap-3 px-3 py-5 text-center hover:brightness-110">
+            <i class="fa-solid fa-building-columns text-2xl text-teal-200" aria-hidden="true"></i>
+            <span class="text-xs font-medium text-white/85">Healthcare payer operations</span>
+          </a>
+          <a href="index.html" class="metallic flex flex-col items-center gap-3 px-3 py-5 text-center hover:brightness-110">
+            <i class="fa-solid fa-hospital text-2xl text-teal-200" aria-hidden="true"></i>
+            <span class="text-xs font-medium text-white/85">Provider organization</span>
+          </a>
+          <a href="index.html" class="metallic flex flex-col items-center gap-3 px-3 py-5 text-center hover:brightness-110">
+            <i class="fa-solid fa-wand-magic-sparkles text-2xl text-teal-200" aria-hidden="true"></i>
+            <span class="text-xs font-medium text-white/85">Vendor</span>
+          </a>
+          <a href="index.html" class="metallic flex flex-col items-center gap-3 px-3 py-5 text-center hover:brightness-110">
+            <i class="fa-solid fa-shield-halved text-2xl text-teal-200" aria-hidden="true"></i>
+            <span class="text-xs font-medium text-white/85">Security</span>
+          </a>
+        </div>
+      </article>
+    </section>
+
+    <!-- MODULE LIST -->
     <section id="modules" class="mt-8 grid gap-4" aria-label="Module progress"></section>
+
+    <p class="mt-10 max-w-3xl text-xs text-white/35">
+      This simulator demonstrates the NHID-Clinical framework. Scores are saved in this browser with
+      localStorage and reflect simulator performance, not a compliance certification.
+    </p>
   </main>
 
   <script>
@@ -46,23 +134,50 @@
       catch { return {}; }
     }
 
+    function stat(label, value) {
+      return `
+        <div class="metallic px-4 py-5">
+          <div class="text-[10px] uppercase tracking-[2px] text-white/55">${label}</div>
+          <div class="mt-2 font-display text-3xl text-white">${value}</div>
+        </div>`;
+    }
+
     function render() {
       const progress = readProgress();
-      const completed = MODULES.filter((module) => progress[module.id]?.completed);
-      const scored = MODULES.filter((module) => Number.isFinite(progress[module.id]?.score));
-      const average = scored.length ? `${Math.round(scored.reduce((sum, module) => sum + progress[module.id].score, 0) / scored.length)}%` : '—';
-      const next = MODULES.find((module) => !progress[module.id]?.completed) || MODULES[0];
+      const completed = MODULES.filter((m) => progress[m.id]?.completed);
+      const scored = MODULES.filter((m) => Number.isFinite(progress[m.id]?.score));
+      const average = scored.length
+        ? `${Math.round(scored.reduce((s, m) => s + progress[m.id].score, 0) / scored.length)}%`
+        : '—';
+      const next = MODULES.find((m) => !progress[m.id]?.completed) || MODULES[0];
+      const nextLabel = completed.length === MODULES.length ? 'Review' : next.title.split(' ').slice(-2).join(' ');
 
-      document.getElementById('summary').innerHTML = [
-        ['Completed', `${completed.length}/${MODULES.length}`],
-        ['Average Score', average],
-        ['Next Step', `<a class="text-teal-300 hover:text-teal-200" href="${next.href}">${completed.length === MODULES.length ? 'Review' : 'Start'} ${next.title}</a>`]
-      ].map(([label, value]) => `<article class="rounded-3xl border border-slate-800 bg-slate-900 p-6"><div class="text-xs uppercase tracking-[2px] text-white/50">${label}</div><div class="mt-2 text-3xl font-display">${value}</div></article>`).join('');
+      document.getElementById('summary').innerHTML =
+        stat('Completed', `${completed.length}/${MODULES.length}`) +
+        stat('Average Score', average) +
+        `<a href="${next.href}" class="metallic flex flex-col justify-between px-4 py-5 hover:brightness-110">
+           <div class="text-[10px] uppercase tracking-[2px] text-white/55">Continue</div>
+           <div class="mt-2 flex items-center justify-between">
+             <span class="font-display text-xl text-white">${nextLabel}</span>
+             <i class="fa-solid fa-arrow-right text-teal-200" aria-hidden="true"></i>
+           </div>
+         </a>`;
 
-      document.getElementById('modules').innerHTML = MODULES.map((module) => {
-        const item = progress[module.id];
-        const status = item?.completed ? `Complete · ${item.score}% · ${new Date(item.completedAt).toLocaleDateString()}` : 'Not started';
-        return `<article class="flex flex-col gap-4 rounded-3xl border border-slate-800 bg-slate-900 p-6 sm:flex-row sm:items-center sm:justify-between"><div><div class="font-display text-2xl">${module.title}</div><div class="mt-1 text-white/60">${status}</div></div><a class="inline-flex items-center gap-2 text-teal-300 hover:text-teal-200" href="${module.href}">${item?.completed ? 'Review' : 'Start'} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></article>`;
+      document.getElementById('modules').innerHTML = MODULES.map((m) => {
+        const item = progress[m.id];
+        const status = item?.completed
+          ? `Complete · ${item.score}% · ${new Date(item.completedAt).toLocaleDateString()}`
+          : 'Not started';
+        return `
+          <article class="hyper-glass flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div class="font-display text-xl">${m.title}</div>
+              <div class="mt-1 text-sm text-white/60">${status}</div>
+            </div>
+            <a class="emissive inline-flex items-center gap-2 px-5 py-2.5 text-sm" href="${m.href}">
+              ${item?.completed ? 'Review' : 'Start'} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </article>`;
       }).join('');
     }
 
