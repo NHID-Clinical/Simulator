@@ -1,17 +1,29 @@
 /* =====================================================================
-   Zero Latency · Hyper-Glass design system — v2 "clinical" refinement
+   Zero Latency · Hyper-Glass design system — v3 "clinical console"
    Shared across every page. Deep-navy acrylic glass over a faint
-   blueprint grid: authoritative and clinical rather than cyber/game.
-   Palette: dark navy base · electric cyan primary · amber for caution.
+   blueprint grid: an enterprise compliance console, not a cyber game.
+
+   COLOR DISCIPLINE (enforced, do not drift):
+     · deep navy       — base surfaces
+     · electric cyan   — system elements, primary actions, live state
+     · amber           — ONLY warnings, penalties, and high-risk moments
+     · emerald         — verified / passing state only
+
    Class contract (do not rename): .hg-body .hg-ambient .hyper-glass
-   .emissive .metallic — plus v2 additions (.hg-stepper, .hg-checkseq).
+   .emissive .metallic .hg-stepper .hg-checkseq — plus v3 components:
+   .hg-stat .hg-badge .hg-dot .hg-bar .hg-btn-ghost .hg-btn-danger
+   .hg-gate .hg-incident .hg-reveal .hg-term[data-tip]
    ===================================================================== */
 
 :root {
-  --hg-bg: #030611;
+  --hg-bg: #040a1c;
+  --hg-panel-1: #0d1830;
+  --hg-panel-2: #091226;
   --hg-cyan: #22d3ee;
   --hg-teal: #2dd4bf;
   --hg-amber: #fbbf24;
+  --hg-amber-deep: #f59e0b;
+  --hg-green: #34d399;
   --hg-ink-1: rgba(255,255,255,0.92);
   --hg-ink-2: rgba(255,255,255,0.70);
   --hg-ink-3: rgba(255,255,255,0.48);
@@ -23,15 +35,17 @@
 }
 
 .hg-body {
-  background: var(--hg-bg);
+  background-color: var(--hg-bg);
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, #0a1530 0%, var(--hg-bg) 55%);
+  background-attachment: fixed;
   color: var(--hg-ink-1);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 /* ---------------------------------------------------------------
-   TYPOGRAPHY DEFAULTS — applied globally so every page inherits a
-   consistent scale without per-page utility churn.
+   TYPOGRAPHY DEFAULTS — one scale, inherited everywhere
 --------------------------------------------------------------- */
 .hg-body { font-size: 15.5px; line-height: 1.65; }
 .hg-body h1 { letter-spacing: -0.03em; line-height: 1.08; text-wrap: balance; }
@@ -44,16 +58,56 @@
 .hg-eyebrow {
   font-size: 11px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--hg-teal);
+  color: var(--hg-cyan);
 }
 .hg-lead { font-size: 1.1rem; line-height: 1.7; color: var(--hg-ink-2); }
 .hg-note { font-size: 0.8rem; line-height: 1.6; color: var(--hg-ink-3); }
 
-/* Plain-language term markers (acronym onboarding) */
+/* Tabular figures for metrics — numbers must not jitter */
+.hg-num { font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------
+   PLAIN-LANGUAGE TERM TOOLTIPS (acronym onboarding)
+   hyper-glass.js promotes title="" to data-tip="" and makes the
+   term keyboard-focusable, so definitions work on hover AND focus.
+--------------------------------------------------------------- */
 .hg-term {
-  text-decoration: underline dotted rgba(45,212,191,0.55);
+  position: relative;
+  text-decoration: underline dotted rgba(34,211,238,0.55);
   text-underline-offset: 3px;
   cursor: help;
+}
+.hg-term[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 9px);
+  transform: translateX(-50%) translateY(3px);
+  width: max-content;
+  max-width: min(280px, 74vw);
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: #0c1a34;
+  border: 1px solid rgba(34,211,238,0.3);
+  color: var(--hg-ink-1);
+  font-size: 12.5px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 16px 32px -14px rgba(0,0,0,0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+  z-index: 60;
+}
+.hg-term[data-tip]:hover::after,
+.hg-term[data-tip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* ---------------------------------------------------------------
@@ -65,7 +119,6 @@
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  /* blueprint grid: barely-there drafting lines */
   background-image:
     linear-gradient(rgba(94,164,255,0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(94,164,255,0.045) 1px, transparent 1px);
@@ -81,18 +134,18 @@
   height: 58vw;
   border-radius: 50%;
   filter: blur(140px);
-  opacity: 0.34;
+  opacity: 0.3;
 }
 .hg-ambient::before {
   top: -20vw;
   left: -12vw;
-  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.5), rgba(34, 211, 238, 0) 68%);
+  background: radial-gradient(circle at center, rgba(34, 211, 238, 0.45), rgba(34, 211, 238, 0) 68%);
   animation: hgFloatA 26s ease-in-out infinite;
 }
 .hg-ambient::after {
   bottom: -24vw;
   right: -14vw;
-  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.55), rgba(37, 99, 235, 0) 70%);
+  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.5), rgba(37, 99, 235, 0) 70%);
   animation: hgFloatB 32s ease-in-out infinite;
 }
 @keyframes hgFloatA {
@@ -111,7 +164,7 @@
 .hg-content { position: relative; z-index: 10; }
 
 /* ---------------------------------------------------------------
-   2. HYPER-GLASS CARD — refined: shallower blur, quieter edge
+   2. HYPER-GLASS CARD — primary panel surface
 --------------------------------------------------------------- */
 .hyper-glass {
   position: relative;
@@ -119,13 +172,13 @@
   border-radius: var(--hg-radius);
   background:
     linear-gradient(165deg, rgba(255,255,255,0.07), rgba(255,255,255,0.012) 45%),
-    linear-gradient(to top, rgba(20,184,166,0.07), rgba(8,15,30,0.16));
+    linear-gradient(to top, rgba(34,211,238,0.05), rgba(8,15,30,0.16));
   backdrop-filter: blur(20px) saturate(135%);
   -webkit-backdrop-filter: blur(20px) saturate(135%);
   border: 1px solid rgba(255,255,255,0.09);
   box-shadow:
-    0 1px 0 0 rgba(255,255,255,0.26) inset,          /* top light edge */
-    0 -16px 36px -30px rgba(45,212,191,0.4) inset,   /* bottom refraction */
+    0 1px 0 0 rgba(255,255,255,0.26) inset,
+    0 -16px 36px -30px rgba(34,211,238,0.35) inset,
     0 0 0 1px rgba(8,14,26,0.55),
     0 26px 52px -26px rgba(0,0,0,0.8),
     0 10px 20px -18px rgba(34,211,238,0.22);
@@ -135,7 +188,7 @@
   transform: translateY(-2px);
   box-shadow:
     0 1px 0 0 rgba(255,255,255,0.36) inset,
-    0 -18px 40px -28px rgba(45,212,191,0.5) inset,
+    0 -18px 40px -28px rgba(34,211,238,0.45) inset,
     0 0 0 1px rgba(8,14,26,0.55),
     0 34px 66px -26px rgba(0,0,0,0.85),
     0 14px 28px -16px rgba(34,211,238,0.32);
@@ -146,7 +199,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(165deg, rgba(255,255,255,0.5), rgba(255,255,255,0.03) 32%, rgba(45,212,191,0.18) 100%);
+  background: linear-gradient(165deg, rgba(255,255,255,0.5), rgba(255,255,255,0.03) 32%, rgba(34,211,238,0.16) 100%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -154,7 +207,7 @@
   pointer-events: none;
   z-index: 2;
 }
-/* cursor-tracked specular glare — cool-toned only, no purple */
+/* cursor-tracked specular glare — cool-toned only */
 .hyper-glass::after {
   content: "";
   position: absolute;
@@ -166,12 +219,15 @@
   transition: opacity 0.4s ease;
   background:
     radial-gradient(200px circle at var(--mouse-x) var(--mouse-y),
-      rgba(255,255,255,0.22), rgba(255,255,255,0) 46%),
+      rgba(255,255,255,0.2), rgba(255,255,255,0) 46%),
     radial-gradient(420px circle at var(--mouse-x) var(--mouse-y),
-      rgba(56,189,248,0.16), rgba(45,212,191,0.08) 40%, rgba(0,0,0,0) 70%);
+      rgba(56,189,248,0.15), rgba(34,211,238,0.07) 40%, rgba(0,0,0,0) 70%);
   mix-blend-mode: screen;
 }
 .hyper-glass > * { position: relative; z-index: 4; }
+
+/* Static variant for dense console panels — no hover lift */
+.hyper-glass.hg-still, .hyper-glass.hg-still:hover { transform: none; }
 
 /* ---------------------------------------------------------------
    3. EMISSIVE PRIMARY ACTION — confident, not neon
@@ -188,7 +244,7 @@
     0 -5px 12px -6px rgba(4,30,40,0.7) inset,
     0 8px 20px -8px rgba(34,211,238,0.5),
     0 0 14px -4px rgba(56,189,248,0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 }
 .emissive:hover {
   transform: translateY(-1px);
@@ -199,25 +255,55 @@
     0 12px 26px -8px rgba(34,211,238,0.6),
     0 0 18px -2px rgba(56,189,248,0.42);
 }
-.emissive:active { transform: translateY(0); }
+.emissive:active { transform: translateY(1px) scale(0.995); filter: brightness(0.97); }
+.emissive:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+/* Ghost secondary action */
+.hg-btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: var(--hg-radius-sm);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--hg-ink-2);
+  font-weight: 600;
+  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+.hg-btn-ghost:hover {
+  border-color: rgba(34,211,238,0.5);
+  color: #a5f3fc;
+  background: rgba(34,211,238,0.06);
+}
+.hg-btn-ghost:active { transform: translateY(1px); }
+
+/* High-risk action (the wrong choice, the destructive path) — amber */
+.hg-btn-danger {
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: var(--hg-radius-sm);
+  border: 1px solid rgba(251,191,36,0.45);
+  background: rgba(251,191,36,0.08);
+  color: #fde68a;
+  font-weight: 700;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+.hg-btn-danger:hover { border-color: rgba(251,191,36,0.8); background: rgba(251,191,36,0.14); }
+.hg-btn-danger:active { transform: translateY(1px); }
 
 /* ---------------------------------------------------------------
-   4. METALLIC EMBEDDED CHIP
+   4. METALLIC EMBEDDED CHIP — secondary surface
 --------------------------------------------------------------- */
 .metallic {
   position: relative;
   border-radius: var(--hg-radius-sm);
   background:
-    linear-gradient(155deg, rgba(255,255,255,0.34), rgba(255,255,255,0.04) 32%),
-    linear-gradient(180deg, #27415d 0%, #142438 60%, #0b1524 100%);
+    linear-gradient(155deg, rgba(255,255,255,0.3), rgba(255,255,255,0.04) 32%),
+    linear-gradient(180deg, #223a55 0%, #122236 60%, #0a1424 100%);
   border: 1px solid rgba(255,255,255,0.12);
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.34) inset,
-    0 -9px 18px -12px rgba(45,212,191,0.36) inset,
+    0 1px 0 rgba(255,255,255,0.3) inset,
+    0 -9px 18px -12px rgba(34,211,238,0.3) inset,
     0 16px 30px -18px rgba(0,0,0,0.8);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, border-color 0.2s ease;
 }
-.metallic:hover { filter: brightness(1.08); }
+.metallic:hover { filter: brightness(1.07); }
 
 /* ---------------------------------------------------------------
    5. MODULE STEPPER — injected by hyper-glass.js on flow pages
@@ -261,7 +347,7 @@
 .hg-step-sep { color: rgba(255,255,255,0.14); margin: 0 1px; }
 
 /* ---------------------------------------------------------------
-   6. STAGED CONTROL CHECKS (Module 4 validate sequence)
+   6. STAGED CONTROL CHECKS (validation sequences)
 --------------------------------------------------------------- */
 .hg-checkseq { display: flex; flex-direction: column; gap: 6px; }
 .hg-check {
@@ -285,11 +371,11 @@
 @keyframes hgCheckIn { to { opacity: 1; transform: none; } }
 @keyframes hgSpin { to { transform: rotate(360deg); } }
 
-/* moved-node highlight (Module 4 reorder feedback) */
+/* moved-node highlight (sequence reorder feedback) */
 .hg-moved { animation: hgMoved 0.45s ease-out; }
 @keyframes hgMoved {
   0% { box-shadow: 0 0 0 2px rgba(34,211,238,0.55), 0 16px 30px -18px rgba(0,0,0,0.8); }
-  100% { box-shadow: 0 1px 0 rgba(255,255,255,0.34) inset, 0 -9px 18px -12px rgba(45,212,191,0.36) inset, 0 16px 30px -18px rgba(0,0,0,0.8); }
+  100% { box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 -9px 18px -12px rgba(34,211,238,0.3) inset, 0 16px 30px -18px rgba(0,0,0,0.8); }
 }
 
 /* result shake for failed validation */
@@ -302,17 +388,194 @@
 }
 
 /* ---------------------------------------------------------------
+   7. KPI STAT TILE — the one way metrics are presented
+   <div class="hg-stat" data-tone="cyan|amber|green">
+     <div class="label">…</div><div class="value">…</div><div class="meta">…</div>
+   </div>
+--------------------------------------------------------------- */
+.hg-stat {
+  position: relative;
+  border-radius: var(--hg-radius-sm);
+  border: 1px solid rgba(255,255,255,0.09);
+  background: linear-gradient(180deg, rgba(18,32,56,0.72), rgba(8,16,32,0.85));
+  padding: 16px 18px;
+  overflow: hidden;
+}
+.hg-stat::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: rgba(255,255,255,0.14);
+}
+.hg-stat .label {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--hg-ink-3);
+}
+.hg-stat .value {
+  margin-top: 6px;
+  font-size: 1.9rem;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: var(--hg-ink-1);
+}
+.hg-stat .meta { margin-top: 4px; font-size: 12px; color: var(--hg-ink-3); }
+.hg-stat[data-tone="cyan"]::before { background: var(--hg-cyan); }
+.hg-stat[data-tone="cyan"] .label { color: rgba(165,243,252,0.85); }
+.hg-stat[data-tone="amber"]::before { background: var(--hg-amber-deep); }
+.hg-stat[data-tone="amber"] .label { color: rgba(253,230,138,0.9); }
+.hg-stat[data-tone="amber"] .value { color: #fde68a; }
+.hg-stat[data-tone="green"]::before { background: var(--hg-green); }
+.hg-stat[data-tone="green"] .label { color: rgba(110,231,183,0.9); }
+
+/* ---------------------------------------------------------------
+   8. BADGES + STATUS DOTS
+--------------------------------------------------------------- */
+.hg-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: var(--hg-ink-2);
+  white-space: nowrap;
+}
+.hg-badge[data-tone="cyan"] {
+  border-color: rgba(34,211,238,0.4);
+  background: rgba(34,211,238,0.1);
+  color: #a5f3fc;
+}
+.hg-badge[data-tone="amber"] {
+  border-color: rgba(251,191,36,0.45);
+  background: rgba(251,191,36,0.1);
+  color: #fde68a;
+}
+.hg-badge[data-tone="green"] {
+  border-color: rgba(52,211,153,0.4);
+  background: rgba(52,211,153,0.1);
+  color: #6ee7b7;
+}
+
+.hg-dot {
+  display: inline-block;
+  width: 8px; height: 8px; flex: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+}
+.hg-dot[data-tone="cyan"] { background: var(--hg-cyan); box-shadow: 0 0 8px rgba(34,211,238,0.6); }
+.hg-dot[data-tone="amber"] { background: var(--hg-amber); box-shadow: 0 0 8px rgba(251,191,36,0.55); }
+.hg-dot[data-tone="green"] { background: var(--hg-green); box-shadow: 0 0 8px rgba(52,211,153,0.55); }
+/* subtle live pulse — for genuinely live state only */
+.hg-dot.live { animation: hgDotPulse 2.2s ease-in-out infinite; }
+@keyframes hgDotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+/* ---------------------------------------------------------------
+   9. PROGRESS BAR
+--------------------------------------------------------------- */
+.hg-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.hg-bar > i {
+  display: block; height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0f9fbe, #22d3ee);
+  transition: width 0.6s cubic-bezier(.2,.8,.2,1);
+}
+.hg-bar[data-tone="amber"] > i { background: linear-gradient(90deg, #b45309, #fbbf24); }
+.hg-bar[data-tone="green"] > i { background: linear-gradient(90deg, #059669, #34d399); }
+
+/* ---------------------------------------------------------------
+   10. CONTROL GATE ROW (live compliance state, Module 4 + dashboard)
+   <div class="hg-gate" data-state="pass|risk|idle">
+     <span class="hg-dot"></span><code>IDG-01</code><span>label</span>
+   </div>
+--------------------------------------------------------------- */
+.hg-gate {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(10,18,34,0.6);
+  font-size: 13px;
+  color: var(--hg-ink-2);
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+.hg-gate code {
+  font-family: ui-monospace, 'Courier New', monospace;
+  font-size: 11.5px; font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--hg-ink-3);
+}
+.hg-gate .hg-dot { transition: background 0.25s ease, box-shadow 0.25s ease; }
+.hg-gate[data-state="pass"] {
+  border-color: rgba(52,211,153,0.3);
+  background: rgba(52,211,153,0.05);
+}
+.hg-gate[data-state="pass"] .hg-dot { background: var(--hg-green); box-shadow: 0 0 8px rgba(52,211,153,0.55); }
+.hg-gate[data-state="pass"] code { color: #6ee7b7; }
+.hg-gate[data-state="risk"] {
+  border-color: rgba(251,191,36,0.4);
+  background: rgba(251,191,36,0.06);
+}
+.hg-gate[data-state="risk"] .hg-dot { background: var(--hg-amber); box-shadow: 0 0 8px rgba(251,191,36,0.55); animation: hgDotPulse 1.6s ease-in-out infinite; }
+.hg-gate[data-state="risk"] code { color: #fde68a; }
+
+/* ---------------------------------------------------------------
+   11. INCIDENT TREATMENT — controlled high-stakes emphasis (amber)
+--------------------------------------------------------------- */
+.hg-incident {
+  position: relative;
+  border-radius: var(--hg-radius-sm);
+  border: 1px solid rgba(251,191,36,0.4);
+  border-left: 3px solid var(--hg-amber-deep);
+  background: linear-gradient(180deg, rgba(251,191,36,0.09), rgba(251,191,36,0.04));
+}
+.hg-verified {
+  border-radius: var(--hg-radius-sm);
+  border: 1px solid rgba(52,211,153,0.4);
+  border-left: 3px solid var(--hg-green);
+  background: linear-gradient(180deg, rgba(52,211,153,0.09), rgba(52,211,153,0.04));
+}
+
+/* ---------------------------------------------------------------
+   12. PANEL REVEAL — restrained entrance, applied by hyper-glass.js
+--------------------------------------------------------------- */
+/* Hiding is opt-in via .hg-js (set by hyper-glass.js once the observer is
+   armed) so content is never invisible if scripting fails. */
+.hg-js .hg-reveal {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.hg-js .hg-reveal.in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(.2,.8,.2,1);
+}
+
+/* ---------------------------------------------------------------
    FOCUS + MOTION SAFETY
 --------------------------------------------------------------- */
 .hg-body :focus-visible {
-  outline: 2px solid rgb(45 212 191);
+  outline: 2px solid rgb(34 211 238);
   outline-offset: 3px;
   border-radius: 10px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hg-ambient::before, .hg-ambient::after,
-  .hg-check, .hg-check .spin, .hg-moved, .hg-shake { animation: none !important; }
+  .hg-check, .hg-check .spin, .hg-moved, .hg-shake,
+  .hg-dot.live, .hg-gate[data-state="risk"] .hg-dot { animation: none !important; }
   .hg-check { opacity: 1; transform: none; }
-  .hyper-glass, .emissive, .metallic, .hg-step { transition: none; }
+  .hg-reveal { opacity: 1; transform: none; transition: none; }
+  .hyper-glass, .emissive, .metallic, .hg-step,
+  .hg-btn-ghost, .hg-btn-danger, .hg-bar > i { transition: none; }
 }

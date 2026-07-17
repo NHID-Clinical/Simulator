@@ -16,7 +16,7 @@
         .module-card:focus-visible,
         .dashboard-card:focus-visible,
         button:focus-visible {
-            outline: 3px solid rgb(20 184 166);
+            outline: 3px solid rgb(34 211 238);
             outline-offset: 4px;
         }
     </style>
@@ -31,26 +31,26 @@
                 </div>
                 <div>
                     <span class="font-display text-4xl sm:text-5xl font-semibold tracking-[-2px]">Zero Latency</span>
-                    <span class="block text-xs tracking-[3px] text-teal-500 font-bold mt-1">NHID-CLINICAL SIMULATOR</span>
+                    <span class="block text-xs tracking-[3px] text-cyan-500 font-bold mt-1">NHID-CLINICAL SIMULATOR</span>
                 </div>
             </div>
 
             <div class="text-left md:text-right">
                 <div class="text-xs text-white/60">CLINICAL AI TRUST OFFICER SIMULATOR</div>
-                <div id="last-updated" class="mt-1 text-xs text-teal-400" aria-live="polite"></div>
+                <div id="last-updated" class="mt-1 text-xs text-cyan-400" aria-live="polite"></div>
             </div>
         </header>
 
         <section class="max-w-3xl" aria-labelledby="page-title">
             <h1 id="page-title" class="font-display text-4xl sm:text-6xl font-semibold tracking-[-2.5px] leading-[1.05]">When AI sounds human,<br>identity becomes a security control.</h1>
             <p class="hg-lead mt-6">AI voice agents now call payers, clinics, and pharmacies sounding exactly like people. When staff can't tell — and the caller doesn't say — patient data can change hands before anyone verifies who is really on the line. This simulator trains your team to catch that moment.</p>
-            <p class="mt-4 rounded-2xl border border-teal-500/30 bg-teal-500/10 px-5 py-4 text-base leading-relaxed text-white/80"><a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-teal-300 hover:text-teal-200">Impersonation latency (PDX-01)</a> is the gap between call connection and clear non-human disclosure — and late disclosure still blocks <span class="hg-term" title="Protected Health Information — patient data covered by HIPAA">PHI</span> on every turn. NHID-Clinical enforces <strong class="text-white">zero</strong> impersonation latency: identity must be disclosed in the first 5 seconds, before any protected health information is exchanged.</p>
+            <p class="mt-4 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-5 py-4 text-base leading-relaxed text-white/80"><a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-cyan-300 hover:text-cyan-200">Impersonation latency (PDX-01)</a> is the gap between call connection and clear non-human disclosure — and late disclosure still blocks <span class="hg-term" title="Protected Health Information — patient data covered by HIPAA">PHI</span> on every turn. NHID-Clinical enforces <strong class="text-white">zero</strong> impersonation latency: identity must be disclosed in the first 5 seconds, before any protected health information is exchanged.</p>
             <p class="mt-4 text-white/70"><span class="hg-term" title="Non-Human Identity Disclosure">NHID</span>-Clinical (Non-Human Identity Disclosure for clinical settings) is an open governance framework for healthcare voice agents: verify identity, enforce disclosure, and create auditable AI interactions before sensitive workflows begin.</p>
             <p class="hg-note mt-4">This site is an interactive simulator that demonstrates the framework. It is education and demonstration — not the framework itself, and not a certification.</p>
         </section>
 
         <!-- Onboarding: how this works, before any scoring -->
-        <section class="mt-10 grid gap-4 sm:grid-cols-3" aria-label="How this simulator works">
+        <section class="mt-10 grid gap-4 sm:grid-cols-3 hg-reveal" aria-label="How this simulator works">
             <div class="hyper-glass p-6">
                 <div class="hg-eyebrow">Step 1 · Experience</div>
                 <h2 class="font-display mt-2 text-xl font-semibold">See the failure</h2>
@@ -69,19 +69,19 @@
         </section>
 
         <!-- Module 0 · problem-first entry point -->
-        <section class="mt-10" aria-labelledby="start-here-title">
+        <section class="mt-10 hg-reveal" aria-labelledby="start-here-title">
             <a href="zero-latency-module0.html" class="group block rounded-[2rem]" data-module0-card>
                 <div class="hyper-glass p-8">
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                         <div class="max-w-2xl">
-                            <div class="inline-flex items-center gap-2 rounded-3xl bg-teal-500/15 px-4 py-1 text-xs font-bold uppercase tracking-[2px] text-teal-300">
+                            <div class="inline-flex items-center gap-2 rounded-full bg-cyan-500/15 px-4 py-1 text-xs font-bold uppercase tracking-[2px] text-cyan-300">
                                 <i class="fa-solid fa-play" aria-hidden="true"></i> Start here · Module 0
                             </div>
                             <h2 id="start-here-title" class="font-display mt-4 text-3xl font-semibold tracking-tight">Why does this matter?</h2>
                             <p class="mt-2 text-white/70 text-[15px] leading-relaxed">Before learning how NHID-Clinical works, experience the governance failure it prevents. Sit at the payer desk and watch what happens when an AI voice agent discloses its identity too late.</p>
                         </div>
                         <div class="flex items-center gap-3 self-start md:self-center">
-                            <span class="hidden rounded-2xl bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-300 md:inline" data-module0-badge hidden>Experienced</span>
+                            <span class="hidden rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-300 md:inline" data-module0-badge hidden>Experienced</span>
                             <span class="emissive inline-flex items-center gap-2 px-5 py-3">The Identity Problem <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
             </a>
         </section>
 
-        <section class="mt-10 grid gap-4 sm:grid-cols-3" aria-label="Simulator progress summary">
+        <section class="mt-10 grid gap-4 sm:grid-cols-3 hg-reveal" aria-label="Simulator progress summary">
             <div class="metallic p-5">
                 <div class="text-xs uppercase tracking-[2px] text-white/50">Completed</div>
                 <div class="mt-2 text-3xl font-display" id="completed-count">0/4</div>
@@ -100,53 +100,53 @@
             </div>
             <div class="metallic p-5">
                 <div class="text-xs uppercase tracking-[2px] text-white/50">Next Step</div>
-                <a id="continue-link" href="zero-latency-module1-v2.html" class="mt-2 inline-flex items-center gap-2 text-lg font-semibold text-teal-400 hover:text-teal-300">
+                <a id="continue-link" href="zero-latency-module1-v2.html" class="mt-2 inline-flex items-center gap-2 text-lg font-semibold text-cyan-400 hover:text-cyan-300">
                     Start Module 1 <i class="fa-solid fa-arrow-right text-sm" aria-hidden="true"></i>
                 </a>
             </div>
         </section>
 
         <!-- Role-based entry points -->
-        <section class="hyper-glass mt-16 p-8" aria-labelledby="role-title">
-            <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Personalize your path</div>
+        <section class="hyper-glass hg-still hg-reveal mt-16 p-8" aria-labelledby="role-title">
+            <div class="text-xs font-bold uppercase tracking-[3px] text-cyan-400">Personalize your path</div>
             <h2 id="role-title" class="font-display mt-2 text-3xl font-semibold tracking-tight">I am a…</h2>
             <p class="mt-2 max-w-2xl text-white/60 text-[15px]">Select your role to see why NHID-Clinical governance matters for you. Your choice is saved in this browser only — no account required.</p>
 
             <div id="role-options" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" role="group" aria-label="Select your role">
-                <button type="button" data-role="payer" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-teal-500">
-                    <div class="text-teal-300"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></div>
+                <button type="button" data-role="payer" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-cyan-500">
+                    <div class="text-cyan-300"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></div>
                     <div class="mt-2 font-semibold">Healthcare payer operations</div>
                 </button>
-                <button type="button" data-role="provider" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-teal-500">
-                    <div class="text-teal-300"><i class="fa-solid fa-house-medical" aria-hidden="true"></i></div>
+                <button type="button" data-role="provider" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-cyan-500">
+                    <div class="text-cyan-300"><i class="fa-solid fa-house-medical" aria-hidden="true"></i></div>
                     <div class="mt-2 font-semibold">Provider organization</div>
                 </button>
-                <button type="button" data-role="vendor" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-teal-500">
-                    <div class="text-teal-300"><i class="fa-solid fa-microchip" aria-hidden="true"></i></div>
+                <button type="button" data-role="vendor" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-cyan-500">
+                    <div class="text-cyan-300"><i class="fa-solid fa-microchip" aria-hidden="true"></i></div>
                     <div class="mt-2 font-semibold">AI voice vendor</div>
                 </button>
-                <button type="button" data-role="security" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-teal-500">
-                    <div class="text-teal-300"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></div>
+                <button type="button" data-role="security" aria-pressed="false" class="metallic p-4 text-left transition-colors hover:border-cyan-500">
+                    <div class="text-cyan-300"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></div>
                     <div class="mt-2 font-semibold">Security / compliance</div>
                 </button>
             </div>
 
-            <div id="role-explanation" class="mt-5 hidden rounded-2xl border border-teal-500/40 bg-teal-500/10 p-5" aria-live="polite"></div>
+            <div id="role-explanation" class="mt-5 hidden rounded-2xl border border-cyan-500/40 bg-cyan-500/10 p-5" aria-live="polite"></div>
         </section>
 
-        <section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6" aria-label="Simulator modules">
+        <section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 hg-reveal" aria-label="Simulator modules">
             <a href="zero-latency-module1-v2.html" class="module-card group block rounded-3xl" data-module-id="module1" data-module-title="Module 1">
                 <div class="hyper-glass rounded-3xl p-8 h-full">
                     <div class="flex items-center justify-between mb-6">
-                        <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 1</div>
-                        <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
+                        <div class="px-4 py-1 bg-cyan-600 text-xs font-bold tracking-wider rounded-full">MODULE 1</div>
+                        <div class="text-xs text-white/50 group-hover:text-cyan-500 transition-colors" data-action-label>START →</div>
                     </div>
                     <div class="font-display text-3xl font-semibold tracking-tight mb-3">The First 5 Seconds</div>
                     <div class="text-white/70 text-[15px] leading-relaxed">Your AI agent just connected to a payer. One wrong opening creates impersonation liability. Master the disclosure window.</div>
                     <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">5–8 min</div>
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Real-time timer</div>
-                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-full">5–8 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-full">Real-time timer</div>
+                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full" data-complete-badge>Complete</div>
                     </div>
                 </div>
             </a>
@@ -154,15 +154,15 @@
             <a href="zero-latency-module2.html" class="module-card group block rounded-3xl" data-module-id="module2" data-module-title="Module 2">
                 <div class="hyper-glass rounded-3xl p-8 h-full">
                     <div class="flex items-center justify-between mb-6">
-                        <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 2</div>
-                        <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
+                        <div class="px-4 py-1 bg-cyan-600 text-xs font-bold tracking-wider rounded-full">MODULE 2</div>
+                        <div class="text-xs text-white/50 group-hover:text-cyan-500 transition-colors" data-action-label>START →</div>
                     </div>
                     <div class="font-display text-3xl font-semibold tracking-tight mb-3">Passport Inspection</div>
                     <div class="text-white/70 text-[15px] leading-relaxed">Inspect an NHID-Auth v2 passport token, compare domain and expiration signals, and reject forged provider claims.</div>
                     <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">6–9 min</div>
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Drag-and-drop validator</div>
-                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-full">6–9 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-full">Drag-and-drop validator</div>
+                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full" data-complete-badge>Complete</div>
                     </div>
                 </div>
             </a>
@@ -170,15 +170,15 @@
             <a href="zero-latency-module3.html" class="module-card group block rounded-3xl" data-module-id="module3" data-module-title="Module 3">
                 <div class="hyper-glass rounded-3xl p-8 h-full">
                     <div class="flex items-center justify-between mb-6">
-                        <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 3</div>
-                        <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
+                        <div class="px-4 py-1 bg-cyan-600 text-xs font-bold tracking-wider rounded-full">MODULE 3</div>
+                        <div class="text-xs text-white/50 group-hover:text-cyan-500 transition-colors" data-action-label>START →</div>
                     </div>
                     <div class="font-display text-3xl font-semibold tracking-tight mb-3">Compliance Gaps</div>
                     <div class="text-white/70 text-[15px] leading-relaxed">Audit late AI disclosures, revoked passports, and escalation failures by tagging realistic call-log violations.</div>
                     <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">7–10 min</div>
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Shadow evaluation</div>
-                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-full">7–10 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-full">Shadow evaluation</div>
+                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full" data-complete-badge>Complete</div>
                     </div>
                 </div>
             </a>
@@ -187,15 +187,15 @@
             <a href="zero-latency-module4.html" class="module-card group block rounded-3xl" data-module-id="module4" data-module-title="Module 4">
                 <div class="hyper-glass rounded-3xl p-8 h-full">
                     <div class="flex items-center justify-between mb-6">
-                        <div class="px-4 py-1 bg-teal-600 text-xs font-bold tracking-wider rounded-3xl">MODULE 4</div>
-                        <div class="text-xs text-white/50 group-hover:text-teal-500 transition-colors" data-action-label>START →</div>
+                        <div class="px-4 py-1 bg-cyan-600 text-xs font-bold tracking-wider rounded-full">MODULE 4</div>
+                        <div class="text-xs text-white/50 group-hover:text-cyan-500 transition-colors" data-action-label>START →</div>
                     </div>
                     <div class="font-display text-3xl font-semibold tracking-tight mb-3">Safe Agent Deployment</div>
                     <div class="text-white/70 text-[15px] leading-relaxed">Configure outbound medical AI voice agents so disclosure is logic-gated before data requests or human-like artifacts.</div>
                     <div class="mt-8 flex flex-wrap items-center gap-2 text-xs">
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">5–7 min</div>
-                        <div class="px-3 py-1 bg-white/10 rounded-2xl">Prompt-node builder</div>
-                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-2xl" data-complete-badge>Complete</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-full">5–7 min</div>
+                        <div class="px-3 py-1 bg-white/10 rounded-full">Prompt-node builder</div>
+                        <div class="hidden px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full" data-complete-badge>Complete</div>
                     </div>
                 </div>
             </a>
@@ -203,11 +203,11 @@
             <a href="nhid-knowledge-base.html" class="dashboard-card group block md:col-span-3 lg:col-span-1 rounded-3xl">
                 <div class="hyper-glass rounded-3xl p-8 h-full flex flex-col justify-between">
                     <div>
-                        <div class="mb-6 inline-flex px-4 py-1 bg-amber-500 text-slate-950 text-xs font-bold tracking-wider rounded-3xl">KNOWLEDGE BASE</div>
+                        <div class="mb-6 inline-flex px-4 py-1 border border-white/20 bg-white/10 text-white/80 text-xs font-bold tracking-wider rounded-full">KNOWLEDGE BASE</div>
                         <div class="font-display text-3xl font-semibold tracking-tight mb-3">Scenario Cards</div>
-                        <div class="text-white/70 text-[15px] leading-relaxed">Review NHID-Clinical risk tiers, failure modes, if-then controls, and audit fields used throughout the game.</div>
+                        <div class="text-white/70 text-[15px] leading-relaxed">Review NHID-Clinical risk tiers, failure modes, if-then controls, and audit fields used throughout the training flow.</div>
                     </div>
-                    <div class="mt-8 flex items-center gap-x-2 text-xs text-amber-300 font-medium">
+                    <div class="mt-8 flex items-center gap-x-2 text-xs text-cyan-300 font-medium">
                         <span>Open Governance Deck</span>
                         <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </div>
@@ -218,13 +218,13 @@
                 <div class="hyper-glass rounded-3xl p-8 h-full flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-6">
-                            <div class="px-4 py-1 bg-teal-600 text-white text-xs font-bold tracking-wider rounded-3xl">PROGRESS</div>
+                            <div class="px-4 py-1 bg-cyan-600 text-white text-xs font-bold tracking-wider rounded-full">CONSOLE</div>
                         </div>
-                        <div class="font-display text-3xl font-semibold tracking-tight mb-3 text-white">Your Dashboard</div>
-                        <div class="text-white/70 text-[15px] leading-relaxed">See your latest scores across all modules and track improvement over time.</div>
+                        <div class="font-display text-3xl font-semibold tracking-tight mb-3 text-white">Operations Console</div>
+                        <div class="text-white/70 text-[15px] leading-relaxed">Monitor training readiness, control-gate coverage, penalty exposure, and audit activity in one live view.</div>
                     </div>
-                    <div class="mt-8 flex items-center gap-x-2 text-xs text-teal-300 font-medium">
-                        <span>View Progress &amp; History</span>
+                    <div class="mt-8 flex items-center gap-x-2 text-xs text-cyan-300 font-medium">
+                        <span>Open Operations Console</span>
                         <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                     </div>
                 </div>
@@ -233,16 +233,16 @@
 
         <div class="mt-12 flex flex-col items-center gap-4 text-center">
             <div class="flex flex-wrap items-center justify-center gap-3">
-                <a href="simulator-record.html" class="inline-flex items-center gap-2 rounded-2xl border border-teal-500/40 px-4 py-2 text-xs font-semibold text-teal-300 transition-colors hover:border-teal-400 hover:text-teal-200">
+                <a href="simulator-record.html" class="inline-flex items-center gap-2 rounded-2xl border border-cyan-500/40 px-4 py-2 text-xs font-semibold text-cyan-300 transition-colors hover:border-cyan-400 hover:text-cyan-200">
                     <i class="fa-solid fa-file-lines" aria-hidden="true"></i> View your Completion Record
                 </a>
-                <button type="button" id="reset-progress" class="rounded-2xl border border-white/15 px-4 py-2 text-xs font-semibold text-white/70 transition-colors hover:border-teal-500 hover:text-teal-300">Reset saved progress</button>
+                <button type="button" id="reset-progress" class="rounded-2xl border border-white/15 px-4 py-2 text-xs font-semibold text-white/70 transition-colors hover:border-cyan-500 hover:text-cyan-300">Reset saved progress</button>
             </div>
             <div class="inline-flex items-center gap-x-2 text-xs text-white/50">
                 <i class="fa-solid fa-info-circle" aria-hidden="true"></i>
                 <span>These simulations follow NHID-Clinical v1.3 and NHID-Auth v2 requirements</span>
             </div>
-            <a href="https://nhid-clinical.org" class="inline-flex items-center gap-x-2 text-xs font-semibold text-teal-300 hover:text-teal-200">
+            <a href="https://nhid-clinical.org" class="inline-flex items-center gap-x-2 text-xs font-semibold text-cyan-300 hover:text-cyan-200">
                 Explore the full NHID-Clinical governance framework
                 <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
             </a>
@@ -335,11 +335,11 @@
             roleButtons.forEach((button) => {
                 const selected = button.dataset.role === role;
                 button.setAttribute('aria-pressed', String(selected));
-                button.classList.toggle('border-teal-500', selected);
-                button.classList.toggle('bg-teal-500/10', selected);
+                button.classList.toggle('border-cyan-500', selected);
+                button.classList.toggle('bg-cyan-500/10', selected);
                 button.classList.toggle('bg-slate-950', !selected);
             });
-            roleExplanation.innerHTML = `<div class="text-xs font-bold uppercase tracking-[2px] text-teal-300">Why this matters for you</div><p class="mt-1 text-white/90">${ROLE_COPY[role]}</p>`;
+            roleExplanation.innerHTML = `<div class="text-xs font-bold uppercase tracking-[2px] text-cyan-300">Why this matters for you</div><p class="mt-1 text-white/90">${ROLE_COPY[role]}</p>`;
             roleExplanation.classList.remove('hidden');
             if (persist) {
                 try { localStorage.setItem(ROLE_KEY, role); } catch (error) { console.warn('Unable to save role selection.', error); }

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard • Zero Latency</title>
+  <title>Operations Console • Zero Latency • NHID Simulator</title>
+  <meta name="description" content="Compliance operations console for the NHID-Clinical Simulator — training readiness, control coverage, penalty exposure, and audit activity." />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="assets/hyper-glass.css" />
@@ -20,172 +21,222 @@
 
     <!-- NAV -->
     <nav class="mb-10 flex flex-wrap items-center justify-between gap-4 text-sm">
-      <div class="flex flex-wrap items-center gap-4">
-        <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300">
-          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to simulator
+      <div class="flex flex-wrap items-center gap-5">
+        <a href="index.html" class="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-cyan-300">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Simulator home
         </a>
-        <a href="nhid-knowledge-base.html" class="text-white/70 hover:text-teal-300">Knowledge base</a>
-        <a href="simulator-record.html" class="text-teal-300 hover:text-teal-200">Completion Record</a>
+        <a href="nhid-knowledge-base.html" class="text-white/70 transition-colors hover:text-cyan-300">Knowledge base</a>
+        <a href="simulator-record.html" class="text-white/70 transition-colors hover:text-cyan-300">Completion record</a>
       </div>
-      <button id="reset" type="button" class="hyper-glass px-4 py-2 text-sm text-white/80 hover:text-teal-200">
-        Reset progress
+      <button id="reset" type="button" class="hg-btn-ghost px-4 py-2 text-xs">
+        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset progress
       </button>
     </nav>
 
-    <!-- BRAND STRIP -->
-    <section class="hyper-glass mb-8 flex items-center gap-4 px-6 py-5">
-      <span class="metallic grid h-11 w-11 place-items-center font-display text-lg text-teal-200">ZL</span>
-      <span class="font-display text-xl tracking-wide text-white/90">Zero Latency</span>
-    </section>
-
-    <!-- HERO + MODULE 0 -->
-    <section class="mb-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-      <div class="flex flex-col justify-center">
-        <h1 class="font-display text-5xl leading-[1.05] tracking-[-2px] sm:text-6xl">
-          When AI sounds human, identity becomes a security control.
-        </h1>
-        <p class="mt-6 max-w-xl text-lg text-white/70">
-          Cool, human-sounding AI erodes the instinct to verify. This simulator rebuilds that
-          instinct — teaching teams to treat non-human identity as an enforceable control.
-        </p>
-        <p class="mt-4 max-w-xl text-sm text-white/60">
-          The target is <a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-teal-300 hover:text-teal-200">zero impersonation latency (PDX-01)</a> — identity disclosed in the first 5 seconds, before any PHI is exchanged.
-        </p>
-        <p class="mt-4 max-w-xl text-sm text-white/45">
-          Scores are saved in this browser with localStorage. Complete module pages to update this dashboard.
-          They reflect simulator performance, not a compliance certification.
+    <!-- CONSOLE HEADER -->
+    <header class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div>
+        <div class="hg-eyebrow">Compliance Operations Console</div>
+        <h1 class="font-display mt-2 text-4xl tracking-tight sm:text-5xl">Training readiness</h1>
+        <p class="mt-3 max-w-2xl text-white/60">
+          Live view of this trainee's NHID-Clinical simulator performance — module status,
+          control-gate coverage, and accumulated penalty exposure.
         </p>
       </div>
+      <div class="flex items-center gap-2 text-xs text-white/50">
+        <span class="hg-dot live" data-tone="cyan" aria-hidden="true"></span>
+        <span id="session-status">Local session · no account required</span>
+      </div>
+    </header>
 
-      <article class="hyper-glass flex flex-col gap-5 p-7">
-        <div class="text-xs font-bold uppercase tracking-[3px] text-teal-300">Module 0</div>
-        <h2 class="font-display text-3xl tracking-[-1px]">Interactive Simulator Module</h2>
-        <p class="text-white/70">
-          Experience the governance failure NHID-Clinical prevents — then block the late
-          disclosure before it lands.
+    <!-- KPI ROW -->
+    <section id="kpis" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Key readiness metrics"></section>
+
+    <!-- MAIN GRID -->
+    <section class="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+
+      <!-- MODULE STATUS -->
+      <article class="hyper-glass hg-still hg-reveal p-7" aria-labelledby="modules-title">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="hg-eyebrow">Module status</div>
+            <h2 id="modules-title" class="font-display mt-1 text-2xl tracking-tight">Training pipeline</h2>
+          </div>
+          <a id="continue-cta" href="zero-latency-module1-v2.html" class="emissive hidden px-4 py-2 text-sm sm:inline-flex sm:items-center sm:gap-2">
+            Continue <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div id="modules" class="mt-5 space-y-3"></div>
+        <p class="hg-note mt-5">
+          Scores reflect simulator performance in this browser only — a training log, not a compliance certification.
         </p>
-        <div class="mt-2">
-          <a href="zero-latency-module0.html" class="emissive inline-flex items-center gap-2 px-6 py-3 text-sm">The Identity Problem <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-        </div>
-        <div class="mt-auto grid grid-cols-3 gap-3 pt-4 text-center">
-          <div class="metallic px-2 py-3">
-            <div class="font-display text-lg text-teal-200">02</div>
-            <div class="text-[10px] uppercase tracking-wider text-white/50">Scenarios</div>
-          </div>
-          <div class="metallic px-2 py-3">
-            <div class="font-display text-lg text-teal-200">5s</div>
-            <div class="text-[10px] uppercase tracking-wider text-white/50">Decide</div>
-          </div>
-          <div class="metallic px-2 py-3">
-            <div class="font-display text-lg text-teal-200">05</div>
-            <div class="text-[10px] uppercase tracking-wider text-white/50">Controls</div>
-          </div>
-        </div>
       </article>
+
+      <div class="space-y-6">
+        <!-- CONTROL COVERAGE -->
+        <article class="hyper-glass hg-still hg-reveal p-7" aria-labelledby="coverage-title">
+          <div class="hg-eyebrow">Control coverage</div>
+          <h2 id="coverage-title" class="font-display mt-1 text-2xl tracking-tight">NHID-Clinical gates exercised</h2>
+          <p class="mt-2 text-sm text-white/55">The five v1.3 control gates, marked as you train against each one.</p>
+          <div id="gates" class="mt-4 space-y-2"></div>
+          <a href="nhid-knowledge-base.html" class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-cyan-300 transition-colors hover:text-cyan-200">
+            Full control catalog <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- ACTIVITY FEED -->
+        <article class="hyper-glass hg-still hg-reveal p-7" aria-labelledby="activity-title">
+          <div class="hg-eyebrow">Audit trail</div>
+          <h2 id="activity-title" class="font-display mt-1 text-2xl tracking-tight">Recent activity</h2>
+          <ol id="activity" class="mt-4 space-y-3"></ol>
+        </article>
+      </div>
     </section>
-
-    <!-- DASHBOARD + PERSONALIZE -->
-    <section class="grid gap-8 lg:grid-cols-2">
-      <article class="hyper-glass p-7">
-        <h2 class="font-display text-2xl tracking-[-0.5px]">Dashboard</h2>
-        <div id="summary" class="mt-5 grid grid-cols-3 gap-4"></div>
-      </article>
-
-      <article class="hyper-glass p-7">
-        <h2 class="font-display text-2xl tracking-[-0.5px]">Personalize Your Path</h2>
-        <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <a href="index.html" class="metallic flex flex-col items-center gap-3 px-3 py-5 text-center hover:brightness-110">
-            <i class="fa-solid fa-building-columns text-2xl text-teal-200" aria-hidden="true"></i>
-            <span class="text-xs font-medium text-white/85">Healthcare payer operations</span>
-          </a>
-          <a href="index.html" class="metallic flex flex-col items-center gap-3 px-3 py-5 text-center hover:brightness-110">
-            <i class="fa-solid fa-hospital text-2xl text-teal-200" aria-hidden="true"></i>
-            <span class="text-xs font-medium text-white/85">Provider organization</span>
-          </a>
-          <a href="index.html" class="metallic flex flex-col items-center gap-3 px-3 py-5 text-center hover:brightness-110">
-            <i class="fa-solid fa-wand-magic-sparkles text-2xl text-teal-200" aria-hidden="true"></i>
-            <span class="text-xs font-medium text-white/85">Vendor</span>
-          </a>
-          <a href="index.html" class="metallic flex flex-col items-center gap-3 px-3 py-5 text-center hover:brightness-110">
-            <i class="fa-solid fa-shield-halved text-2xl text-teal-200" aria-hidden="true"></i>
-            <span class="text-xs font-medium text-white/85">Security</span>
-          </a>
-        </div>
-      </article>
-    </section>
-
-    <!-- MODULE LIST -->
-    <section id="modules" class="mt-8 grid gap-4" aria-label="Module progress"></section>
 
     <p class="mt-10 max-w-3xl text-xs text-white/35">
-      This simulator demonstrates the NHID-Clinical framework. Scores are saved in this browser with
-      localStorage and reflect simulator performance, not a compliance certification.
+      This console demonstrates the NHID-Clinical framework. Progress is stored locally with
+      localStorage and reflects simulator performance on this device only.
     </p>
   </main>
 
   <script>
-    const STORAGE_KEY = 'zeroLatencyProgress';
+    const PROGRESS_KEY = 'zeroLatencyProgress';
+    const GAME_KEY = 'zeroLatencyGameState';
+
     const MODULES = [
-      { id: 'module1', title: 'The First 5 Seconds', href: 'zero-latency-module1-v2.html' },
-      { id: 'module2', title: 'Passport Inspection', href: 'zero-latency-module2.html' },
-      { id: 'module3', title: 'Compliance Gaps', href: 'zero-latency-module3.html' },
-      { id: 'module4', title: 'Safe Agent Deployment', href: 'zero-latency-module4.html' }
+      { id: 'module0', title: 'The Identity Problem', sub: 'Module 0 · Observation', href: 'zero-latency-module0.html', graded: false },
+      { id: 'module1', title: 'The First 5 Seconds', sub: 'Module 1 · Disclosure window', href: 'zero-latency-module1-v2.html', graded: true },
+      { id: 'module2', title: 'Passport Inspection', sub: 'Module 2 · Credential validation', href: 'zero-latency-module2.html', graded: true },
+      { id: 'module3', title: 'Compliance Gaps', sub: 'Module 3 · Call-log audit', href: 'zero-latency-module3.html', graded: true },
+      { id: 'module4', title: 'Safe Agent Deployment', sub: 'Module 4 · Final control point', href: 'zero-latency-module4.html', graded: true }
     ];
 
-    function readProgress() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; }
-      catch { return {}; }
+    // Which control gates each module exercises (see knowledge base catalog).
+    const GATES = [
+      { id: 'IDG-01', name: 'Identity Disclosure Gate', modules: ['module1', 'module4'] },
+      { id: 'PDX-01', name: 'Pre-Data Exchange Gate', modules: ['module1', 'module2', 'module4'] },
+      { id: 'DBC-01', name: 'Deceptive Behavior Check', modules: ['module1', 'module4'] },
+      { id: 'EIT-01', name: 'Escalation Implementation Test', modules: ['module3'] },
+      { id: 'ATR-01', name: 'Audit Trail Requirements', modules: ['module3'] }
+    ];
+
+    function readJSON(key, fallback) {
+      try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; }
+      catch { return fallback; }
     }
 
-    function stat(label, value) {
-      return `
-        <div class="metallic px-4 py-5">
-          <div class="text-[10px] uppercase tracking-[2px] text-white/55">${label}</div>
-          <div class="mt-2 font-display text-3xl text-white">${value}</div>
-        </div>`;
+    function stat(tone, label, value, meta) {
+      return `<div class="hg-stat" data-tone="${tone}">
+        <div class="label">${label}</div>
+        <div class="value font-display">${value}</div>
+        <div class="meta">${meta}</div>
+      </div>`;
     }
 
     function render() {
-      const progress = readProgress();
-      const completed = MODULES.filter((m) => progress[m.id]?.completed);
-      const scored = MODULES.filter((m) => Number.isFinite(progress[m.id]?.score));
-      const average = scored.length
-        ? `${Math.round(scored.reduce((s, m) => s + progress[m.id].score, 0) / scored.length)}%`
-        : '—';
-      const next = MODULES.find((m) => !progress[m.id]?.completed) || MODULES[0];
-      const nextLabel = completed.length === MODULES.length ? 'Review' : next.title.split(' ').slice(-2).join(' ');
+      const progress = readJSON(PROGRESS_KEY, {});
+      const game = readJSON(GAME_KEY, { trust: null, penalty: 0 });
 
-      document.getElementById('summary').innerHTML =
-        stat('Completed', `${completed.length}/${MODULES.length}`) +
-        stat('Average Score', average) +
-        `<a href="${next.href}" class="metallic flex flex-col justify-between px-4 py-5 hover:brightness-110">
-           <div class="text-[10px] uppercase tracking-[2px] text-white/55">Continue</div>
-           <div class="mt-2 flex items-center justify-between">
-             <span class="font-display text-xl text-white">${nextLabel}</span>
-             <i class="fa-solid fa-arrow-right text-teal-200" aria-hidden="true"></i>
-           </div>
-         </a>`;
+      const graded = MODULES.filter((m) => m.graded);
+      const gradedDone = graded.filter((m) => progress[m.id]?.completed);
+      const scored = graded.filter((m) => Number.isFinite(progress[m.id]?.score));
+      const average = scored.length
+        ? Math.round(scored.reduce((s, m) => s + progress[m.id].score, 0) / scored.length)
+        : null;
+      const readiness = Math.round((gradedDone.length / graded.length) * 100);
+      const penalty = Number.isFinite(game.penalty) ? game.penalty : 0;
+      const trust = Number.isFinite(game.trust) ? game.trust : null;
+
+      // --- KPI row ---
+      document.getElementById('kpis').innerHTML =
+        stat('cyan', 'Readiness', `${readiness}%`, `${gradedDone.length} of ${graded.length} graded modules complete`) +
+        stat(average === null ? 'cyan' : average >= 90 ? 'green' : 'cyan', 'Average score', average === null ? '—' : `${average}%`, average === null ? 'No graded attempts yet' : average >= 90 ? 'Meets the 90% target' : 'Target: 90% or above') +
+        stat(trust === null ? 'cyan' : trust >= 90 ? 'green' : trust >= 70 ? 'cyan' : 'amber', 'Trust rating', trust === null ? '—' : `${trust}%`, 'Weighted across attempts') +
+        stat(penalty > 0 ? 'amber' : 'cyan', 'Penalty exposure', `$${penalty.toLocaleString()}`, penalty > 0 ? 'Accumulated simulated HIPAA exposure' : 'No simulated violations recorded');
+
+      // --- Module pipeline ---
+      const next = graded.find((m) => !progress[m.id]?.completed);
+      const cta = document.getElementById('continue-cta');
+      if (next) {
+        cta.href = next.href;
+        cta.classList.remove('hidden');
+      } else {
+        cta.href = 'simulator-record.html';
+        cta.innerHTML = 'View record <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+        cta.classList.remove('hidden');
+      }
 
       document.getElementById('modules').innerHTML = MODULES.map((m) => {
         const item = progress[m.id];
-        const status = item?.completed
-          ? `Complete · ${item.score}% · ${new Date(item.completedAt).toLocaleDateString()}`
-          : 'Not started';
+        const done = !!item?.completed;
+        const isNext = next && m.id === next.id;
+        const score = m.graded && Number.isFinite(item?.score) ? item.score : null;
+        const statusBadge = done
+          ? `<span class="hg-badge" data-tone="green">Complete</span>`
+          : isNext
+            ? `<span class="hg-badge" data-tone="cyan">Up next</span>`
+            : `<span class="hg-badge">Not started</span>`;
+        const scoreCell = score !== null
+          ? `<div class="flex items-center gap-3">
+               <div class="hg-bar w-24" data-tone="${score >= 90 ? 'green' : score >= 70 ? '' : 'amber'}"><i style="width:${score}%"></i></div>
+               <span class="hg-num text-sm text-white/80">${score}%</span>
+             </div>`
+          : m.graded
+            ? '<span class="text-sm text-white/30">—</span>'
+            : '<span class="text-xs uppercase tracking-wider text-white/30">Ungraded</span>';
         return `
-          <article class="hyper-glass flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <div class="font-display text-xl">${m.title}</div>
-              <div class="mt-1 text-sm text-white/60">${status}</div>
+          <div class="flex flex-col gap-3 rounded-xl border border-white/[.07] bg-slate-900/40 px-5 py-4 transition-colors hover:border-cyan-500/30 sm:flex-row sm:items-center sm:justify-between">
+            <div class="min-w-0">
+              <div class="text-[11px] font-semibold uppercase tracking-[.14em] text-white/40">${m.sub}</div>
+              <div class="mt-0.5 flex items-center gap-3">
+                <span class="font-display text-lg">${m.title}</span>
+                ${statusBadge}
+              </div>
             </div>
-            <a class="emissive inline-flex items-center gap-2 px-5 py-2.5 text-sm" href="${m.href}">
-              ${item?.completed ? 'Review' : 'Start'} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-            </a>
-          </article>`;
+            <div class="flex items-center gap-5">
+              ${scoreCell}
+              <a class="hg-btn-ghost px-4 py-2 text-xs" href="${m.href}">${done ? 'Review' : 'Start'}</a>
+            </div>
+          </div>`;
       }).join('');
+
+      // --- Control coverage ---
+      document.getElementById('gates').innerHTML = GATES.map((gate) => {
+        const exercised = gate.modules.some((id) => progress[id]?.completed);
+        return `<div class="hg-gate" data-state="${exercised ? 'pass' : 'idle'}">
+          <span class="hg-dot" aria-hidden="true"></span>
+          <code>${gate.id}</code>
+          <span class="flex-1">${gate.name}</span>
+          <span class="text-[11px] uppercase tracking-wider ${exercised ? 'text-emerald-300/90' : 'text-white/30'}">${exercised ? 'Exercised' : 'Pending'}</span>
+        </div>`;
+      }).join('');
+
+      // --- Activity feed ---
+      const events = MODULES
+        .filter((m) => progress[m.id]?.completedAt)
+        .map((m) => ({ m, at: new Date(progress[m.id].completedAt), score: progress[m.id].score }))
+        .sort((a, b) => b.at - a.at)
+        .slice(0, 6);
+      document.getElementById('activity').innerHTML = events.length
+        ? events.map(({ m, at, score }) => `
+            <li class="flex items-start gap-3 text-sm">
+              <span class="hg-dot mt-1.5" data-tone="${Number.isFinite(score) && score < 70 ? 'amber' : 'green'}" aria-hidden="true"></span>
+              <div>
+                <div class="text-white/85">${m.title} completed${Number.isFinite(score) ? ` · <span class="hg-num">${score}%</span>` : ''}</div>
+                <div class="mt-0.5 text-xs text-white/40">${at.toLocaleDateString()} · ${at.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+              </div>
+            </li>`).join('')
+        : '<li class="text-sm text-white/40">No activity yet. Completed modules appear here with their timestamps.</li>';
+
+      const lastEvent = events[0];
+      document.getElementById('session-status').textContent = lastEvent
+        ? `Local session · last activity ${lastEvent.at.toLocaleDateString()}`
+        : 'Local session · no account required';
     }
 
     document.getElementById('reset').addEventListener('click', () => {
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(PROGRESS_KEY);
+      localStorage.removeItem(GAME_KEY);
       render();
     });
 
