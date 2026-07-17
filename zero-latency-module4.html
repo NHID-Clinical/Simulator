@@ -1,12 +1,290 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Safe Agent Deployment • Zero Latency</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><link rel="stylesheet" href="assets/hyper-glass.css"><script src="assets/hyper-glass.js" defer></script><style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');body{font-family:'Inter',system-ui,sans-serif}.font-display{font-family:'Space Grotesk','Inter',sans-serif}button:focus-visible,a:focus-visible{outline:3px solid rgb(20 184 166);outline-offset:4px}.pulse{animation:pulse 1s infinite}@keyframes pulse{50%{opacity:.55}}</style>  <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
-</head><body class="hg-body text-white" onload="shell()"><main class="relative z-10 mx-auto max-w-5xl px-6 py-10"><nav class="mb-8 flex items-center justify-between text-sm"><a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left"></i> Simulator home</a><a href="zero-latency-dashboard.html" class="text-white/70 hover:text-teal-300">Dashboard</a></nav><div class="mb-6 grid gap-3 sm:grid-cols-2"><div class="rounded-3xl border border-teal-500/30 bg-teal-500/10 p-4"><div class="text-xs uppercase tracking-[2px] text-teal-300">Trust & Compliance</div><div class="font-display text-3xl" data-trust>100%</div></div><div class="rounded-3xl border border-rose-500/30 bg-rose-500/10 p-4"><div class="text-xs uppercase tracking-[2px] text-rose-300">Potential HIPAA Penalty</div><div class="font-display text-3xl" data-penalty>$0</div></div></div><section class="hyper-glass p-8"><div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Module 4 · Provider-Side Deployment</div><h1 class="font-display mt-3 text-5xl">Build the Safe Voice Agent</h1><p class="mt-3 text-white/70">Reorder the prompt nodes so disclosure fires before any data request or human-like artifact.</p><p class="mt-3 text-sm text-white/50">A correct sequence delivers <a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-teal-300 hover:text-teal-200">zero impersonation latency (PDX-01)</a> — disclosure in the first 5 seconds, before any PHI is exchanged.</p><ol id="nodes" class="mt-8 space-y-3"></ol><button id="check" class="emissive mt-6 px-5 py-3">Validate sequence</button><div id="feedback" class="mt-6 hidden rounded-3xl border p-5"></div></section></main><script>
-const GAME_KEY='zeroLatencyGameState', PROGRESS_KEY='zeroLatencyProgress';
-function state(){try{return JSON.parse(localStorage.getItem(GAME_KEY)||'{"trust":100,"penalty":0,"modules":{},"streak":0}')||{trust:100,penalty:0,modules:{},streak:0}}catch{return {trust:100,penalty:0,modules:{},streak:0}}}
-function save(s){localStorage.setItem(GAME_KEY,JSON.stringify(s));const p={};Object.entries(s.modules||{}).forEach(([id,m])=>p[id]={completed:true,score:m.score,completedAt:m.completedAt});localStorage.setItem(PROGRESS_KEY,JSON.stringify(p));}
-function award(id,score,penalty=0){const s=state();s.trust=Math.max(0,Math.min(100,Math.round((s.trust*.7)+(score*.3)-penalty/5000)));s.penalty+=(penalty||0);s.streak=score>=90?s.streak+1:0;s.modules[id]={score,penalty,completedAt:new Date().toISOString()};save(s);return s;}
-function meter(){const s=state();document.querySelectorAll('[data-trust]').forEach(e=>e.textContent=s.trust+'%');document.querySelectorAll('[data-penalty]').forEach(e=>e.textContent='$'+s.penalty.toLocaleString());}
-function shell(){meter();}
-</script><script>
-const moduleNodes=['Ask for prior-auth status','Declare: I am an automated AI agent for Dr. Smith','Play typing sound','Play synthetic breathing (*exhale*)','Offer NHID passport'];
-const list=document.getElementById('nodes');function draw(hl){list.innerHTML=moduleNodes.map((nodeLabel,i)=>`<li class="metallic p-4${i===hl?' hg-moved':''}"><button class="mr-2 text-teal-300" onclick="move(${i},-1)" aria-label="Move up">↑</button><button class="mr-3 text-teal-300" onclick="move(${i},1)" aria-label="Move down">↓</button><button class="mr-3 text-rose-300" onclick="removeNode(${i})">Remove</button>${nodeLabel}</li>`).join('')}function move(i,d){const j=i+d;if(j<0||j>=moduleNodes.length)return;[moduleNodes[i],moduleNodes[j]]=[moduleNodes[j],moduleNodes[i]];draw(j)}function removeNode(i){moduleNodes.splice(i,1);draw()}draw();check.onclick=()=>{const ok=moduleNodes[0].startsWith('Declare')&&moduleNodes[1].startsWith('Offer')&&!moduleNodes.includes('Play typing sound')&&!moduleNodes.includes('Play synthetic breathing (*exhale*)');check.disabled=true;feedback.className='mt-6 rounded-3xl border border-slate-600/40 bg-slate-900/40 p-5';feedback.classList.remove('hidden');const verdict=()=>{check.disabled=false;award('module4',ok?100:65,ok?0:25000);meter();feedback.className='mt-6 rounded-3xl border p-5 '+(ok?'border-emerald-500 bg-emerald-500/10':'border-amber-500 bg-amber-500/10');const v=document.createElement('div');v.className='mt-3';v.innerHTML=(ok?'<b>Deployment approved.</b> But why? Logic-gated disclosure (IDG-01) comes first, the passport is offered before any data request (PDX-01), and both DBC-01 deceptive artifacts are removed.':'<b>Needs hardening.</b> But why? Disclosure must be the first logic block, and both deceptive artifacts (typing sound and synthetic breathing) must be removed — DBC-01 flags them as simulating a human, which CA AB 489 prohibits.')+'<br><a class="mt-3 inline-flex text-teal-300" href="zero-latency-dashboard.html">View dashboard →</a>';feedback.appendChild(v);if(!ok)feedback.classList.add('hg-shake');setTimeout(()=>feedback.classList.remove('hg-shake'),450)};if(window.HG&&HG.runChecks){HG.runChecks(feedback,['IDG-01 · identity disclosure gate','PDX-01 · pre-data exchange gate','DBC-01 · deceptive artifact scan'],verdict)}else{feedback.innerHTML='';verdict()}};
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safe Agent Deployment • Module 4 • Zero Latency</title>
+  <meta name="description" content="Configure an outbound healthcare voice agent so identity disclosure is logic-gated before any data request — the final control point before production.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/hyper-glass.css">
+  <script src="assets/hyper-glass.js" defer></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    .node-drag { opacity: 0.35; }
+    .node-over { border-color: rgba(34,211,238,0.6) !important; }
+  </style>
+  <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
+</head>
+<body class="hg-body text-white" onload="shell()">
+  <main class="relative z-10 mx-auto max-w-6xl px-6 py-10">
+    <nav class="mb-8 flex items-center justify-between text-sm">
+      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-cyan-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Simulator home</a>
+      <a href="zero-latency-dashboard.html" class="text-white/70 transition-colors hover:text-cyan-300">Operations console</a>
+    </nav>
+
+    <!-- STAKES ROW -->
+    <div class="mb-8 grid gap-3 sm:grid-cols-3" aria-label="Deployment stakes">
+      <div class="hg-stat" data-tone="cyan">
+        <div class="label">Trust &amp; compliance</div>
+        <div class="value font-display" data-trust>100%</div>
+        <div class="meta">Carried across modules</div>
+      </div>
+      <div class="hg-stat" data-tone="amber">
+        <div class="label">Accumulated exposure</div>
+        <div class="value font-display" data-penalty>$0</div>
+        <div class="meta">Simulated HIPAA penalties so far</div>
+      </div>
+      <div class="hg-stat" data-tone="amber">
+        <div class="label">At stake in this deployment</div>
+        <div class="value font-display">$1.9M</div>
+        <div class="meta">Max annual HIPAA civil penalty, one violation category</div>
+      </div>
+    </div>
+
+    <!-- DEPLOYMENT CONSOLE -->
+    <section class="hyper-glass hg-still p-8" aria-labelledby="m4-title">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="hg-badge" data-tone="amber">Final control point</span>
+        <span class="hg-eyebrow">Module 4 · Provider-side deployment</span>
+      </div>
+      <h1 id="m4-title" class="font-display mt-4 text-4xl tracking-tight sm:text-5xl">Build the safe voice agent</h1>
+      <p class="mt-4 max-w-3xl text-white/70">
+        This agent goes to production against real payer desks when you approve it. Order the prompt
+        logic so disclosure fires before any data request or human-like artifact — a wrong sequence
+        ships an impersonating agent under your organization's name.
+      </p>
+      <p class="mt-3 max-w-3xl text-sm text-white/50">
+        A correct sequence delivers <a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-cyan-300 transition-colors hover:text-cyan-200">zero impersonation latency (PDX-01)</a>
+        — disclosure in the first 5 seconds, before any <span class="hg-term" title="Protected Health Information — patient data covered by HIPAA">PHI</span> is exchanged.
+      </p>
+
+      <div class="mt-8 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <!-- SEQUENCE BUILDER -->
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="font-display text-xl tracking-tight">Prompt logic sequence</h2>
+            <span class="text-xs text-white/40">Drag to reorder · remove deceptive artifacts</span>
+          </div>
+          <ol id="nodes" class="mt-4 space-y-3"></ol>
+          <button id="check" class="emissive mt-6 inline-flex items-center gap-2 px-6 py-3">
+            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Validate &amp; deploy
+          </button>
+          <div id="feedback" class="mt-6 hidden rounded-xl p-5" aria-live="polite"></div>
+        </div>
+
+        <!-- LIVE GATE PANEL -->
+        <aside class="self-start rounded-2xl border border-white/[.07] bg-slate-950/50 p-6">
+          <div class="flex items-center gap-2">
+            <span class="hg-dot live" data-tone="cyan" aria-hidden="true"></span>
+            <h2 class="font-display text-xl tracking-tight">Pre-deployment gate check</h2>
+          </div>
+          <p class="mt-2 text-sm text-white/50">Gates evaluate live as you edit the sequence. All three must clear before production.</p>
+          <div id="gates" class="mt-4 space-y-2"></div>
+          <div class="mt-5">
+            <div class="flex items-center justify-between text-xs text-white/50">
+              <span class="font-semibold uppercase tracking-wider">Deployment readiness</span>
+              <span id="readiness-label" class="hg-num">0/3 gates</span>
+            </div>
+            <div class="hg-bar mt-2"><i id="readiness-bar" style="width:0%"></i></div>
+          </div>
+          <div class="hg-incident mt-6 p-4 text-sm text-amber-100/90">
+            <div class="text-[11px] font-bold uppercase tracking-[.14em] text-amber-300">Why this module matters most</div>
+            <p class="mt-1.5 max-w-none text-[13px] leading-relaxed">
+              Every prior module trained you to catch unsafe agents. This one asks you to ship one.
+              An approved-but-wrong configuration doesn't fail once — it fails on every call it makes.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const GAME_KEY = 'zeroLatencyGameState', PROGRESS_KEY = 'zeroLatencyProgress';
+    function state() {
+      try { return JSON.parse(localStorage.getItem(GAME_KEY) || '{"trust":100,"penalty":0,"modules":{},"streak":0}') || { trust: 100, penalty: 0, modules: {}, streak: 0 }; }
+      catch { return { trust: 100, penalty: 0, modules: {}, streak: 0 }; }
+    }
+    function save(s) {
+      localStorage.setItem(GAME_KEY, JSON.stringify(s));
+      const p = {};
+      Object.entries(s.modules || {}).forEach(([id, m]) => p[id] = { completed: true, score: m.score, completedAt: m.completedAt });
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+    }
+    function award(id, score, penalty = 0) {
+      const s = state();
+      s.trust = Math.max(0, Math.min(100, Math.round((s.trust * .7) + (score * .3) - penalty / 5000)));
+      s.penalty += (penalty || 0);
+      s.streak = score >= 90 ? s.streak + 1 : 0;
+      s.modules[id] = { score, penalty, completedAt: new Date().toISOString() };
+      save(s);
+      return s;
+    }
+    function meter() {
+      const s = state();
+      document.querySelectorAll('[data-trust]').forEach(e => e.textContent = s.trust + '%');
+      document.querySelectorAll('[data-penalty]').forEach(e => e.textContent = '$' + s.penalty.toLocaleString());
+    }
+    function shell() { meter(); }
+  </script>
+
+  <script>
+    // Prompt nodes. type: disclosure | credential | data | artifact.
+    // Only deceptive artifacts are removable — the rest must be ordered.
+    const nodes = [
+      { label: 'Ask for prior-auth status', type: 'data' },
+      { label: 'Declare: “I am an automated AI agent for Dr. Smith”', type: 'disclosure' },
+      { label: 'Play typing sound', type: 'artifact' },
+      { label: 'Play synthetic breathing (*exhale*)', type: 'artifact' },
+      { label: 'Offer NHID passport', type: 'credential' }
+    ];
+
+    const KIND_BADGE = {
+      disclosure: '<span class="hg-badge" data-tone="cyan">Identity disclosure</span>',
+      credential: '<span class="hg-badge" data-tone="cyan">Credential exchange</span>',
+      data: '<span class="hg-badge">Data request</span>',
+      artifact: '<span class="hg-badge" data-tone="amber">Human-like artifact</span>'
+    };
+
+    const list = document.getElementById('nodes');
+    const checkBtn = document.getElementById('check');
+    const feedback = document.getElementById('feedback');
+
+    function gateStates() {
+      const discIdx = nodes.findIndex(n => n.type === 'disclosure');
+      const credIdx = nodes.findIndex(n => n.type === 'credential');
+      const dataIdxs = nodes.map((n, i) => n.type === 'data' ? i : -1).filter(i => i !== -1);
+      const hasArtifacts = nodes.some(n => n.type === 'artifact');
+      return [
+        { id: 'IDG-01', name: 'Disclosure fires first', pass: discIdx === 0 },
+        { id: 'PDX-01', name: 'Passport precedes any data request', pass: discIdx !== -1 && credIdx !== -1 && discIdx < credIdx && dataIdxs.every(i => i > credIdx) },
+        { id: 'DBC-01', name: 'No deceptive artifacts in the pipeline', pass: !hasArtifacts }
+      ];
+    }
+
+    function drawGates() {
+      const gates = gateStates();
+      document.getElementById('gates').innerHTML = gates.map(g => `
+        <div class="hg-gate" data-state="${g.pass ? 'pass' : 'risk'}">
+          <span class="hg-dot" aria-hidden="true"></span>
+          <code>${g.id}</code>
+          <span class="flex-1">${g.name}</span>
+          <span class="text-[11px] uppercase tracking-wider ${g.pass ? 'text-emerald-300/90' : 'text-amber-300/90'}">${g.pass ? 'Clear' : 'At risk'}</span>
+        </div>`).join('');
+      const cleared = gates.filter(g => g.pass).length;
+      document.getElementById('readiness-label').textContent = `${cleared}/3 gates`;
+      const bar = document.getElementById('readiness-bar');
+      bar.style.width = `${Math.round((cleared / 3) * 100)}%`;
+      bar.parentElement.dataset.tone = cleared === 3 ? 'green' : cleared >= 2 ? '' : 'amber';
+    }
+
+    let dragIdx = null;
+
+    function draw(highlight) {
+      list.innerHTML = nodes.map((node, i) => `
+        <li class="metallic flex items-center gap-3 p-4${i === highlight ? ' hg-moved' : ''}" draggable="true" data-idx="${i}">
+          <span class="hg-num w-6 flex-none text-center font-display text-sm text-white/35">${String(i + 1).padStart(2, '0')}</span>
+          <i class="fa-solid fa-grip-vertical flex-none cursor-grab text-white/25" aria-hidden="true"></i>
+          <div class="min-w-0 flex-1">
+            <div class="text-[15px] text-white/90">${node.label}</div>
+            <div class="mt-1.5">${KIND_BADGE[node.type]}</div>
+          </div>
+          <div class="flex flex-none items-center gap-1">
+            <button class="hg-btn-ghost h-8 w-8 justify-center !p-0 text-xs" data-move="-1" data-idx="${i}" aria-label="Move step ${i + 1} up"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></button>
+            <button class="hg-btn-ghost h-8 w-8 justify-center !p-0 text-xs" data-move="1" data-idx="${i}" aria-label="Move step ${i + 1} down"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button>
+            ${node.type === 'artifact' ? `<button class="hg-btn-danger h-8 px-3 text-xs" data-remove="${i}" aria-label="Remove ${node.label}">Remove</button>` : ''}
+          </div>
+        </li>`).join('');
+      drawGates();
+    }
+
+    list.addEventListener('click', (e) => {
+      const moveBtn = e.target.closest('[data-move]');
+      if (moveBtn) {
+        const i = Number(moveBtn.dataset.idx), d = Number(moveBtn.dataset.move), j = i + d;
+        if (j < 0 || j >= nodes.length) return;
+        [nodes[i], nodes[j]] = [nodes[j], nodes[i]];
+        draw(j);
+        return;
+      }
+      const removeBtn = e.target.closest('[data-remove]');
+      if (removeBtn) {
+        nodes.splice(Number(removeBtn.dataset.remove), 1);
+        draw();
+      }
+    });
+
+    // Drag-and-drop reorder with clear visual feedback.
+    list.addEventListener('dragstart', (e) => {
+      const li = e.target.closest('li[data-idx]');
+      if (!li) return;
+      dragIdx = Number(li.dataset.idx);
+      li.classList.add('node-drag');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    list.addEventListener('dragend', () => {
+      dragIdx = null;
+      list.querySelectorAll('li').forEach(li => li.classList.remove('node-drag', 'node-over'));
+    });
+    list.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const li = e.target.closest('li[data-idx]');
+      list.querySelectorAll('li').forEach(el => el.classList.remove('node-over'));
+      if (li && Number(li.dataset.idx) !== dragIdx) li.classList.add('node-over');
+    });
+    list.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const li = e.target.closest('li[data-idx]');
+      if (!li || dragIdx === null) return;
+      const to = Number(li.dataset.idx);
+      if (to === dragIdx) return;
+      const [moved] = nodes.splice(dragIdx, 1);
+      nodes.splice(to, 0, moved);
+      dragIdx = null;
+      draw(to);
+    });
+
+    draw();
+
+    checkBtn.onclick = () => {
+      const gates = gateStates();
+      const ok = gates.every(g => g.pass);
+      checkBtn.disabled = true;
+      feedback.className = 'mt-6 rounded-xl border border-white/[.07] bg-slate-950/60 p-5';
+      feedback.classList.remove('hidden');
+
+      const verdict = () => {
+        checkBtn.disabled = false;
+        award('module4', ok ? 100 : 65, ok ? 0 : 25000);
+        meter();
+        const failed = gates.filter(g => !g.pass);
+        feedback.className = 'mt-6 p-5 ' + (ok ? 'hg-verified' : 'hg-incident');
+        const v = document.createElement('div');
+        v.className = 'mt-3';
+        v.innerHTML = ok
+          ? `<div class="text-[11px] font-bold uppercase tracking-[.14em] text-emerald-300">Deployment approved · zero impersonation latency</div>
+             <p class="mt-2 max-w-none text-white/85">But why? Logic-gated disclosure (IDG-01) comes first, the passport is offered before any data request (PDX-01), and both DBC-01 deceptive artifacts are removed. Every call this agent makes will disclose within the first 5 seconds — before any PHI moves.</p>
+             <a class="mt-3 inline-flex items-center gap-2 font-semibold text-cyan-300 transition-colors hover:text-cyan-200" href="zero-latency-dashboard.html">View operations console <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>`
+          : `<div class="text-[11px] font-bold uppercase tracking-[.14em] text-amber-300">Deployment blocked · $25,000 penalty recorded</div>
+             <p class="mt-2 max-w-none text-white/85">But why? ${failed.map(g => `<code class="text-amber-200">${g.id}</code> failed — ${g.name.toLowerCase()}`).join('; ')}. Disclosure must be the first logic block, the passport must precede any data request, and both deceptive artifacts must be removed — CA AB 489 prohibits simulating a human.</p>
+             <p class="mt-2 max-w-none text-sm text-amber-100/70">Fix the sequence and validate again. In production this configuration would have failed on every outbound call.</p>`;
+        feedback.appendChild(v);
+        if (!ok) {
+          feedback.classList.add('hg-shake');
+          setTimeout(() => feedback.classList.remove('hg-shake'), 450);
+        }
+      };
+
+      if (window.HG && HG.runChecks) {
+        HG.runChecks(feedback, ['IDG-01 · identity disclosure gate', 'PDX-01 · pre-data exchange gate', 'DBC-01 · deceptive artifact scan'], verdict);
+      } else {
+        feedback.innerHTML = '';
+        verdict();
+      }
+    };
+  </script>
+</body>
+</html>

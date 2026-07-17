@@ -13,7 +13,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
     body { font-family: 'Inter', system-ui, sans-serif; }
     .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
-    button:focus-visible, a:focus-visible { outline: 3px solid rgb(20 184 166); outline-offset: 4px; }
+    button:focus-visible, a:focus-visible { outline: 3px solid rgb(34 211 238); outline-offset: 4px; }
     @media print {
       .no-print, .hg-ambient { display: none !important; }
       body { background: #fff !important; color: #0f172a !important; }
@@ -26,8 +26,8 @@
 <body class="hg-body text-white">
   <main class="mx-auto max-w-3xl px-6 py-10">
     <nav class="no-print mb-8 flex items-center justify-between text-sm">
-      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Simulator home</a>
-      <a href="zero-latency-dashboard.html" class="text-white/70 hover:text-teal-300">Dashboard</a>
+      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-cyan-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Simulator home</a>
+      <a href="zero-latency-dashboard.html" class="text-white/70 transition-colors hover:text-cyan-300">Operations console</a>
     </nav>
 
     <section class="record-sheet hyper-glass p-8" aria-labelledby="record-title">
@@ -36,7 +36,7 @@
           <img src="assets/nhid-logo.svg" alt="" class="h-full w-full object-contain">
         </div>
         <div>
-          <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">NHID-Clinical Simulator</div>
+          <div class="text-xs font-bold uppercase tracking-[3px] text-cyan-400">NHID-Clinical Simulator</div>
           <h1 id="record-title" class="font-display text-3xl sm:text-4xl">Completion Record</h1>
         </div>
       </div>
@@ -73,7 +73,7 @@
         <button type="button" id="print" class="emissive inline-flex items-center gap-2 px-5 py-3">
           <i class="fa-solid fa-print" aria-hidden="true"></i> Print / save as PDF
         </button>
-        <a href="index.html" class="inline-flex items-center gap-2 rounded-2xl border border-white/15 px-5 py-3 font-semibold text-white/80 hover:border-teal-500 hover:text-teal-300">
+        <a href="index.html" class="inline-flex items-center gap-2 rounded-2xl border border-white/15 px-5 py-3 font-semibold text-white/80 hover:border-cyan-500 hover:text-cyan-300">
           Back to simulator
         </a>
       </div>
@@ -124,7 +124,7 @@
       try { role = localStorage.getItem(ROLE_KEY); } catch (error) { console.warn('Unable to read role.', error); }
 
       const roleLine = role && ROLE_LABELS[role]
-        ? `<div class="mt-3 text-sm text-white/60">Selected path: <span class="text-teal-300">${ROLE_LABELS[role]}</span></div>`
+        ? `<div class="mt-3 text-sm text-white/60">Selected path: <span class="text-cyan-300">${ROLE_LABELS[role]}</span></div>`
         : '';
 
       document.getElementById('overall').innerHTML = `

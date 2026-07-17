@@ -1,11 +1,14 @@
 /* =====================================================================
-   Zero Latency · Hyper-Glass interaction layer — v2
+   Zero Latency · Hyper-Glass interaction layer — v3
    - Injects the fixed ambient layer (blueprint grid + glows).
    - Cursor-tracked specular glare on .hyper-glass (one rAF-throttled
      delegated pointer listener updating --mouse-x/--mouse-y).
    - Injects a shared module-flow stepper on flow pages so the whole
      experience reads as one system.
-   - window.HG.runChecks(): staged control-check feedback (Module 4).
+   - Promotes .hg-term title="" to styled, keyboard-accessible
+     data-tip tooltips (acronym onboarding).
+   - Reveal-on-scroll for .hg-reveal panels (IntersectionObserver).
+   - window.HG.runChecks(): staged control-check feedback.
    ===================================================================== */
 (function () {
   'use strict';
@@ -81,6 +84,39 @@
     next();
   }
 
+  /* Promote title="" on .hg-term to a styled data-tip tooltip that also
+     works from the keyboard. The title attribute is removed so the
+     browser's native (unstyled, hover-only) tooltip doesn't double up. */
+  function initTermTips() {
+    var terms = document.querySelectorAll('.hg-term[title]');
+    for (var i = 0; i < terms.length; i++) {
+      var el = terms[i];
+      el.setAttribute('data-tip', el.getAttribute('title'));
+      el.removeAttribute('title');
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+    }
+  }
+
+  /* Restrained panel entrance for elements marked .hg-reveal. Content is
+     only hidden after body gets .hg-js, so a script failure never blanks
+     the page. */
+  function initReveal() {
+    var els = document.querySelectorAll('.hg-reveal');
+    if (!els.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+    document.body.classList.add('hg-js');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
   function init() {
     var body = document.body;
     if (!body) return;
@@ -94,6 +130,8 @@
     }
 
     injectStepper();
+    initTermTips();
+    initReveal();
 
     var ticking = false;
     var last = null;

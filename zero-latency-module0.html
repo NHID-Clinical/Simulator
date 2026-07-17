@@ -13,7 +13,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
     body { font-family: 'Inter', system-ui, sans-serif; }
     .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
-    button:focus-visible, a:focus-visible { outline: 3px solid rgb(20 184 166); outline-offset: 4px; }
+    button:focus-visible, a:focus-visible { outline: 3px solid rgb(34 211 238); outline-offset: 4px; }
     .fade-in { animation: fade-in .35s ease-out; }
     @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
     @media (prefers-reduced-motion: reduce) { .fade-in { animation: none; } }
@@ -23,14 +23,14 @@
 <body class="hg-body text-white">
   <main class="relative z-10 mx-auto max-w-5xl px-6 py-10">
     <nav class="mb-8 flex items-center justify-between text-sm">
-      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Simulator home</a>
-      <a href="zero-latency-module1-v2.html" class="text-white/70 hover:text-teal-300">Skip to Module 1</a>
+      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-cyan-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Simulator home</a>
+      <a href="zero-latency-module1-v2.html" class="text-white/70 hover:text-cyan-300">Skip to Module 1</a>
     </nav>
 
-    <section class="hyper-glass p-8" aria-labelledby="m0-title">
-      <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Module 0 · Before You Begin</div>
-      <h1 id="m0-title" class="font-display mt-3 text-4xl sm:text-5xl">The Identity Problem</h1>
-      <p class="mt-4 max-w-3xl text-white/80"><a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-teal-300 hover:text-teal-200">Impersonation latency (PDX-01)</a> is the gap between call connection and clear non-human disclosure. You are about to watch it unfold — and late disclosure still blocks PHI on every turn. NHID-Clinical enforces <strong class="text-white">zero</strong> impersonation latency: identity must be disclosed in the first 5 seconds, before any protected health information is exchanged.</p>
+    <section class="hyper-glass hg-still p-8" aria-labelledby="m0-title">
+      <div class="hg-eyebrow">Module 0 · Before you begin</div>
+      <h1 id="m0-title" class="font-display mt-3 text-4xl tracking-tight sm:text-5xl">The identity problem</h1>
+      <p class="mt-4 max-w-3xl text-white/80"><a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-cyan-300 hover:text-cyan-200">Impersonation latency (PDX-01)</a> is the gap between call connection and clear non-human disclosure. You are about to watch it unfold — and late disclosure still blocks PHI on every turn. NHID-Clinical enforces <strong class="text-white">zero</strong> impersonation latency: identity must be disclosed in the first 5 seconds, before any protected health information is exchanged.</p>
       <p class="mt-3 max-w-3xl text-white/70">Before learning how NHID-Clinical works, experience the governance failure it is built to prevent. This module is an observation exercise — nothing here is scored.</p>
 
       <!-- Call progress rail -->
@@ -39,7 +39,7 @@
           <span>Call opens</span><span>Info requested</span><span>Identity disclosed</span>
         </div>
         <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-800">
-          <div id="rail" class="h-full w-0 rounded-full bg-gradient-to-r from-amber-400 to-rose-500 transition-[width] duration-500"></div>
+          <div id="rail" class="h-full w-0 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-[width] duration-500"></div>
         </div>
       </div>
 
@@ -48,7 +48,7 @@
         <div class="metallic p-6">
           <div class="flex items-center justify-between">
             <div class="text-xs font-bold uppercase tracking-[3px] text-white/40">Live call · payer desk</div>
-            <div id="stage-label" class="text-xs font-semibold text-teal-300">Not started</div>
+            <div id="stage-label" class="text-xs font-semibold text-cyan-300">Not started</div>
           </div>
           <div id="transcript" class="mt-4 min-h-[16rem] space-y-3" aria-live="polite"></div>
           <div id="controls" class="mt-6"></div>
@@ -115,7 +115,7 @@
       const isAgent = beat.who === 'agent';
       wrap.innerHTML = `
         <div class="flex ${isAgent ? '' : 'justify-end'}">
-          <div class="max-w-[85%] rounded-2xl px-4 py-3 text-[15px] ${isAgent ? 'border border-slate-700 bg-slate-900 text-white/85' : 'bg-teal-600 text-white'}">
+          <div class="max-w-[85%] rounded-2xl px-4 py-3 text-[15px] ${isAgent ? 'border border-slate-700 bg-slate-900 text-white/85' : 'bg-cyan-600 text-white'}">
             <div class="mb-1 text-[11px] font-bold uppercase tracking-[2px] ${isAgent ? 'text-white/40' : 'text-white/70'}">${isAgent ? 'Inbound caller' : 'You'}</div>
             ${beat.text}
           </div>
@@ -149,28 +149,28 @@
       markComplete();
       controls.innerHTML = `
         <div class="fade-in space-y-6">
-          <div class="rounded-3xl border border-rose-500/50 bg-rose-500/10 p-5">
-            <div class="text-xs font-bold uppercase tracking-[3px] text-rose-300">What just happened</div>
+          <div class="hg-incident p-5">
+            <div class="text-xs font-bold uppercase tracking-[3px] text-amber-300">What just happened</div>
             <p class="mt-2 text-lg text-white/90">Identity disclosure occurred <strong>after</strong> the interaction had already begun — and after protected member information was requested.</p>
           </div>
 
           <div>
             <div class="text-xs font-bold uppercase tracking-[3px] text-white/40">This creates</div>
             <div class="mt-3 grid gap-3 sm:grid-cols-2">
-              <div class="metallic p-4"><div class="font-display text-lg text-teal-300">Trust risk</div><p class="mt-1 text-sm text-white/70">The representative acted without knowing they were speaking to an automated system.</p></div>
-              <div class="metallic p-4"><div class="font-display text-lg text-teal-300">Audit uncertainty</div><p class="mt-1 text-sm text-white/70">There is no clean record of when identity was established versus when data was discussed.</p></div>
-              <div class="metallic p-4"><div class="font-display text-lg text-teal-300">Compliance exposure</div><p class="mt-1 text-sm text-white/70">Protected information entered the conversation before the caller was verified.</p></div>
-              <div class="metallic p-4"><div class="font-display text-lg text-teal-300">Operational friction</div><p class="mt-1 text-sm text-white/70">Calls must be re-worked, escalated, or reviewed after the fact.</p></div>
+              <div class="metallic p-4"><div class="font-display text-lg text-cyan-300">Trust risk</div><p class="mt-1 text-sm text-white/70">The representative acted without knowing they were speaking to an automated system.</p></div>
+              <div class="metallic p-4"><div class="font-display text-lg text-cyan-300">Audit uncertainty</div><p class="mt-1 text-sm text-white/70">There is no clean record of when identity was established versus when data was discussed.</p></div>
+              <div class="metallic p-4"><div class="font-display text-lg text-cyan-300">Compliance exposure</div><p class="mt-1 text-sm text-white/70">Protected information entered the conversation before the caller was verified.</p></div>
+              <div class="metallic p-4"><div class="font-display text-lg text-cyan-300">Operational friction</div><p class="mt-1 text-sm text-white/70">Calls must be re-worked, escalated, or reviewed after the fact.</p></div>
             </div>
           </div>
 
-          <div class="rounded-3xl border border-teal-500/40 bg-teal-500/10 p-5">
-            <div class="text-xs font-bold uppercase tracking-[3px] text-teal-300">The governance response</div>
+          <div class="rounded-3xl border border-cyan-500/40 bg-cyan-500/10 p-5">
+            <div class="text-xs font-bold uppercase tracking-[3px] text-cyan-300">The governance response</div>
             <p class="mt-2 text-white/90">NHID-Clinical introduces <strong>identity disclosure gates</strong> and <strong>auditable controls</strong> — so disclosure and verification happen <em>before</em> sensitive workflows begin, not after.</p>
             <ul class="mt-3 space-y-1 text-sm text-white/70">
-              <li><i class="fa-solid fa-shield-halved mr-2 text-teal-300" aria-hidden="true"></i>Disclosure is required at the start of the interaction.</li>
-              <li><i class="fa-solid fa-fingerprint mr-2 text-teal-300" aria-hidden="true"></i>Identity is verified before protected data is exchanged.</li>
-              <li><i class="fa-solid fa-clipboard-check mr-2 text-teal-300" aria-hidden="true"></i>Every gate produces an auditable record.</li>
+              <li><i class="fa-solid fa-shield-halved mr-2 text-cyan-300" aria-hidden="true"></i>Disclosure is required at the start of the interaction.</li>
+              <li><i class="fa-solid fa-fingerprint mr-2 text-cyan-300" aria-hidden="true"></i>Identity is verified before protected data is exchanged.</li>
+              <li><i class="fa-solid fa-clipboard-check mr-2 text-cyan-300" aria-hidden="true"></i>Every gate produces an auditable record.</li>
             </ul>
           </div>
 

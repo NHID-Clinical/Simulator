@@ -12,22 +12,22 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
     body { font-family: 'Inter', system-ui, sans-serif; }
     .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
-    button:focus-visible, a:focus-visible { outline: 3px solid rgb(20 184 166); outline-offset: 4px; }
+    button:focus-visible, a:focus-visible { outline: 3px solid rgb(34 211 238); outline-offset: 4px; }
   </style>
   <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
 </head>
 <body class="hg-body text-white">
   <main class="relative z-10 mx-auto max-w-7xl px-6 py-10">
     <nav class="mb-8 flex items-center justify-between text-sm">
-      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-teal-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Simulator home</a>
-      <a href="zero-latency-dashboard.html" class="text-white/70 hover:text-teal-300">Dashboard</a>
+      <a href="index.html" class="inline-flex items-center gap-2 text-white/70 hover:text-cyan-300"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Simulator home</a>
+      <a href="zero-latency-dashboard.html" class="text-white/70 transition-colors hover:text-cyan-300">Operations console</a>
     </nav>
 
-    <section class="hyper-glass p-8">
-      <div class="text-xs font-bold uppercase tracking-[3px] text-teal-400">Module 3 · Detective Game</div>
-      <h1 class="font-display mt-3 text-5xl">Case Board: Who Caused the Compliance Gap?</h1>
+    <section class="hyper-glass hg-still p-8">
+      <div class="hg-eyebrow">Module 3 · Call-log audit</div>
+      <h1 class="font-display mt-3 text-4xl tracking-tight sm:text-5xl">Case board: who caused the compliance gap?</h1>
       <p class="mt-3 max-w-3xl text-white/70">Review evidence, link it to suspects, and issue a final verdict. Passing score: 80%.</p>
-      <p class="mt-2 max-w-3xl text-sm text-white/50">Many gaps here are forms of <a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-teal-300 hover:text-teal-200">impersonation latency (PDX-01)</a> — the gap between call connection and clear non-human disclosure, where late disclosure still blocks PHI on every turn.</p>
+      <p class="mt-2 max-w-3xl text-sm text-white/50">Many gaps here are forms of <a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-cyan-300 hover:text-cyan-200">impersonation latency (PDX-01)</a> — the gap between call connection and clear non-human disclosure, where late disclosure still blocks PHI on every turn.</p>
 
       <div class="mt-8 grid gap-6 xl:grid-cols-[1fr_1fr_320px]">
         <section class="metallic p-6">
@@ -94,7 +94,7 @@
       localStorage.setItem(PROGRESS_KEY, JSON.stringify(Object.fromEntries(Object.entries(state.modules).map(([id, item]) => [id, { completed: true, score: item.score, completedAt: item.completedAt }]))));
     }
 
-    document.getElementById('evidence').innerHTML = evidence.map(([id, title, body]) => `<article class="metallic p-4"><div class="text-xs font-bold text-teal-300">${id} · ${title}</div><p class="mt-2 text-sm text-white/70">${body}</p></article>`).join('');
+    document.getElementById('evidence').innerHTML = evidence.map(([id, title, body]) => `<article class="metallic p-4"><div class="text-xs font-bold text-cyan-300">${id} · ${title}</div><p class="mt-2 text-sm text-white/70">${body}</p></article>`).join('');
     document.getElementById('suspects').innerHTML = Object.entries(suspects).map(([key, suspect]) => `<article class="metallic p-4"><div class="font-bold">${suspect[0]}</div><p class="mt-2 text-sm text-white/60">${suspect[1]}</p></article>`).join('');
     document.getElementById('deduction').innerHTML = evidence.map(([id, title, body, answer]) => `
       <label class="metallic p-4">
@@ -115,7 +115,7 @@
     document.getElementById('check').addEventListener('click', () => {
       const score = scoreLinks();
       const feedback = document.getElementById('feedback');
-      feedback.className = `mt-6 rounded-3xl border p-5 ${score >= 80 ? 'border-emerald-500 bg-emerald-500/10' : 'border-amber-500 bg-amber-500/10'}`;
+      feedback.className = `mt-6 p-5 ${score >= 80 ? 'hg-verified' : 'hg-incident'}`;
       feedback.textContent = score >= 80 ? 'Strong deductions. Now issue the final verdict.' : 'Review the evidence links. Which evidence actually caused the data release?';
       feedback.classList.remove('hidden');
     });
@@ -125,9 +125,9 @@
       const penalty = score >= 80 ? 0 : 50000;
       complete(score, penalty);
       const feedback = document.getElementById('feedback');
-      feedback.className = `mt-6 rounded-3xl border p-5 ${score >= 80 ? 'border-emerald-500 bg-emerald-500/10' : 'border-rose-500 bg-rose-500/10'}`;
+      feedback.className = `mt-6 p-5 ${score >= 80 ? 'hg-verified' : 'hg-incident'}`;
       feedback.innerHTML = score >= 80
-        ? '<b>Final reveal:</b> Late disclosure was the primary breach, with revocation and escalation evidence showing secondary control gaps. You separated cause from contributing risk.<br><a class="mt-3 inline-flex text-teal-300" href="zero-latency-module4.html">Continue to Safe Deployment →</a>'
+        ? '<b>Final reveal:</b> Late disclosure was the primary breach, with revocation and escalation evidence showing secondary control gaps. You separated cause from contributing risk.<br><a class="mt-3 inline-flex text-cyan-300" href="zero-latency-module4.html">Continue to Safe Deployment →</a>'
         : '<b>Final reveal:</b> The critical cause was IDG-01 late disclosure: the rep released data after the bot delayed machine identity. Review the evidence and retry.';
       feedback.classList.remove('hidden');
     });
