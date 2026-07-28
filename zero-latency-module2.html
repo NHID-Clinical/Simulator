@@ -6,8 +6,10 @@
   <title>Passport Inspection • Module 2 • Zero Latency</title>
   <meta name="description" content="Validate an NHID-Auth v2 passport token against the provider registry and decide whether to accept or reject the caller.">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/terminal-theme.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="assets/hyper-glass.css">
+  <link rel="stylesheet" href="assets/terminal-theme.css">
   <script src="assets/hyper-glass.js" defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -134,14 +136,39 @@
       const msg = ok
         ? '<div class="text-[11px] font-bold uppercase tracking-[.14em] text-emerald-300">Passport rejected · correct call</div><p class="mt-2 max-w-none text-white/85">But why? Signature format alone is not enough; expired tokens and mismatched NPI domains break the cryptographic chain of trust.</p>'
         : '<div class="text-[11px] font-bold uppercase tracking-[.14em] text-amber-300">Bad acceptance · $75,000 penalty recorded</div><p class="mt-2 max-w-none text-white/85">But why? A valid-looking string can still be expired or bound to the wrong domain, so accepting it would authorize an impersonator.</p>';
-      award('module2', ok ? 100 : 50, ok ? 0 : 75000);
-      meter();
-      feedback.className = 'mt-6 p-5 ' + (ok ? 'hg-verified' : 'hg-incident');
-      feedback.innerHTML = msg + '<a class="mt-3 inline-flex items-center gap-2 font-semibold text-cyan-300 transition-colors hover:text-cyan-200" href="zero-latency-module3.html">Next: Compliance Gaps <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>';
+
+      accept.disabled = reject.disabled = true;
+      feedback.className = 'mt-6 rounded-xl border border-slate-700 bg-slate-950/60 p-5';
       feedback.classList.remove('hidden');
-      if (!ok) {
-        feedback.classList.add('hg-shake');
-        setTimeout(() => feedback.classList.remove('hg-shake'), 450);
+
+      // Verdict is unchanged — it just lands after the console reports the
+      // checks it ran, so the decision reads as an evaluation, not a toggle.
+      const verdict = () => {
+        accept.disabled = reject.disabled = false;
+        award('module2', ok ? 100 : 50, ok ? 0 : 75000);
+        meter();
+        feedback.className = 'mt-6 p-5 ' + (ok ? 'hg-verified' : 'hg-incident');
+        const v = document.createElement('div');
+        v.className = 'mt-3';
+        v.innerHTML = msg + '<a class="mt-3 inline-flex items-center gap-2 font-semibold text-cyan-300 transition-colors hover:text-cyan-200" href="zero-latency-module3.html">Next: Compliance Gaps <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>';
+        feedback.appendChild(v);
+        if (!ok) {
+          feedback.classList.add('hg-shake');
+          setTimeout(() => feedback.classList.remove('hg-shake'), 450);
+        }
+      };
+
+      if (window.HG && HG.runChecks) {
+        HG.runChecks(feedback, [
+          'Authenticating caller credential',
+          'Verifying Ed25519 signature format',
+          'Checking token expiration window',
+          'Resolving issuer domain against provider registry',
+          'Generating audit record'
+        ], verdict);
+      } else {
+        feedback.innerHTML = '';
+        verdict();
       }
     }
     accept.onclick = () => done(false);

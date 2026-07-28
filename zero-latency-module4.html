@@ -6,8 +6,10 @@
   <title>Safe Agent Deployment • Module 4 • Zero Latency</title>
   <meta name="description" content="Configure an outbound healthcare voice agent so identity disclosure is logic-gated before any data request — the final control point before production.">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/terminal-theme.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="assets/hyper-glass.css">
+  <link rel="stylesheet" href="assets/terminal-theme.css">
   <script src="assets/hyper-glass.js" defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -279,7 +281,14 @@
       };
 
       if (window.HG && HG.runChecks) {
-        HG.runChecks(feedback, ['IDG-01 · identity disclosure gate', 'PDX-01 · pre-data exchange gate', 'DBC-01 · deceptive artifact scan'], verdict);
+        HG.runChecks(feedback, [
+          'Authenticating agent configuration',
+          'Loading prompt logic sequence',
+          'Evaluating IDG-01 · identity disclosure gate',
+          'Evaluating PDX-01 · pre-data exchange gate',
+          'Running DBC-01 · deceptive artifact scan',
+          'Generating audit record'
+        ], verdict);
       } else {
         feedback.innerHTML = '';
         verdict();

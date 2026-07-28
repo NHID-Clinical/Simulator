@@ -1,0 +1,975 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* =====================================================================
+   NHID TERMINAL · Clinical Trust Evaluation Console — design system
+   Loaded AFTER assets/hyper-glass.css. Every rule here is an override
+   of, or an addition to, the hyper-glass class contract, so pages keep
+   their markup, IDs, and JavaScript hooks untouched.
+
+   Reference points: NASA mission control, Bell Labs workstations,
+   1980s hospital telecom equipment, medical device consoles. Cassette
+   futurism read as engineering, never as a retro toy.
+
+   COLOR DISCIPLINE (enforced, do not drift):
+     · phosphor green  — system, nominal, verified, primary action
+     · amber           — warnings, penalties, at-risk gates
+     · red             — destructive / unsafe path, failures
+     · info blue       — live state and informational lamps only
+     · warm off-white  — primary text (never pure white, never pure black)
+
+   Specificity contract: every override is written as `.hg-body <sel>`
+   so it beats both hyper-glass.css and the per-page <style> blocks
+   without needing !important.
+   ===================================================================== */
+
+:root {
+  /* --- surfaces ------------------------------------------------ */
+  --tm-bg: #0B1117;
+  --tm-surface: #111923;
+  --tm-raised: #17232F;
+  --tm-border: #34414D;
+  --tm-border-soft: rgba(52, 65, 77, 0.6);
+
+  /* --- phosphor ------------------------------------------------ */
+  --tm-phos: #56F09A;
+  --tm-phos-2: #38C87A;
+  --tm-phos-dim: rgba(86, 240, 154, 0.12);
+  --tm-phos-line: rgba(86, 240, 154, 0.38);
+
+  /* --- text ---------------------------------------------------- */
+  --tm-text: #E8E0D0;
+  --tm-text-2: #A7B1BA;
+  --tm-text-3: #8A949D;   /* dimmest legible tier — 6.1:1 on --tm-bg */
+
+  /* --- semantic ------------------------------------------------ */
+  --tm-warn: #FFB000;
+  --tm-warn-text: #FFC24D;
+  --tm-danger: #CC3B3B;
+  --tm-danger-text: #F06A6A;   /* 6.3:1 — #CC3B3B is fill/border only */
+  --tm-info: #72C6FF;
+
+  /* --- geometry ------------------------------------------------ */
+  --tm-radius: 8px;
+  --tm-radius-sm: 6px;
+  --tm-radius-xs: 3px;
+
+  /* --- type ---------------------------------------------------- */
+  --tm-console: 'VT323', ui-monospace, 'Courier New', monospace;
+  --tm-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --tm-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* legacy hyper-glass tokens retargeted so any stragglers stay on-palette */
+  --hg-bg: #0B1117;
+  --hg-panel-1: #17232F;
+  --hg-panel-2: #111923;
+  --hg-cyan: #56F09A;
+  --hg-teal: #38C87A;
+  --hg-amber: #FFB000;
+  --hg-amber-deep: #D18F00;
+  --hg-green: #56F09A;
+  --hg-ink-1: #E8E0D0;
+  --hg-ink-2: #A7B1BA;
+  --hg-ink-3: #8A949D;
+  --hg-radius: 8px;
+  --hg-radius-sm: 6px;
+}
+
+/* =====================================================================
+   1. BASE — equipment-room shell
+   ===================================================================== */
+.hg-body {
+  background-color: var(--tm-bg);
+  /* Faint panel gradients: a lit rack in a dark equipment room. */
+  background-image:
+    radial-gradient(140% 90% at 50% -20%, rgba(86, 240, 154, 0.035), transparent 60%),
+    linear-gradient(180deg, #0D141B 0%, var(--tm-bg) 42%, #090F14 100%);
+  background-attachment: fixed;
+  color: var(--tm-text);
+  font-family: var(--tm-body);
+  font-size: 15.5px;
+  line-height: 1.65;
+}
+
+.hg-body ::selection { background: rgba(86, 240, 154, 0.26); color: var(--tm-text); }
+
+/* Never let a console panel push the page sideways. */
+.hg-body main { max-width: 100%; }
+.hg-body img, .hg-body svg { max-width: 100%; }
+
+/* ---------------------------------------------------------------
+   AMBIENT LAYER — injected by hyper-glass.js, repurposed here as a
+   static equipment texture. Scanline, engineering grid, phosphor
+   bloom and vignette all sit at or below 5% opacity: present, but
+   below the threshold most people consciously notice. No animation.
+--------------------------------------------------------------- */
+.hg-body .hg-ambient {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(232, 224, 208, 0.026) 0 1px, transparent 1px 3px),
+    linear-gradient(rgba(86, 240, 154, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(86, 240, 154, 0.032) 1px, transparent 1px);
+  background-size: 100% 3px, 72px 72px, 72px 72px;
+  background-position: 0 0, 0 0, 0 0;
+  -webkit-mask-image: none;
+  mask-image: none;
+  opacity: 1;
+}
+.hg-body .hg-ambient::before {
+  /* phosphor bloom over the top of the rack */
+  content: "";
+  position: absolute;
+  inset: -30vh 0 auto 0;
+  width: 100%;
+  height: 90vh;
+  border-radius: 0;
+  filter: none;
+  opacity: 1;
+  animation: none;
+  background: radial-gradient(60% 55% at 50% 45%, rgba(86, 240, 154, 0.045), transparent 70%);
+}
+.hg-body .hg-ambient::after {
+  /* soft vignette — corners fall away like a curved CRT bezel */
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  filter: none;
+  opacity: 1;
+  animation: none;
+  background: radial-gradient(120% 100% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+/* =====================================================================
+   2. TYPOGRAPHY
+   VT323  → console titles, labels, timestamps, status, metadata
+   Inter  → explanations, policy text, transcripts, instructions
+   JetBrains Mono → JSON, logs, traces, identifiers
+   ===================================================================== */
+.hg-body .font-display {
+  font-family: var(--tm-console);
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  line-height: 1.1;
+  -webkit-font-smoothing: antialiased;
+}
+.hg-body h1.font-display,
+.hg-body h2.font-display,
+.hg-body h3.font-display { text-wrap: balance; }
+
+/* Headings stay sentence case — all-caps hero copy costs more in
+   readability than it buys in atmosphere. Labels do the shouting. */
+.hg-body h1, .hg-body h2, .hg-body h3 { color: var(--tm-text); }
+
+.hg-body p, .hg-body li, .hg-body dd { font-family: var(--tm-body); }
+.hg-body p { max-width: 72ch; }
+
+.hg-body code,
+.hg-body .font-mono,
+.hg-body .hg-num,
+.hg-body pre,
+.hg-body kbd {
+  font-family: var(--tm-mono);
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+}
+.hg-body code {
+  font-size: 0.86em;
+  letter-spacing: 0.02em;
+  color: var(--tm-text-2);
+}
+/* Passport tokens, trace IDs and domains are single unbreakable words wide
+   enough to force a narrow viewport into horizontal scroll. They break. */
+.hg-body .font-mono,
+.hg-body code,
+.hg-body pre { overflow-wrap: anywhere; }
+
+/* Engineering label — the small uppercase strap above a panel title. */
+.hg-body .hg-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--tm-console);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tm-phos-2);
+}
+.hg-body .hg-eyebrow::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--tm-border), transparent);
+}
+
+/* Micro-labels. Every letter-spaced caption in the markup is a terminal
+   label — panel captions, status words, record headers — so the whole
+   family adopts the console face at a size VT323 can actually carry.
+   The two negative-tracking classes are display headlines and are
+   deliberately excluded. */
+.hg-body .tracking-\[2px\],
+.hg-body .tracking-\[3px\],
+.hg-body .tracking-\[\.14em\],
+.hg-body .tracking-wider {
+  font-family: var(--tm-console);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.17em;
+}
+
+/* Filled accent chips read as engraved equipment plates. */
+.hg-body .bg-cyan-600 {
+  border: 1px solid rgba(86, 240, 154, 0.3);
+  color: var(--tm-phos);
+}
+
+.hg-body .hg-lead { font-size: 1.06rem; line-height: 1.7; color: var(--tm-text-2); }
+.hg-body .hg-note { font-size: 0.8rem; line-height: 1.6; color: var(--tm-text-3); }
+
+/* Plain-language term tooltips */
+.hg-body .hg-term {
+  text-decoration: underline dotted var(--tm-phos-line);
+  text-underline-offset: 3px;
+}
+.hg-body .hg-term[data-tip]::after {
+  border-radius: var(--tm-radius-sm);
+  background: var(--tm-raised);
+  border: 1px solid var(--tm-border);
+  color: var(--tm-text);
+  font-family: var(--tm-body);
+  box-shadow: 0 12px 28px -14px rgba(0, 0, 0, 0.9);
+  /* The tooltip is absolutely positioned but still contributes to the
+     page's scrollable overflow while hidden, which pushed narrow
+     viewports into horizontal scroll. Taking it out of flow until it is
+     actually shown costs the fade-in and buys a clean 360px layout. */
+  display: none;
+  transition: none;
+}
+.hg-body .hg-term[data-tip]:hover::after,
+.hg-body .hg-term[data-tip]:focus-visible::after {
+  display: block;
+  opacity: 1;
+}
+
+/* =====================================================================
+   3. GEOMETRY NORMALIZATION
+   Pill and capsule shapes read as consumer software. Equipment panels
+   are square-shouldered with an 8px break.
+   ===================================================================== */
+.hg-body .rounded-3xl,
+.hg-body .rounded-2xl,
+.hg-body .rounded-\[2rem\] { border-radius: var(--tm-radius); }
+.hg-body .rounded-xl { border-radius: var(--tm-radius-sm); }
+.hg-body span.rounded-full,
+.hg-body div.rounded-full,
+.hg-body a.rounded-full { border-radius: var(--tm-radius-xs); }
+
+/* Raw utility borders left over from page markup adopt the panel stroke. */
+.hg-body .border-white\/\[\.07\],
+.hg-body .border-white\/15,
+.hg-body .border-white\/20,
+.hg-body .border-white\/10 { border-color: var(--tm-border); }
+.hg-body .ring-white\/20 { --tw-ring-color: var(--tm-border); }
+
+/* =====================================================================
+   4. LEGIBILITY FLOOR
+   Low-opacity text utilities are pinned to tiers that clear WCAG AA on
+   the console background instead of fading to 3:1.
+   ===================================================================== */
+.hg-body .text-white\/25,
+.hg-body .text-white\/30,
+.hg-body .text-white\/35,
+.hg-body .text-white\/40,
+.hg-body .text-white\/45 { color: var(--tm-text-3); }
+.hg-body .text-white\/50,
+.hg-body .text-white\/55,
+.hg-body .text-white\/60,
+.hg-body .text-white\/65 { color: var(--tm-text-2); }
+.hg-body .text-white\/70,
+.hg-body .text-white\/75,
+.hg-body .text-white\/80,
+.hg-body .text-white\/85,
+.hg-body .text-white\/90 { color: rgba(232, 224, 208, 0.92); }
+
+/* Decorative grips and icon ghosts may stay quiet. */
+.hg-body .fa-grip-vertical.text-white\/25 { color: rgba(167, 177, 186, 0.45); }
+
+/* =====================================================================
+   5. PANELS — industrial equipment surfaces (no glassmorphism)
+   ===================================================================== */
+.hg-body .hyper-glass {
+  border-radius: var(--tm-radius);
+  background: linear-gradient(180deg, var(--tm-raised) 0%, var(--tm-surface) 100%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--tm-border);
+  box-shadow:
+    inset 0 1px 0 rgba(232, 224, 208, 0.05),
+    0 12px 28px -22px rgba(0, 0, 0, 0.95);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.hg-body .hyper-glass:hover {
+  transform: none;
+  border-color: rgba(86, 240, 154, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(232, 224, 208, 0.07),
+    0 12px 28px -22px rgba(0, 0, 0, 0.95);
+}
+/* Beveled top edge instead of the old gradient glass rim. */
+.hg-body .hyper-glass::before {
+  inset: 0 0 auto 0;
+  height: 1px;
+  padding: 0;
+  border-radius: 0;
+  background: linear-gradient(90deg, transparent, rgba(232, 224, 208, 0.14) 18%, rgba(232, 224, 208, 0.14) 82%, transparent);
+  -webkit-mask: none;
+  mask: none;
+  opacity: 1;
+}
+/* Cursor-tracked specular glare is a glass affordance — retired. */
+.hg-body .hyper-glass::after { display: none; }
+
+.hg-body .metallic {
+  border-radius: var(--tm-radius);
+  background: var(--tm-raised);
+  border: 1px solid var(--tm-border);
+  box-shadow: inset 0 1px 0 rgba(232, 224, 208, 0.045);
+  transition: border-color 0.16s ease, background 0.16s ease, transform 0.08s ease;
+}
+.hg-body .metallic:hover { filter: none; border-color: rgba(86, 240, 154, 0.28); }
+
+/* Selectable panels (answer choices, role pickers) get a tactile press. */
+.hg-body button.metallic,
+.hg-body label.metallic { cursor: pointer; }
+.hg-body button.metallic:hover { background: #1B2937; }
+.hg-body button.metallic:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+.hg-body button.metallic[aria-pressed="true"] {
+  border-color: var(--tm-phos-2);
+  background: rgba(86, 240, 154, 0.08);
+}
+
+/* =====================================================================
+   6. BUTTONS — tactile, industrial, slight inset press, no neon
+   ===================================================================== */
+.hg-body .emissive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--tm-radius-sm);
+  font-family: var(--tm-console);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--tm-phos);
+  background: linear-gradient(180deg, #2A4636 0%, #1C3227 100%);
+  border: 1px solid var(--tm-phos-2);
+  box-shadow:
+    inset 0 1px 0 rgba(86, 240, 154, 0.22),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(0, 0, 0, 0.6);
+  transition: background 0.14s ease, border-color 0.14s ease, transform 0.06s ease, box-shadow 0.06s ease;
+  text-decoration: none;
+}
+.hg-body .emissive:hover {
+  transform: none;
+  filter: none;
+  background: linear-gradient(180deg, #33553F 0%, #223B2E 100%);
+  border-color: var(--tm-phos);
+}
+.hg-body .emissive:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.55);
+}
+.hg-body .emissive:disabled,
+.hg-body .emissive[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hg-body .hg-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--tm-radius-sm);
+  font-family: var(--tm-console);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--tm-text-2);
+  background: var(--tm-surface);
+  border: 1px solid var(--tm-border);
+  box-shadow: inset 0 1px 0 rgba(232, 224, 208, 0.05);
+  transition: border-color 0.14s ease, color 0.14s ease, background 0.14s ease, transform 0.06s ease;
+  text-decoration: none;
+}
+.hg-body .hg-btn-ghost:hover {
+  border-color: var(--tm-phos-2);
+  color: var(--tm-phos);
+  background: rgba(86, 240, 154, 0.07);
+}
+.hg-body .hg-btn-ghost:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.hg-body .hg-btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--tm-radius-sm);
+  font-family: var(--tm-console);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--tm-danger-text);
+  background: linear-gradient(180deg, rgba(204, 59, 59, 0.16), rgba(204, 59, 59, 0.07));
+  border: 1px solid rgba(204, 59, 59, 0.6);
+  box-shadow: inset 0 1px 0 rgba(240, 106, 106, 0.16);
+  transition: border-color 0.14s ease, background 0.14s ease, transform 0.06s ease;
+}
+.hg-body .hg-btn-danger:hover {
+  border-color: var(--tm-danger-text);
+  background: linear-gradient(180deg, rgba(204, 59, 59, 0.26), rgba(204, 59, 59, 0.12));
+}
+.hg-body .hg-btn-danger:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Form controls read as panel-mounted selectors. */
+.hg-body select,
+.hg-body input[type="text"],
+.hg-body textarea {
+  border-radius: var(--tm-radius-sm);
+  background: var(--tm-bg);
+  border: 1px solid var(--tm-border);
+  color: var(--tm-text);
+  font-family: var(--tm-body);
+  font-size: 14px;
+  transition: border-color 0.14s ease;
+}
+.hg-body select:hover { border-color: var(--tm-phos-2); }
+.hg-body select option { background: var(--tm-surface); color: var(--tm-text); }
+
+/* =====================================================================
+   7. STATUS COMPONENTS — illuminated industrial indicators
+   PASS · FAIL · WARNING · DISCLOSURE DETECTED · ESCALATION REQUIRED
+   ===================================================================== */
+.hg-body .hg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 9px 2px;
+  border-radius: var(--tm-radius-xs);
+  font-family: var(--tm-console);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--tm-border);
+  background: var(--tm-bg);
+  color: var(--tm-text-2);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+}
+/* the lamp in the indicator housing */
+.hg-body .hg-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+.hg-body .hg-badge[data-tone="green"] {
+  border-color: var(--tm-phos-line);
+  background: rgba(86, 240, 154, 0.12);
+  color: var(--tm-phos);
+}
+.hg-body .hg-badge[data-tone="green"]::before {
+  opacity: 1;
+  box-shadow: 0 0 6px rgba(86, 240, 154, 0.8);
+}
+.hg-body .hg-badge[data-tone="cyan"] {
+  border-color: rgba(114, 198, 255, 0.42);
+  background: rgba(114, 198, 255, 0.09);
+  color: var(--tm-info);
+}
+.hg-body .hg-badge[data-tone="cyan"]::before {
+  opacity: 0.85;
+  box-shadow: 0 0 6px rgba(114, 198, 255, 0.7);
+}
+.hg-body .hg-badge[data-tone="amber"] {
+  border-color: rgba(255, 176, 0, 0.45);
+  background: rgba(255, 176, 0, 0.1);
+  color: var(--tm-warn-text);
+}
+.hg-body .hg-badge[data-tone="amber"]::before {
+  opacity: 1;
+  box-shadow: 0 0 6px rgba(255, 176, 0, 0.7);
+}
+.hg-body .hg-badge[data-tone="danger"] {
+  border-color: rgba(204, 59, 59, 0.55);
+  background: rgba(204, 59, 59, 0.12);
+  color: var(--tm-danger-text);
+}
+.hg-body .hg-badge[data-tone="danger"]::before {
+  opacity: 1;
+  box-shadow: 0 0 6px rgba(240, 106, 106, 0.7);
+}
+
+/* Indicator labels are nowrap by default so they read as one plate. On
+   narrow viewports that nowrap sets a min-content floor wide enough to
+   push dense rows (the Module 4 sequence) into horizontal scroll, so it
+   is released and the plate wraps instead. */
+@media (max-width: 520px) {
+  .hg-body .hg-badge { white-space: normal; }
+}
+
+/* Indicator lamps — square-cut, bezelled, unlit by default. */
+.hg-body .hg-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: #1E2A34;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--tm-border);
+}
+.hg-body .hg-dot[data-tone="cyan"] {
+  background: var(--tm-info);
+  box-shadow: 0 0 0 1px rgba(114, 198, 255, 0.35), 0 0 7px rgba(114, 198, 255, 0.55);
+}
+.hg-body .hg-dot[data-tone="green"] {
+  background: var(--tm-phos);
+  box-shadow: 0 0 0 1px rgba(86, 240, 154, 0.35), 0 0 7px rgba(86, 240, 154, 0.5);
+}
+.hg-body .hg-dot[data-tone="amber"] {
+  background: var(--tm-warn);
+  box-shadow: 0 0 0 1px rgba(255, 176, 0, 0.35), 0 0 7px rgba(255, 176, 0, 0.5);
+}
+.hg-body .hg-dot[data-tone="danger"] {
+  background: var(--tm-danger-text);
+  box-shadow: 0 0 0 1px rgba(204, 59, 59, 0.4), 0 0 7px rgba(204, 59, 59, 0.5);
+}
+
+/* =====================================================================
+   8. KPI READOUT TILE
+   ===================================================================== */
+.hg-body .hg-stat {
+  border-radius: var(--tm-radius);
+  border: 1px solid var(--tm-border);
+  background: var(--tm-surface);
+  padding: 14px 16px 14px 19px;
+  box-shadow: inset 0 1px 0 rgba(232, 224, 208, 0.045);
+}
+.hg-body .hg-stat::before { width: 3px; background: var(--tm-border); }
+.hg-body .hg-stat .label {
+  font-family: var(--tm-console);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tm-text-2);
+}
+.hg-body .hg-stat .value {
+  margin-top: 4px;
+  font-size: 2.05rem;
+  color: var(--tm-text);
+  letter-spacing: 0.01em;
+}
+.hg-body .hg-stat .meta {
+  margin-top: 3px;
+  font-family: var(--tm-body);
+  font-size: 12px;
+  color: var(--tm-text-3);
+}
+.hg-body .hg-stat[data-tone="cyan"]::before { background: var(--tm-info); }
+.hg-body .hg-stat[data-tone="cyan"] .label { color: var(--tm-info); }
+.hg-body .hg-stat[data-tone="green"]::before { background: var(--tm-phos); }
+.hg-body .hg-stat[data-tone="green"] .label { color: var(--tm-phos); }
+.hg-body .hg-stat[data-tone="green"] .value { color: var(--tm-phos); }
+.hg-body .hg-stat[data-tone="amber"]::before { background: var(--tm-warn); }
+.hg-body .hg-stat[data-tone="amber"] .label { color: var(--tm-warn-text); }
+.hg-body .hg-stat[data-tone="amber"] .value { color: var(--tm-warn-text); }
+
+/* =====================================================================
+   9. SEGMENTED METER
+   ===================================================================== */
+.hg-body .hg-bar {
+  height: 9px;
+  border-radius: var(--tm-radius-xs);
+  background: var(--tm-bg);
+  border: 1px solid var(--tm-border);
+  padding: 1px;
+}
+.hg-body .hg-bar > i {
+  border-radius: 1px;
+  background: repeating-linear-gradient(90deg, var(--tm-phos-2) 0 5px, rgba(0, 0, 0, 0.6) 5px 7px);
+  box-shadow: 0 0 6px rgba(56, 200, 122, 0.3);
+}
+.hg-body .hg-bar[data-tone="green"] > i {
+  background: repeating-linear-gradient(90deg, var(--tm-phos) 0 5px, rgba(0, 0, 0, 0.6) 5px 7px);
+}
+.hg-body .hg-bar[data-tone="amber"] > i {
+  background: repeating-linear-gradient(90deg, var(--tm-warn) 0 5px, rgba(0, 0, 0, 0.6) 5px 7px);
+  box-shadow: 0 0 6px rgba(255, 176, 0, 0.28);
+}
+
+/* =====================================================================
+   10. CONTROL GATE ROW — diagnostic readout line
+   ===================================================================== */
+.hg-body .hg-gate {
+  gap: 11px;
+  padding: 9px 12px;
+  border-radius: var(--tm-radius-sm);
+  border: 1px solid var(--tm-border);
+  border-left-width: 3px;
+  border-left-color: var(--tm-border);
+  background: var(--tm-bg);
+  font-family: var(--tm-body);
+  font-size: 13px;
+  color: var(--tm-text-2);
+}
+.hg-body .hg-gate code {
+  flex: none;
+  padding: 2px 6px 1px;
+  border-radius: var(--tm-radius-xs);
+  border: 1px solid var(--tm-border);
+  background: var(--tm-surface);
+  font-family: var(--tm-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--tm-text-3);
+}
+/* On very narrow screens the trailing status word wraps below the gate
+   name instead of widening the row. */
+@media (max-width: 365px) {
+  .hg-body .hg-gate { flex-wrap: wrap; row-gap: 4px; }
+}
+.hg-body .hg-gate[data-state="pass"] {
+  border-color: rgba(86, 240, 154, 0.25);
+  border-left-color: var(--tm-phos);
+  background: rgba(86, 240, 154, 0.05);
+}
+.hg-body .hg-gate[data-state="pass"] code { color: var(--tm-phos); border-color: rgba(86, 240, 154, 0.35); }
+.hg-body .hg-gate[data-state="risk"] {
+  border-color: rgba(255, 176, 0, 0.28);
+  border-left-color: var(--tm-warn);
+  background: rgba(255, 176, 0, 0.05);
+}
+.hg-body .hg-gate[data-state="risk"] code { color: var(--tm-warn-text); border-color: rgba(255, 176, 0, 0.4); }
+
+/* =====================================================================
+   11. ALERT PANELS — incident / verified
+   ===================================================================== */
+.hg-body .hg-incident {
+  border-radius: var(--tm-radius);
+  border: 1px solid rgba(255, 176, 0, 0.4);
+  border-left: 3px solid var(--tm-warn);
+  background: linear-gradient(180deg, rgba(255, 176, 0, 0.09), rgba(255, 176, 0, 0.035));
+}
+.hg-body .hg-verified {
+  border-radius: var(--tm-radius);
+  border: 1px solid rgba(86, 240, 154, 0.38);
+  border-left: 3px solid var(--tm-phos);
+  background: linear-gradient(180deg, rgba(86, 240, 154, 0.09), rgba(86, 240, 154, 0.035));
+}
+
+/* =====================================================================
+   12. MODULE STEPPER — console tab strip
+   ===================================================================== */
+.hg-body .hg-stepper {
+  gap: 3px;
+  padding: 5px 6px;
+  border-radius: var(--tm-radius-sm);
+  border: 1px solid var(--tm-border);
+  background: var(--tm-surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: inset 0 1px 0 rgba(232, 224, 208, 0.05);
+}
+.hg-body .hg-step {
+  padding: 4px 10px 3px;
+  border-radius: var(--tm-radius-xs);
+  font-family: var(--tm-console);
+  font-size: 15px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--tm-text-3);
+}
+.hg-body .hg-step:hover { color: var(--tm-text); background: rgba(232, 224, 208, 0.05); }
+.hg-body .hg-step .dot { width: 6px; height: 6px; border-radius: 1px; background: #26313B; }
+.hg-body .hg-step.done { color: var(--tm-text-2); }
+.hg-body .hg-step.done .dot { background: var(--tm-phos-2); box-shadow: 0 0 5px rgba(56, 200, 122, 0.6); }
+.hg-body .hg-step.current {
+  background: var(--tm-phos-2);
+  color: #06120C;
+  font-weight: 400;
+}
+.hg-body .hg-step.current .dot { background: #06120C; box-shadow: none; }
+.hg-body .hg-step-sep { color: var(--tm-border); }
+
+/* =====================================================================
+   13. OPERATIONAL PROGRESS LOG — window.HG.runChecks output
+   Professional status lines, not fake hacking.
+   ===================================================================== */
+.hg-body .hg-checkseq {
+  gap: 1px;
+  padding: 10px 12px;
+  border-radius: var(--tm-radius-sm);
+  border: 1px solid var(--tm-border);
+  background: var(--tm-bg);
+}
+.hg-body .hg-check {
+  gap: 9px;
+  padding: 3px 0;
+  font-family: var(--tm-mono);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  color: var(--tm-text-3);
+}
+.hg-body .hg-check .spin {
+  width: 10px;
+  height: 10px;
+  border-radius: 1px;
+  border-width: 2px;
+  border-color: rgba(86, 240, 154, 0.22);
+  border-top-color: var(--tm-phos);
+}
+.hg-body .hg-check.ok { color: var(--tm-text-2); }
+.hg-body .hg-check.ok .spin::before { content: '\2713'; color: var(--tm-phos); font-size: 12px; }
+.hg-body .hg-check.ok::after {
+  content: "OK";
+  margin-left: auto;
+  padding-left: 12px;
+  font-family: var(--tm-console);
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  color: var(--tm-phos);
+}
+
+/* =====================================================================
+   14. DIAGNOSTIC TABLES / READOUT ROWS
+   ===================================================================== */
+.hg-body .tm-table-wrap { overflow-x: auto; }
+.hg-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--tm-body);
+  font-size: 13.5px;
+}
+.hg-body thead th {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: bottom;
+  font-family: var(--tm-console);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tm-text-2);
+  background: var(--tm-bg);
+  border-bottom: 1px solid var(--tm-border);
+}
+.hg-body tbody td {
+  padding: 9px 12px;
+  vertical-align: top;
+  color: var(--tm-text);
+  border-bottom: 1px solid var(--tm-border-soft);
+}
+.hg-body tbody tr:last-child td { border-bottom: 0; }
+.hg-body tbody tr:hover td { background: rgba(86, 240, 154, 0.035); }
+.hg-body td .hg-num, .hg-body th .hg-num { font-family: var(--tm-mono); }
+
+/* Sequence rows carry a label, a status plate and a control cluster. Below
+   tablet the cluster wraps under the label rather than forcing the row —
+   and the page — wider than the viewport. */
+@media (max-width: 640px) {
+  .hg-body li.metallic { flex-wrap: wrap; row-gap: 10px; }
+  .hg-body li.metallic > .flex-none:last-child {
+    flex-basis: 100%;
+    justify-content: flex-end;
+    margin-left: 0;
+  }
+}
+
+/* Row-per-record readout (module pipeline, evidence lists). */
+.hg-body .tm-readout {
+  border-radius: var(--tm-radius-sm);
+  border: 1px solid var(--tm-border);
+  border-left: 3px solid var(--tm-border);
+  background: var(--tm-surface);
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+.hg-body .tm-readout:hover {
+  border-color: rgba(86, 240, 154, 0.28);
+  border-left-color: var(--tm-phos-2);
+  background: #141E29;
+}
+
+/* =====================================================================
+   15. CONSOLE HEADER — injected by terminal-theme.js on every page
+   ===================================================================== */
+.tm-console {
+  position: relative;
+  margin: 0 0 1.75rem;
+  border: 1px solid var(--tm-border);
+  border-radius: var(--tm-radius);
+  background: linear-gradient(180deg, var(--tm-raised), var(--tm-surface));
+  box-shadow: inset 0 1px 0 rgba(232, 224, 208, 0.05), 0 12px 28px -24px rgba(0, 0, 0, 0.95);
+  overflow: hidden;
+}
+.tm-console__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 18px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--tm-border);
+  background: linear-gradient(180deg, rgba(86, 240, 154, 0.05), transparent);
+}
+.tm-console__id { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 12px; min-width: 0; }
+.tm-console__mark {
+  font-family: var(--tm-console);
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tm-phos);
+}
+.tm-console__sub {
+  font-family: var(--tm-console);
+  font-size: 17px;
+  line-height: 1.1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tm-text-2);
+}
+.tm-console__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--tm-console);
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tm-text-2);
+}
+.tm-console__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--tm-surface);
+}
+/* Separators are drawn by each cell rather than by a gap over a coloured
+   container, so a short final row leaves plain surface instead of a
+   stray block of border colour. `.tm-console` clips the outer edges. */
+.tm-console__meta > div {
+  padding: 9px 16px 10px;
+  background: var(--tm-surface);
+  box-shadow: 0 0 0 1px var(--tm-border);
+  min-width: 0;
+}
+.tm-console__meta dt {
+  font-family: var(--tm-console);
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tm-text-3);
+}
+.tm-console__meta dd {
+  margin: 2px 0 0;
+  font-family: var(--tm-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: var(--tm-text);
+  overflow-wrap: anywhere;
+}
+.tm-console__meta dd[data-tm-mode] { color: var(--tm-phos); }
+
+@media (max-width: 420px) {
+  .tm-console__mark { font-size: 22px; }
+  .tm-console__sub { font-size: 15px; }
+}
+
+/* =====================================================================
+   16. FOCUS + MOTION SAFETY
+   ===================================================================== */
+.hg-body :focus-visible {
+  outline: 2px solid var(--tm-phos);
+  outline-offset: 3px;
+  border-radius: var(--tm-radius-xs);
+}
+
+.hg-js .hg-reveal { transform: translateY(6px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hg-body .hg-ambient::before,
+  .hg-body .hg-ambient::after { animation: none !important; }
+  .hg-body .hyper-glass,
+  .hg-body .metallic,
+  .hg-body .emissive,
+  .hg-body .hg-btn-ghost,
+  .hg-body .hg-btn-danger,
+  .hg-body .hg-step,
+  .hg-body .tm-readout,
+  .hg-body select { transition: none !important; }
+  .hg-body .emissive:active,
+  .hg-body .hg-btn-ghost:active,
+  .hg-body .hg-btn-danger:active,
+  .hg-body button.metallic:active { transform: none; }
+}
+
+/* =====================================================================
+   17. PRINT — the completion record has to survive paper
+   ===================================================================== */
+@media print {
+  .tm-console,
+  .hg-body .hg-ambient,
+  .hg-body .hg-stepper { display: none !important; }
+  .hg-body {
+    background: #fff !important;
+    color: #10171d !important;
+  }
+  .hg-body .hyper-glass,
+  .hg-body .metallic,
+  .hg-body .hg-stat,
+  .hg-body .tm-readout {
+    background: #fff !important;
+    border-color: #b9c2c9 !important;
+    box-shadow: none !important;
+    color: #10171d !important;
+  }
+  .hg-body .hyper-glass::before { display: none !important; }
+  .hg-body .hg-eyebrow,
+  .hg-body .hg-stat .label,
+  .hg-body .hg-stat .meta,
+  .hg-body .hg-note { color: #4a545c !important; }
+  .hg-body [class*="text-white"] { color: #10171d !important; }
+}
