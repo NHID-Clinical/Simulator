@@ -48,7 +48,8 @@
             <p class="hg-lead mt-6">AI voice agents now call payers, clinics, and pharmacies sounding exactly like people. When staff can't tell — and the caller doesn't say — patient data can change hands before anyone verifies who is really on the line. This simulator trains your team to catch that moment.</p>
             <p class="mt-4 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-5 py-4 text-base leading-relaxed text-white/80"><a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-cyan-300 hover:text-cyan-200">Impersonation latency (PDX-01)</a> is the gap between call connection and clear non-human disclosure — and late disclosure still blocks <span class="hg-term" title="Protected Health Information — patient data covered by HIPAA">PHI</span> on every turn. NHID-Clinical enforces <strong class="text-white">zero</strong> impersonation latency: identity must be disclosed in the first 5 seconds, before any protected health information is exchanged.</p>
             <p class="mt-4 text-white/70"><span class="hg-term" title="Non-Human Identity Disclosure">NHID</span>-Clinical (Non-Human Identity Disclosure for clinical settings) is an open governance framework for healthcare voice agents: verify identity, enforce disclosure, and create auditable AI interactions before sensitive workflows begin.</p>
-            <p class="hg-note mt-4">This site is an interactive simulator that demonstrates the framework. It is education and demonstration — not the framework itself, and not a certification.</p>
+            <p class="mt-4 text-base font-semibold text-cyan-300">The open simulator demonstrates NHID-Clinical controls.</p>
+            <p class="hg-note mt-2">This site is an interactive simulator that demonstrates the framework. It is education and demonstration — not the framework itself, and not a certification.</p>
         </section>
 
         <!-- Onboarding: how this works, before any scoring -->
@@ -231,6 +232,22 @@
                     </div>
                 </div>
             </a>
+        </section>
+
+        <!-- Next steps: open evaluation, or the commercial platform layer -->
+        <section class="mt-12 hyper-glass rounded-3xl p-8" aria-labelledby="next-steps-title">
+            <div class="hg-eyebrow">Next steps</div>
+            <h2 id="next-steps-title" class="font-display mt-2 text-2xl sm:text-3xl font-semibold tracking-tight text-white">Take it past the simulation</h2>
+            <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/70">The controls you just exercised are defined in the open NHID-Clinical framework and published under CC BY 4.0. Run them against your own scenarios for free, or connect a real agent to the platform layer that operates them in production.</p>
+            <div class="mt-6 flex flex-wrap items-center gap-3">
+                <a href="zero-latency-module0.html" class="hg-btn-ghost px-5 py-2.5 font-semibold text-cyan-200">
+                    <i class="fa-solid fa-play" aria-hidden="true"></i> Run a free evaluation
+                </a>
+                <a href="https://nhid-clinical.org/platform/" class="hg-btn-ghost px-5 py-2.5 font-semibold">
+                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Connect your agent to TrustLayer
+                </a>
+            </div>
+            <p class="mt-4 text-xs text-white/40">TrustLayer is the optional commercial platform layer. The specification, controls, conformance tests, and this simulator stay open and free.</p>
         </section>
 
         <div class="mt-12 flex flex-col items-center gap-4 text-center">
