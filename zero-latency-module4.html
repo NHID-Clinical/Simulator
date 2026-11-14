@@ -42,7 +42,7 @@
       <div class="hg-stat" data-tone="amber">
         <div class="label">At stake in this deployment</div>
         <div class="value font-display">$1.9M</div>
-        <div class="meta">Max annual HIPAA civil penalty, one violation category</div>
+        <div class="meta">Illustrative figure for this exercise, not a legal estimate</div>
       </div>
     </div>
 
@@ -60,7 +60,7 @@
       </p>
       <p class="mt-3 max-w-3xl text-sm text-white/50">
         A correct sequence delivers <a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-cyan-300 transition-colors hover:text-cyan-200">zero impersonation latency (PDX-01)</a>
-        — disclosure in the first 5 seconds, before any <span class="hg-term" title="Protected Health Information — patient data covered by HIPAA">PHI</span> is exchanged.
+        — disclosure in the agent's first message, before any <span class="hg-term" title="Protected Health Information — patient data covered by HIPAA">PHI</span> is requested.
       </p>
 
       <div class="mt-8 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
@@ -268,11 +268,11 @@
         v.className = 'mt-3';
         v.innerHTML = ok
           ? `<div class="text-[11px] font-bold uppercase tracking-[.14em] text-emerald-300">Deployment approved · zero impersonation latency</div>
-             <p class="mt-2 max-w-none text-white/85">But why? Logic-gated disclosure (IDG-01) comes first, the passport is offered before any data request (PDX-01), and both DBC-01 deceptive artifacts are removed. Every call this agent makes will disclose within the first 5 seconds — before any PHI moves.</p>
+             <p class="mt-2 max-w-none text-white/85">But why? Logic-gated disclosure (IDG-01) comes first, the passport is offered before any data request (PDX-01), and both DBC-01 deceptive artifacts are removed. Every call this agent makes will disclose in its first message, before any PHI is requested.</p>
              <a class="mt-3 inline-flex items-center gap-2 font-semibold text-cyan-300 transition-colors hover:text-cyan-200" href="zero-latency-dashboard.html">View operations console <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>`
           : `<div class="text-[11px] font-bold uppercase tracking-[.14em] text-amber-300">Deployment blocked · $25,000 penalty recorded</div>
              <p class="mt-2 max-w-none text-white/85">But why? ${failed.map(g => `<code class="text-amber-200">${g.id}</code> failed — ${g.name.toLowerCase()}`).join('; ')}. Disclosure must be the first logic block, the passport must precede any data request, and both deceptive artifacts must be removed — CA AB 489 prohibits simulating a human.</p>
-             <p class="mt-2 max-w-none text-sm text-amber-100/70">Fix the sequence and validate again. In production this configuration would have failed on every outbound call.</p>`;
+             <p class="mt-2 max-w-none text-sm text-amber-100/70">Fix the sequence and validate again. This configuration would fail the check on every outbound call.</p>`;
         feedback.appendChild(v);
         if (!ok) {
           feedback.classList.add('hg-shake');

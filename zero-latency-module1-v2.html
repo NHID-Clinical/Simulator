@@ -29,7 +29,7 @@
       <div class="hg-eyebrow">Module 1 · Live call exercise</div>
       <h1 class="font-display mt-3 text-4xl tracking-tight sm:text-5xl">Listen &amp; catch: stop the PHI leak</h1>
       <p class="mt-3 max-w-3xl text-white/70">Goal: enforce the pre-data exchange gate before a public <span class="hg-term" title="National Provider Identifier — a public, searchable ID for U.S. healthcare providers; knowing one proves nothing">NPI</span> and patient name can be used to extract eligibility, claims, or prior-auth data (<span class="hg-term" title="Protected Health Information — patient data covered by HIPAA">PHI</span>).</p>
-      <p class="mt-3 max-w-3xl text-white/70">This is a race against <a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-cyan-300 hover:text-cyan-200">impersonation latency (PDX-01)</a> — the gap between call connection and clear non-human disclosure. Close it fast: identity must be disclosed in the first 5 seconds, before any PHI is exchanged, and late disclosure still blocks PHI on every turn.</p>
+      <p class="mt-3 max-w-3xl text-white/70">This is a race against <a href="nhid-knowledge-base.html#impersonation-latency" class="font-bold text-cyan-300 hover:text-cyan-200">impersonation latency (PDX-01)</a> — the gap between call connection and clear non-human disclosure. Close it fast: the specification counts turns and asks for disclosure in the agent's first message, before any PHI is requested, and late disclosure still blocks PHI on every turn. The 5-second timer here is a training device, not part of the specification.</p>
       <p class="mt-2 max-w-3xl text-xs text-white/40">This scenario demonstrates a control from the NHID-Clinical framework. It is practical simulation, not the framework itself.</p>
 
       <div class="mt-6 grid gap-3 sm:grid-cols-3">
@@ -77,7 +77,7 @@
         choices: [
           ['', 'I understand. I can give the auth status if you verify the subscriber ZIP.', false, 'Empathy is good, but ZIP is still protected context. The bot is using urgency to pull you past the gate.'],
           ['', 'I can continue once your role and automation status are verified.', true, 'Correct. You acknowledged the urgency without handing over data or accepting the human-assistant claim.'],
-          ['', 'Transfer me to a human clinic operator or send a valid NHID-Auth passport now.', true, 'You gave two compliant paths: cryptographic proof or human escalation.']
+          ['', 'Transfer me to a person at the provider\'s office or send a valid NHID-Auth passport now.', true, 'You gave two compliant paths: cryptographic proof or human escalation.']
         ]
       },
       {
