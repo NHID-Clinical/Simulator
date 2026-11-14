@@ -154,7 +154,7 @@
         stat('cyan', 'Readiness', `${readiness}%`, `${gradedDone.length} of ${graded.length} graded modules complete`) +
         stat(average === null ? 'cyan' : average >= 90 ? 'green' : 'cyan', 'Average score', average === null ? '—' : `${average}%`, average === null ? 'No graded attempts yet' : average >= 90 ? 'Meets the 90% target' : 'Target: 90% or above') +
         stat(trust === null ? 'cyan' : trust >= 90 ? 'green' : trust >= 70 ? 'cyan' : 'amber', 'Trust rating', trust === null ? '—' : `${trust}%`, 'Weighted across attempts') +
-        stat(penalty > 0 ? 'amber' : 'cyan', 'Penalty exposure', `$${penalty.toLocaleString()}`, penalty > 0 ? 'Accumulated simulated HIPAA exposure' : 'No simulated violations recorded');
+        stat(penalty > 0 ? 'amber' : 'cyan', 'Penalty exposure', `$${penalty.toLocaleString()}`, penalty > 0 ? 'Accumulated simulated penalties (game score)' : 'No simulated violations recorded');
 
       // --- Module pipeline ---
       const next = graded.find((m) => !progress[m.id]?.completed);
