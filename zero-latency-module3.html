@@ -93,7 +93,7 @@
       state.penalty = (state.penalty || 0) + penalty;
       state.modules.module3 = { score, penalty, completedAt: new Date().toISOString() };
       localStorage.setItem(GAME_KEY, JSON.stringify(state));
-      localStorage.setItem(PROGRESS_KEY, JSON.stringify(Object.fromEntries(Object.entries(state.modules).map(([id, item]) => [id, { completed: true, score: item.score, completedAt: item.completedAt }]))));
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify({ ...(() => { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}') || {}; } catch { return {}; } })(), ...Object.fromEntries(Object.entries(state.modules).map(([id, item]) => [id, { completed: true, score: item.score, completedAt: item.completedAt }])) }));
     }
 
     document.getElementById('evidence').innerHTML = evidence.map(([id, title, body]) => `<article class="metallic p-4"><div class="text-xs font-bold text-cyan-300">${id} · ${title}</div><p class="mt-2 text-sm text-white/70">${body}</p></article>`).join('');

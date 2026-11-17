@@ -52,7 +52,7 @@
             <h2 class="font-display text-xl tracking-tight">Incoming call metadata</h2>
             <span class="hg-badge" data-tone="cyan">Unverified</span>
           </div>
-          <div id="token" draggable="true" class="mt-4 cursor-grab rounded-xl border border-dashed border-cyan-400/70 bg-cyan-400/10 p-4 font-mono text-sm transition-shadow hover:shadow-[0_0_16px_-4px_rgba(34,211,238,.5)]">
+          <div id="token" draggable="true" tabindex="0" role="button" aria-describedby="drop-hint" class="mt-4 cursor-grab rounded-xl border border-dashed border-cyan-400/70 bg-cyan-400/10 p-4 font-mono text-sm transition-shadow hover:shadow-[0_0_16px_-4px_rgba(34,211,238,.5)]">
             <i class="fa-solid fa-grip-vertical mr-2 text-white/25" aria-hidden="true"></i>nhid.passport.ed25519.NPI12345.expired.sig:9af3
           </div>
           <dl class="mt-5 space-y-3 text-sm">
@@ -97,7 +97,8 @@
     }
     function save(s) {
       localStorage.setItem(GAME_KEY, JSON.stringify(s));
-      const p = {};
+      // Start from what is already saved so Module 0's ungraded completion survives.
+      const p = (() => { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}') || {}; } catch { return {}; } })();
       Object.entries(s.modules || {}).forEach(([id, m]) => p[id] = { completed: true, score: m.score, completedAt: m.completedAt });
       localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
     }
@@ -123,8 +124,12 @@
     token.ondragstart = e => e.dataTransfer.setData('text/plain', 'token');
     drop.ondragover = e => { e.preventDefault(); drop.classList.add('border-cyan-500/70'); };
     drop.ondragleave = () => drop.classList.remove('border-cyan-500/70');
-    drop.ondrop = e => {
-      e.preventDefault();
+    // Dragging is not available to keyboard users and is unreliable on touch
+    // screens, so activating the token runs the same validation as dropping it.
+    token.onclick = () => inspect();
+    token.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inspect(); } };
+    drop.ondrop = e => { e.preventDefault(); inspect(); };
+    function inspect() {
       inspected = true;
       checks.classList.remove('hidden');
       document.getElementById('drop-hint').textContent = 'Validation complete — two of three checks failed.';
