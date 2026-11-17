@@ -17,6 +17,12 @@
     .font-display { font-family: 'Space Grotesk', 'Inter', sans-serif; }
     .node-drag { opacity: 0.35; }
     .node-over { border-color: rgba(34,211,238,0.6) !important; }
+    /* Phone: the gate name gets its own line instead of a 70px column. */
+    @media (max-width: 640px) {
+      #gates .hg-gate { flex-wrap: wrap; row-gap: 4px; }
+      #gates .hg-gate > .flex-1 { order: 3; flex-basis: 100%; }
+      #gates .hg-gate > span:last-child { margin-left: auto; }
+    }
   </style>
   <link rel="icon" href="assets/nhid-logo.svg" type="image/svg+xml">
 </head>
@@ -112,7 +118,8 @@
     }
     function save(s) {
       localStorage.setItem(GAME_KEY, JSON.stringify(s));
-      const p = {};
+      // Start from what is already saved so Module 0's ungraded completion survives.
+      const p = (() => { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}') || {}; } catch { return {}; } })();
       Object.entries(s.modules || {}).forEach(([id, m]) => p[id] = { completed: true, score: m.score, completedAt: m.completedAt });
       localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
     }
@@ -210,12 +217,15 @@
         if (j < 0 || j >= nodes.length) return;
         [nodes[i], nodes[j]] = [nodes[j], nodes[i]];
         draw(j);
+        list.querySelector(`[data-move="${d}"][data-idx="${j}"]`).focus();
         return;
       }
       const removeBtn = e.target.closest('[data-remove]');
       if (removeBtn) {
-        nodes.splice(Number(removeBtn.dataset.remove), 1);
+        const at = Number(removeBtn.dataset.remove);
+        nodes.splice(at, 1);
         draw();
+        (list.querySelector(`li[data-idx="${Math.min(at, nodes.length - 1)}"] button`) || checkBtn).focus();
       }
     });
 

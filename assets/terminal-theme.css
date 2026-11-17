@@ -224,8 +224,10 @@
 /* Filled accent chips read as engraved equipment plates. */
 .hg-body .bg-cyan-600 {
   border: 1px solid rgba(86, 240, 154, 0.3);
-  color: var(--tm-phos);
+  /* Dark ink: phosphor green on this cyan fill measured 2.5:1. */
+  color: #06120C;
 }
+.hg-body .bg-cyan-600 > .text-white\/70 { color: inherit; }
 
 .hg-body .hg-lead { font-size: 1.06rem; line-height: 1.7; color: var(--tm-text-2); }
 .hg-body .hg-note { font-size: 0.8rem; line-height: 1.6; color: var(--tm-text-3); }
@@ -811,6 +813,21 @@
     flex-basis: 100%;
     justify-content: flex-end;
     margin-left: 0;
+  }
+}
+
+/* Phone tap targets: page navigation links and buttons reach 44px. */
+@media (max-width: 640px) {
+  .hg-body main > nav:not(.hg-stepper) a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .hg-body .emissive,
+  .hg-body .hg-btn-ghost,
+  .hg-body .hg-btn-danger {
+    min-height: 44px;
+    min-width: 44px;
   }
 }
 

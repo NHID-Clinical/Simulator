@@ -134,7 +134,7 @@
       state.penalty = (state.penalty || 0) + penaltyAdd;
       state.modules.module1 = { score: finalScore, penalty: penaltyAdd, completedAt: new Date().toISOString() };
       localStorage.setItem(GAME_KEY, JSON.stringify(state));
-      localStorage.setItem(PROGRESS_KEY, JSON.stringify(Object.fromEntries(Object.entries(state.modules).map(([id, item]) => [id, { completed: true, score: item.score, completedAt: item.completedAt }]))));
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify({ ...(() => { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}') || {}; } catch { return {}; } })(), ...Object.fromEntries(Object.entries(state.modules).map(([id, item]) => [id, { completed: true, score: item.score, completedAt: item.completedAt }])) }));
       document.getElementById('trust').textContent = `${state.trust}%`;
       document.getElementById('penalty').textContent = `$${state.penalty.toLocaleString()}`;
     }
