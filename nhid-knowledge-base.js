@@ -88,7 +88,7 @@ window.NHID_KB = {
   ],
   failureModes: [
     { mode: 'Identity spoofing (IDG-01)', response: 'Require non-voice proof, session binding, and contextual checks before trust.' },
-    { mode: 'Impersonation latency (PDX-01)', response: 'Enforce the pre-data gate on EVERY turn, not just turn zero — late disclosure still blocks PHI.' },
+    { mode: 'Impersonation latency', response: 'Enforce the pre-data gate on EVERY turn, not just turn zero — late disclosure still blocks PHI.' },
     { mode: 'Deceptive artifacts (DBC-01)', response: 'Flag synthetic breathing/typing/human claims; set partial_failure and review under CA AB 489.' },
     { mode: 'Escalation failure (EIT-01)', response: 'Stop automation and trigger a tested human handoff; an untested path is no path.' },
     { mode: 'Audit gap (ATR-01)', response: 'Reject or flag events missing CallSid or pipeline_version; incomplete records are unreplayable.' },
